@@ -10,7 +10,7 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Jello World!");
+            Console.WriteLine("Murder Everyone");
 
             Console.ReadKey();
         }
