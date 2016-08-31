@@ -16,5 +16,10 @@ namespace TestProject
 
             Console.ReadKey();
         }
+
+        public int GetSomeNumber(int a)
+        {
+            return a * 5;
+        }
     }
 }
