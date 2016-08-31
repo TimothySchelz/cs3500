@@ -16,5 +16,10 @@ namespace TestProject
 
             Console.ReadKey();
         }
+
+        public int ADifferentMethod()
+        {
+            return 0;
+        }
     }
 }
