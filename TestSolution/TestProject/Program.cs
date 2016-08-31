@@ -12,6 +12,8 @@ namespace TestProject
         {
             Console.WriteLine("Murder Everyone");
 
+            int number = 5;
+
             Console.ReadKey();
         }
     }
