@@ -10,7 +10,7 @@ namespace DifferentMessage
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Kill all humans");
+            Console.WriteLine("Kill some humans");
 
             Console.ReadKey();
         }
