@@ -17,6 +17,11 @@ namespace TestProject
             Console.ReadKey();
         }
 
+        public int GetSomeNumber(int a)
+        {
+            return a * 5;
+        }
+
         public int ADifferentMethod()
         {
             return 0;
