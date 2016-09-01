@@ -1,0 +1,6 @@
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\bin\Debug\TestProject.exe.config
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\bin\Debug\TestProject.exe
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\bin\Debug\TestProject.pdb
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\obj\Debug\TestProject.exe
+C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\obj\Debug\TestProject.pdb
