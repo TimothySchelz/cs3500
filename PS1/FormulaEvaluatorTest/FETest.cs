@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FormulaEvaluatorTest
 {
-    class Program
+    class FETest
     {
 
         public static String test = "( 2 + 35 ) * A7";
