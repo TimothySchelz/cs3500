@@ -26,36 +26,126 @@ namespace FormulaEvaluator
 
             //Create the stacks
             Stack<int> values = new Stack<int>();
-            Stack<char> operation = new Stack<char>();
+            Stack<char> operations = new Stack<char>();
+
+            int currentNumber;
+            char currentOperation;
 
             for (int i = 0; i < substrings.Length; i++)
             {
+
                 switch (CategorizeToken(substrings[i]))
                 {
+                    // Integer
                     case 1:
-                        Console.WriteLine("Case 1");
+                        //Turn it from a string into a char
+
+                        Int32.TryParse(substrings[i], out currentNumber);
+
+                        ValueActions(values, operations, currentNumber);
                         break;
+
+                    // Variable
                     case 2:
-                        Console.WriteLine("Case 2");
+                        currentNumber = variableEvaluator(substrings[i]);
+                        ValueActions(values, operations, currentNumber);
                         break;
+
+                    // Addition
                     case 3:
-                        Console.WriteLine("Case 3");
+                        // Check if the previous stuff was also addition/subtraction
+                        if (operations.Peek().Equals('+') || operations.Peek() == '-')
+                        {
+                            // Check if there are enough values to do the previous operation
+                            if (values.Count < 2)
+                            {
+                                throw new ArgumentException("Not enough values to perform operation");
+                            }
+
+                            // Pop everything out
+                            int num1 = values.Pop();
+                            int num2 = values.Pop();
+                            int oper = operations.Pop();
+
+                            // Perform the previous addition or subtraction
+                            if (oper == '+')
+                            {
+                                values.Push(num2 + num1);
+                            }
+                            else
+                            {
+                                values.Push(num2 - num1);
+                            }
+
+                        }
+
+                        // Push the current operation onto the operations stack
+                        Char.TryParse(substrings[i], out currentOperation);
+                        operations.Push(currentOperation);
                         break;
+
+                    // Multiplication
                     case 4:
-                        Console.WriteLine("Case 4");
+                        // Turn the token into a char
+                        Char.TryParse(substrings[i], out currentOperation);
+
+                        // Push it onto the stack
+                        operations.Push(currentOperation);
                         break;
+
+                    // Opening Parenthesis
                     case 5:
-                        Console.WriteLine("Case 5");
+                        Char.TryParse(substrings[i], out currentOperation);
+
+                        // Push it onto the stack
+                        operations.Push(currentOperation);
                         break;
+
+                    // Closing Parenthesis
                     case 6:
                         Console.WriteLine("Case 6");
                         break;
+
                     default:
                         Console.WriteLine("Default case");
                         break;
                 }
             }
         }
+
+        private static void ValueActions(Stack<int> values, Stack<char> operations, int currentNumber)
+        {
+            // Checking for an empty value stack
+            if (values.Count == 0)
+            {
+                 throw new ArgumentException("The value stack is empty already"); 
+            }
+            // Check if the operation stack is empty before peeking
+            if (operations.Count == 0)
+            {
+                // Push the current integer onto the stack
+                values.Push(currentNumber);
+            }
+            // Check if multiplication is at the top
+            if (operations.Peek().Equals('*') || operations.Peek() == '/')
+            {
+                int lastNumber = values.Pop();
+                char operation = operations.Pop();
+
+                // Chacks for division by zero
+                if (currentNumber == 0 && operation == /) {
+                    throw new ArgumentException("Division by zero");
+                }
+                // Multiply or divide and push
+                if (operation == '*') {
+                    values.Push(lastNumber*currentNumber);
+                } else {
+                    values.Push(lastNumber/currentNumber);
+                }
+            }
+        }
+
+
 
         /// <summary>
         /// This method looks at a token, caegorizes it, and returns a corresponding int.

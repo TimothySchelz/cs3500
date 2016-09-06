@@ -14,20 +14,11 @@ namespace FormulaEvaluatorTest
 
         static void Main(string[] args)
         {
-            string[] substrings = Regex.Split(test, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
+            Stack<char> operation = new Stack<char>();
 
-            for(int i = 0; i < substrings.Length; i++)
-            {
-                if(substrings[i].Equals(" "))
-                {
-                    Console.WriteLine("!");
-                } else
-                {
-                    Console.WriteLine(substrings[i]);
-                }
-            }
+            Console.WriteLine(operation.Peek());
 
-            Console.Read();
+            Console.ReadLine();
         }
     }
 }
