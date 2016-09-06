@@ -47,12 +47,6 @@ namespace FormulaEvaluator
                         {
                             throw new ArgumentException("The value stack is empty already"); 
                         }
-                        // Check if the operation stack is empty before peeking
-                        if (operations.Count == 0)
-                        {
-                            // Push the current integer onto the stack
-                            values.Push(currentNumber);
-                        }
 
                         Multiplication(values, operations, currentNumber);
                         break;
@@ -91,23 +85,69 @@ namespace FormulaEvaluator
 
                     // Closing Parenthesis
                     case 6:
+                        // Does the first step(addition)
                         Addition(values, operations);
 
-                        if (operations.Count < 0 || operations.Pop() != '(')
+                        // checks to make sure we have a matching opening parenthesis
+                        if (operations.Count < 0 || operations.Peek() != '(')
                         {
                             throw new ArgumentException("Opening parenthesis not in the correct position.");
                         }
-
+                        // Pops the opening parenthesis
                         operations.Pop();
 
+                        // Makes sure we are doing muliplication/division
+                        if (operations.Count > 0 && (operations.Pop() == '*' || operations.Pop() == '/'))
+                        {
+                            // Checks to make sure there are enough values to do the operation
+                            if (values.Count < 2)
+                            {
+                                throw new ArgumentException("Not enough values to perform operation");
+                            }
 
-                        Multiplication(values, operations, );
-
+                            // Doing the multiplication and pushes the result
+                            currentNumber = values.Pop();
+                            Multiplication(values, operations, currentNumber);
+                        }
                         break;
 
                     default:
-                        Console.WriteLine("Default case");
-                        break;
+                        throw new ArgumentException("CategorizeToken is returning stupid things");
+                        
+                }
+            }
+
+            // Check if the operations stack is empty or not
+            if (operations.Count == 0)
+            {
+                if (values.Count != 1)
+                {
+                    throw new ArgumentException("There are too many values on the stack");
+                }
+
+                return values.Pop();
+            }
+            else
+            {
+                // Check to make sure we have everything to do addition or subtraction
+                if (operations.Count != 1 || values.Count != 2 || (operations.Peek() != '+' && operations.Peek() != '-'))
+                {
+                    throw new ArgumentException("There isn't exaclty 1 operator and 2 values left");
+                }
+
+                if (operations.Pop() == '+')
+                {
+                    currentNumber = values.Pop();
+                    int previousNumber = values.Pop();
+
+                    return previousNumber + currentNumber;
+                }
+                else
+                {
+                    currentNumber = values.Pop();
+                    int previousNumber = values.Pop();
+
+                    return previousNumber - currentNumber;
                 }
             }
 
@@ -144,7 +184,12 @@ namespace FormulaEvaluator
 
         private static void Multiplication(Stack<int> values, Stack<char> operations, int currentNumber)
         {
-
+            // Check if the operation stack is empty before peeking
+            if (operations.Count == 0)
+            {
+                // Push the current integer onto the stack
+                values.Push(currentNumber);
+            }
             // Check if multiplication is at the top
             if (operations.Peek().Equals('*') || operations.Peek() == '/')
             {
@@ -152,14 +197,18 @@ namespace FormulaEvaluator
                 char operation = operations.Pop();
 
                 // Chacks for division by zero
-                if (currentNumber == 0 && operation == '/') {
+                if (currentNumber == 0 && operation == '/')
+                {
                     throw new ArgumentException("Division by zero");
                 }
                 // Multiply or divide and push
-                if (operation == '*') {
-                    values.Push(lastNumber*currentNumber);
-                } else {
-                    values.Push(lastNumber/currentNumber);
+                if (operation == '*')
+                {
+                    values.Push(lastNumber * currentNumber);
+                }
+                else
+                {
+                    values.Push(lastNumber / currentNumber);
                 }
             }
         }
@@ -184,7 +233,7 @@ namespace FormulaEvaluator
         {
             // Checks to see which case the current token falls into
             int number;
-            if(Int32.TryParse(s, out number) && number >= 0)
+            if (Int32.TryParse(s, out number) && number >= 0)
             {
                 return 1;
             }
@@ -192,7 +241,7 @@ namespace FormulaEvaluator
             {
                 return 2;
             }
-            else if(s.Equals("+")|| s.Equals("-"))
+            else if (s.Equals("+") || s.Equals("-"))
             {
                 return 3;
             }
@@ -234,7 +283,7 @@ namespace FormulaEvaluator
             }
 
             // Go through one char at a time seeing if it is letters then numbers
-            for(int i = 0; i < variable.Length; i++)
+            for (int i = 0; i < variable.Length; i++)
             {
                 // while still just a series of letters
                 if (!switchedToNumbers)
@@ -244,18 +293,20 @@ namespace FormulaEvaluator
                     {
                         continue;
                     }
-                        // If we have a number switch to the number part of the variable's name
+                    // If we have a number switch to the number part of the variable's name
                     else if ((variable[i] >= '0' && variable[i] <= '9'))
                     {
                         switchedToNumbers = true;
                     }
-                        // If it is anything else then it does not fit the scheme
+                    // If it is anything else then it does not fit the scheme
                     else
                     {
                         throw new ArgumentException("Variable name is of the wrong format." + s + " is an invalid format");
                     }
-                // If we are on the number section of the variable
-                } else {
+                    // If we are on the number section of the variable
+                }
+                else
+                {
                     // If we don't have a number then we have a problem
                     if (!(variable[i] >= '0' && variable[i] <= '9'))
                     {
