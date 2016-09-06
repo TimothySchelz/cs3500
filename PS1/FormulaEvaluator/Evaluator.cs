@@ -145,6 +145,10 @@ namespace FormulaEvaluator
                         }
                         break;
 
+                    case 0:
+                        //Empty string.  Disregard.
+                        break;
+
                     //Something went wrong!
                     default:
                         throw new ArgumentException("CategorizeToken is returning stupid things");
@@ -199,7 +203,7 @@ namespace FormulaEvaluator
             //Make sure there is something on the operations stack
             if (operations.Count < 1)
             {
-                throw new ArgumentException("There is not an operation to be done");
+                return;
             }
 
             // Check if the previous stuff was also addition/subtraction
@@ -273,6 +277,7 @@ namespace FormulaEvaluator
 
         /// <summary>
         /// This method looks at a token, caegorizes it, and returns a corresponding int.
+        /// 0 = empty buffer string.  Disregards
         /// 1 = integer
         /// 2 = variable
         /// 3 = + or -
@@ -312,17 +317,19 @@ namespace FormulaEvaluator
             else if (IsVariableFormat(s))
             {
                 return 2;
+            } else if (s.Equals(""))
+            {
+                return 0;
             }
 
-            // It was not one of the listed types.  Something is wrong
-            throw new ArgumentException();
+            throw new ArgumentException("AHHHHH!! Run for your life! It isn't one of the accepted tokens");
         }
 
         /// <summary>
         /// Just checks if the string is of the format of a variable.  If it is the wrong format it will throw an ArgumentException.
         /// </summary>
         /// <param name="s">The string to be checked</param>
-        /// <returns>returns true as long as an exception is not thrown</returns>
+        /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string</returns>
         private static bool IsVariableFormat(string s)
         {
             // Simplifies what needs to be checked.
@@ -331,6 +338,11 @@ namespace FormulaEvaluator
 
             // Keeps track of when we switch from letters to numbers.
             bool switchedToNumbers = false;
+
+            // Check if it is actually an empty token.  Disregard if it is empty
+            if (variable.Length == 0) {
+                return false;
+            }
 
             // Checks if the first char is a letter and that the last char is an integer.
             if (!(variable[0] >= 'A' && variable[0] <= 'Z') || !(variable[variable.Length - 1] >= 'A' && variable[variable.Length - 1] <= 'Z'))
