@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaEvaluator", "FormulaEvaluator\FormulaEvaluator.csproj", "{21900448-4606-40A9-9A9E-ACABCC22DD70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaEvaluatorTest", "FormulaEvaluatorTest\FormulaEvaluatorTest.csproj", "{DCB6BF17-74D8-4FCF-98EB-4DDC05E33784}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FETester", "FETester\FETester.csproj", "{76052F31-5D50-4A0C-AB51-B411DA93830D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{21900448-4606-40A9-9A9E-ACABCC22DD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21900448-4606-40A9-9A9E-ACABCC22DD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21900448-4606-40A9-9A9E-ACABCC22DD70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DCB6BF17-74D8-4FCF-98EB-4DDC05E33784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCB6BF17-74D8-4FCF-98EB-4DDC05E33784}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCB6BF17-74D8-4FCF-98EB-4DDC05E33784}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCB6BF17-74D8-4FCF-98EB-4DDC05E33784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76052F31-5D50-4A0C-AB51-B411DA93830D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76052F31-5D50-4A0C-AB51-B411DA93830D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76052F31-5D50-4A0C-AB51-B411DA93830D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76052F31-5D50-4A0C-AB51-B411DA93830D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

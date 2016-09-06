@@ -11,6 +11,13 @@ namespace FormulaEvaluator
     {
         public delegate int Lookup(String v);
 
+        /// <summary>
+        /// Evaluate takes a mathmatical expressions and evaluates it.  It can really only deal with +-*/ and parenthesis.
+        /// If the input string is not a valid expression it will throw an ArgumentException.
+        /// </summary>
+        /// <param name="exp">The mathematical expression to be evaluated</param>
+        /// <param name="variableEvaluator"> A function to look up variables.  It should take a string as a variable and return an integer</param>
+        /// <returns>Returns the integer the expression evaluated to.</returns>
         public static int Evaluate(String exp, Lookup variableEvaluator)
         {
             // TODO... The sixth option and what to do when all parsed
@@ -19,7 +26,7 @@ namespace FormulaEvaluator
             string[] substrings = Regex.Split(exp, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
 
             //Remove whitespace
-            for(int i = 0; i < substrings.Length; i++)
+            for (int i = 0; i < substrings.Length; i++)
             {
                 substrings[i].Trim();
             }
@@ -45,7 +52,7 @@ namespace FormulaEvaluator
                         // Checking for an empty value stack
                         if (values.Count == 0)
                         {
-                            throw new ArgumentException("The value stack is empty already"); 
+                            throw new ArgumentException("The value stack is empty already");
                         }
 
                         Multiplication(values, operations, currentNumber);
@@ -111,9 +118,10 @@ namespace FormulaEvaluator
                         }
                         break;
 
+                    //Something went wrong!
                     default:
                         throw new ArgumentException("CategorizeToken is returning stupid things");
-                        
+
                 }
             }
 
@@ -153,8 +161,20 @@ namespace FormulaEvaluator
 
         }
 
+        /// <summary>
+        /// Performs the section of the algorithm that does addition or subtraction.  It pops 2 entries from values and one entry from operations and then performs the operation.
+        /// If there are not enough entries in either stack it will throw an ArgumentException.
+        /// </summary>
+        /// <param name="values">The values stack</param>
+        /// <param name="operations">The operations stack</param>
         private static void Addition(Stack<int> values, Stack<char> operations)
         {
+            //Make sure there is something on the operations stack
+            if (operations.Count < 1)
+            {
+                throw new ArgumentException("There is not an operation to be done");
+            }
+
             // Check if the previous stuff was also addition/subtraction
             if (operations.Peek().Equals('+') || operations.Peek() == '-')
             {
@@ -182,6 +202,13 @@ namespace FormulaEvaluator
             }
         }
 
+        /// <summary>
+        /// Performs the part of the operation where you multiply or divide values.  It will pop one entry off of values and one off of operations.
+        /// It will throw an ArgumentException if there is not any entries in values of operations.
+        /// </summary>
+        /// <param name="values">The values stack</param>
+        /// <param name="operations">the operations stack.  Seriously why don't I just change the permissions.</param>
+        /// <param name="currentNumber"> The second number in the operation. i.e. the number you would divide by.</param>
         private static void Multiplication(Stack<int> values, Stack<char> operations, int currentNumber)
         {
             // Check if the operation stack is empty before peeking
