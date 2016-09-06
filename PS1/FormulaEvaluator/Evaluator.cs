@@ -45,23 +45,49 @@ namespace FormulaEvaluator
                 {
                     // Integer
                     case 1:
-                        //Turn it from a string into a char
-
+                        //Turn it from a string into a int
                         Int32.TryParse(substrings[i], out currentNumber);
 
-                        // Checking for an empty value stack
-                        if (values.Count == 0)
+                        // Check if the operation stack is empty before peeking
+                        if (operations.Count == 0)
                         {
-                            throw new ArgumentException("The value stack is empty already");
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                            break;
                         }
 
-                        Multiplication(values, operations, currentNumber);
+                        // Check if multiplication is at the top
+                        if (operations.Peek().Equals('*') || operations.Peek() == '/')
+                        {
+                            Multiplication(values, operations, currentNumber);
+                        } else
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                        }
                         break;
 
                     // Variable
                     case 2:
                         currentNumber = variableEvaluator(substrings[i]);
-                        Multiplication(values, operations, currentNumber);
+
+                        // Check if the operation stack is empty before peeking
+                        if (operations.Count == 0)
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                        }
+
+                        // Check if multiplication is at the top
+                        if (operations.Peek().Equals('*') || operations.Peek() == '/')
+                        {
+                            Multiplication(values, operations, currentNumber);
+                        }
+                        else
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                        }
                         break;
 
                     // Addition
@@ -114,6 +140,7 @@ namespace FormulaEvaluator
 
                             // Doing the multiplication and pushes the result
                             currentNumber = values.Pop();
+
                             Multiplication(values, operations, currentNumber);
                         }
                         break;
@@ -211,32 +238,34 @@ namespace FormulaEvaluator
         /// <param name="currentNumber"> The second number in the operation. i.e. the number you would divide by.</param>
         private static void Multiplication(Stack<int> values, Stack<char> operations, int currentNumber)
         {
-            // Check if the operation stack is empty before peeking
+            // Checking for an empty value stack
+            if (values.Count == 0)
+            {
+                throw new ArgumentException("The value stack is empty already");
+            }
+
+            // Checking for an empty operations stack
             if (operations.Count == 0)
             {
-                // Push the current integer onto the stack
-                values.Push(currentNumber);
+                throw new ArgumentException("The operations stack is empty already");
             }
-            // Check if multiplication is at the top
-            if (operations.Peek().Equals('*') || operations.Peek() == '/')
-            {
-                int lastNumber = values.Pop();
-                char operation = operations.Pop();
 
-                // Chacks for division by zero
-                if (currentNumber == 0 && operation == '/')
-                {
-                    throw new ArgumentException("Division by zero");
-                }
-                // Multiply or divide and push
-                if (operation == '*')
-                {
-                    values.Push(lastNumber * currentNumber);
-                }
-                else
-                {
-                    values.Push(lastNumber / currentNumber);
-                }
+            int lastNumber = values.Pop();
+            char operation = operations.Pop();
+
+            // Chacks for division by zero
+            if (currentNumber == 0 && operation == '/')
+            {
+                throw new ArgumentException("Division by zero");
+            }
+            // Multiply or divide and push
+            if (operation == '*')
+            {
+                values.Push(lastNumber * currentNumber);
+            }
+            else
+            {
+                values.Push(lastNumber / currentNumber);
             }
         }
 
@@ -260,13 +289,9 @@ namespace FormulaEvaluator
         {
             // Checks to see which case the current token falls into
             int number;
-            if (Int32.TryParse(s, out number) && number >= 0)
+            if (Int32.TryParse(s, out number))
             {
                 return 1;
-            }
-            else if (IsVariableFormat(s))
-            {
-                return 2;
             }
             else if (s.Equals("+") || s.Equals("-"))
             {
@@ -283,6 +308,10 @@ namespace FormulaEvaluator
             else if (s.Equals(")"))
             {
                 return 6;
+            }
+            else if (IsVariableFormat(s))
+            {
+                return 2;
             }
 
             // It was not one of the listed types.  Something is wrong
