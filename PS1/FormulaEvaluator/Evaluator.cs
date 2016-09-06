@@ -90,7 +90,7 @@ namespace FormulaEvaluator
                         }
                         break;
 
-                    // Addition
+                    // Addition or subtraction
                     case 3:
                         Addition(values, operations);
 
@@ -99,7 +99,7 @@ namespace FormulaEvaluator
                         operations.Push(currentOperation);
                         break;
 
-                    // Multiplication
+                    // Multiplication or division
                     case 4:
                         // Turn the token into a char
                         Char.TryParse(substrings[i], out currentOperation);
@@ -130,7 +130,7 @@ namespace FormulaEvaluator
                         operations.Pop();
 
                         // Makes sure we are doing muliplication/division
-                        if (operations.Count > 0 && (operations.Pop() == '*' || operations.Pop() == '/'))
+                        if (operations.Count > 0 && (operations.Peek() == '*' || operations.Peek() == '/'))
                         {
                             // Checks to make sure there are enough values to do the operation
                             if (values.Count < 2)
@@ -218,7 +218,7 @@ namespace FormulaEvaluator
                 // Pop everything out
                 int num1 = values.Pop();
                 int num2 = values.Pop();
-                int oper = operations.Pop();
+                char oper = operations.Pop();
 
                 // Perform the previous addition or subtraction
                 if (oper == '+')
