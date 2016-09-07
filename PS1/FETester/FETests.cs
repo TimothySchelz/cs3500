@@ -412,6 +412,9 @@ namespace FETester
             Assert.AreEqual(2, Evaluate("2 / (2*A1 - B2)", limited));
         }
 
+        /*
+         * Some more tests
+         */
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TheSpecialInvalidString()

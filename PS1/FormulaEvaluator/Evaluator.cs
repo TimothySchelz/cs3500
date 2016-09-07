@@ -136,7 +136,7 @@ namespace FormulaEvaluator
                             // Checks to make sure there are enough values to do the operation
                             if (values.Count < 2)
                             {
-                                throw new ArgumentException("Not enough values to perform operation");
+                                throw new ArgumentException("Not enough values to perform multiplication or division");
                             }
 
                             // Doing the multiplication and pushes the result
@@ -157,12 +157,16 @@ namespace FormulaEvaluator
                 }
             }
 
+            /*
+             * Now that we are done parsing we do the finishing touches
+             */
+
             // Check if the operations stack is empty or not
             if (operations.Count == 0)
             {
                 if (values.Count != 1)
                 {
-                    throw new ArgumentException("There are too many values on the stack");
+                    throw new ArgumentException("There is not only 1 value in the values stack at the end.");
                 }
 
                 return values.Pop();
@@ -172,7 +176,7 @@ namespace FormulaEvaluator
                 // Check to make sure we have everything to do addition or subtraction
                 if (operations.Count != 1 || values.Count != 2 || (operations.Peek() != '+' && operations.Peek() != '-'))
                 {
-                    throw new ArgumentException("There isn't exaclty 1 operator and 2 values left");
+                    throw new ArgumentException("There isn't exaclty 1 operator and 2 values left.  We should only have 2 operation left to do.");
                 }
 
                 if (operations.Pop() == '+')
@@ -213,7 +217,7 @@ namespace FormulaEvaluator
                 // Check if there are enough values to do the previous operation
                 if (values.Count < 2)
                 {
-                    throw new ArgumentException("Not enough values to perform operation");
+                    throw new ArgumentException("Not enough values to perform addition or subtraction");
                 }
 
                 // Pop everything out
@@ -246,13 +250,13 @@ namespace FormulaEvaluator
             // Checking for an empty value stack
             if (values.Count == 0)
             {
-                throw new ArgumentException("The value stack is empty already");
+                throw new ArgumentException("The value stack is empty already and cannot perform multiplication or division");
             }
 
             // Checking for an empty operations stack
             if (operations.Count == 0)
             {
-                throw new ArgumentException("The operations stack is empty already");
+                throw new ArgumentException("The operations stack is empty already.  There is not a multiplication or division to do.");
             }
 
             int lastNumber = values.Pop();
@@ -348,7 +352,7 @@ namespace FormulaEvaluator
             // Checks if the first char is a letter and that the last char is an integer.
             if (!(variable[0] >= 'A' && variable[0] <= 'Z') || !(variable[variable.Length - 1] >= '0' && variable[variable.Length - 1] <= '9'))
             {
-                throw new ArgumentException("Variable name is of the wrong format." + s + " is an invalid format");
+                throw new ArgumentException("Variable name is of the wrong format. \"" + s + "\" is an invalid format");
             }
 
             // Go through one char at a time seeing if it is letters then numbers
@@ -371,7 +375,7 @@ namespace FormulaEvaluator
                     // If it is anything else then it does not fit the scheme
                     else
                     {
-                        throw new ArgumentException("Variable name is of the wrong format. " + s + " is an invalid format");
+                        throw new ArgumentException("Variable name is of the wrong format. \"" + s + "\" is an invalid format");
                     }
                     // If we are on the number section of the variable
                 }
@@ -380,7 +384,7 @@ namespace FormulaEvaluator
                     // If we don't have a number then we have a problem
                     if (!(variable[i] >= '0' && variable[i] <= '9'))
                     {
-                        throw new ArgumentException("Variable name is of the wrong format. " + s + " is an invalid format");
+                        throw new ArgumentException("Variable name is of the wrong format. \"" + s + "\" is an invalid format");
                     }
                 }
             }
