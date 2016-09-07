@@ -117,6 +117,12 @@ namespace FETester
 
         // Failing tests with no variables
         [TestMethod]
+        public void InterestingCase1()
+        {
+            Evaluate("2 + (8)", zero);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void DivideByZero()
         {
@@ -399,6 +405,18 @@ namespace FETester
             Assert.AreEqual(2, Evaluate("2 / A1", zero));
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DivideByZeroWithVariables()
+        {
+            Assert.AreEqual(2, Evaluate("2 / (2*A1 - B2)", limited));
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TheSpecialInvalidString()
+        {
+            Assert.AreEqual(2, Evaluate("5 2 / A1", limited));
+        }
     }
 }
