@@ -418,5 +418,11 @@ namespace FETester
         {
             Assert.AreEqual(2, Evaluate("5 2 / A1", limited));
         }
+
+        [TestMethod]
+        public void LongExpression()
+        {
+            Assert.AreEqual(-25, Evaluate("5+13*(A1+16)/9+D4*3-84+B2+(13*0)", limited));
+        }
     }
 }
