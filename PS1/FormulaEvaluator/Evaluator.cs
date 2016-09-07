@@ -28,7 +28,7 @@ namespace FormulaEvaluator
             //Remove whitespace
             for (int i = 0; i < substrings.Length; i++)
             {
-                substrings[i].Trim();
+                substrings[i] = substrings[i].Trim();
             }
 
             //Create the stacks
@@ -76,10 +76,11 @@ namespace FormulaEvaluator
                         {
                             // Push the current integer onto the stack
                             values.Push(currentNumber);
+                            break;
                         }
 
                         // Check if multiplication is at the top
-                        if (operations.Peek().Equals('*') || operations.Peek() == '/')
+                        if ((operations.Count > 0) && (operations.Peek().Equals('*') || operations.Peek() == '/'))
                         {
                             Multiplication(values, operations, currentNumber);
                         }
@@ -122,7 +123,7 @@ namespace FormulaEvaluator
                         Addition(values, operations);
 
                         // checks to make sure we have a matching opening parenthesis
-                        if (operations.Count < 0 || operations.Peek() != '(')
+                        if (operations.Count <= 0 || operations.Peek() != '(')
                         {
                             throw new ArgumentException("Opening parenthesis not in the correct position.");
                         }
@@ -329,11 +330,11 @@ namespace FormulaEvaluator
         /// Just checks if the string is of the format of a variable.  If it is the wrong format it will throw an ArgumentException.
         /// </summary>
         /// <param name="s">The string to be checked</param>
-        /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string</returns>
+        /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string or white space</returns>
         private static bool IsVariableFormat(string s)
         {
             // Simplifies what needs to be checked.
-            s.ToUpper();
+            s = s.ToUpper();
             char[] variable = s.ToCharArray();
 
             // Keeps track of when we switch from letters to numbers.
@@ -345,7 +346,7 @@ namespace FormulaEvaluator
             }
 
             // Checks if the first char is a letter and that the last char is an integer.
-            if (!(variable[0] >= 'A' && variable[0] <= 'Z') || !(variable[variable.Length - 1] >= 'A' && variable[variable.Length - 1] <= 'Z'))
+            if (!(variable[0] >= 'A' && variable[0] <= 'Z') || !(variable[variable.Length - 1] >= '0' && variable[variable.Length - 1] <= '9'))
             {
                 throw new ArgumentException("Variable name is of the wrong format." + s + " is an invalid format");
             }
@@ -365,11 +366,12 @@ namespace FormulaEvaluator
                     else if ((variable[i] >= '0' && variable[i] <= '9'))
                     {
                         switchedToNumbers = true;
+                        continue;
                     }
                     // If it is anything else then it does not fit the scheme
                     else
                     {
-                        throw new ArgumentException("Variable name is of the wrong format." + s + " is an invalid format");
+                        throw new ArgumentException("Variable name is of the wrong format. " + s + " is an invalid format");
                     }
                     // If we are on the number section of the variable
                 }
@@ -378,7 +380,7 @@ namespace FormulaEvaluator
                     // If we don't have a number then we have a problem
                     if (!(variable[i] >= '0' && variable[i] <= '9'))
                     {
-                        throw new ArgumentException("Variable name is of the wrong format." + s + " is an invalid format");
+                        throw new ArgumentException("Variable name is of the wrong format. " + s + " is an invalid format");
                     }
                 }
             }

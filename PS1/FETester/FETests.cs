@@ -13,7 +13,18 @@ namespace FETester
             return 0;
         }
 
+        public static int LimitedLookup(String s)
+        {
+            if (s == "A1") { return 2; }
+            if (s == "B2") { return 4; }
+            if (s == "C3") { return 6; }
+            if (s == "D4") { return 8; }
+            if (s == "XyZ321") { return 85; }
+            throw new ArgumentException("Variable DNE");
+        }
+
         Lookup zero = ZeroLookup;
+        Lookup limited = LimitedLookup;
 
         // Successfull tests with no variables
         [TestMethod]
@@ -249,9 +260,17 @@ namespace FETester
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
+        public void ExtraClosingParenthesis4()
+        {
+            Evaluate("(5+3))", zero);
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void ExtraEmptyParenthesis1()
         {
-            Evaluate("2*(5-3)()", zero);
+            Evaluate("2*()(5-3)", zero);
         }
 
         [TestMethod]
@@ -317,6 +336,69 @@ namespace FETester
             Evaluate("spaghetti - 3&@sd", zero);
         }
 
-        // Successful tests with variables
+        /*
+         * Successful tests with variables
+         */
+
+
+        // Just using the zero lookup
+        [TestMethod]
+        public void SimpleUsingZero()
+        {
+            Assert.AreEqual(0, Evaluate("A1", zero));
+            Assert.AreEqual(2, Evaluate("2 + A1", zero));
+            Assert.AreEqual(2, Evaluate("A1 + 2", zero));
+            Assert.AreEqual(0, Evaluate("5*A1", zero));
+            Assert.AreEqual(17, Evaluate("ASJKFJ290834 + 17", zero));
+        }
+
+        // Using the limited lookup
+        [TestMethod]
+        public void JustLookUpLimited()
+        {
+            Assert.AreEqual(2, Evaluate("A1", limited));
+            Assert.AreEqual(4, Evaluate("B2", limited));
+            Assert.AreEqual(6, Evaluate("C3", limited));
+            Assert.AreEqual(8, Evaluate("D4", limited));
+            Assert.AreEqual(85, Evaluate("XyZ321", limited));
+        }
+
+        [TestMethod]
+        public void OneVariableLimited()
+        {
+            Assert.AreEqual(5, Evaluate("3 + A1", limited));
+            Assert.AreEqual(32, Evaluate("B2*8", limited));
+            Assert.AreEqual(2, Evaluate("C3/3", limited));
+            Assert.AreEqual(4, Evaluate("(D4+4)/3", limited));
+        }
+
+        [TestMethod]
+        public void MultipleVariablesLimited()
+        {
+            Assert.AreEqual(4, Evaluate("A1 + A1", limited));
+            Assert.AreEqual(8, Evaluate("B2*A1", limited));
+            Assert.AreEqual(5, Evaluate("(C3+B2)/A1", limited));
+        }
+
+        [TestMethod]
+        public void MultipleOperationsInParenthesisLimited()
+        {
+            Assert.AreEqual(6, Evaluate("(A1 + A1 + A1)", limited));
+            Assert.AreEqual(14, Evaluate("(B2*A1 + C3)", limited));
+            Assert.AreEqual(14, Evaluate("(C3+B2*B2+C3)/A1", limited));
+        }
+
+        /*
+         * Failed tests with variables
+         */
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DivideByZeroUsingZero()
+        {
+            Assert.AreEqual(2, Evaluate("2 / A1", zero));
+        }
+
+
     }
 }
