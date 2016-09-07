@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FormulaEvaluator
 {
+    /// <summary>
+    /// This static class has an evaluate method to evaluate a mathematical expression represented as a string.
+    /// </summary>
     public static class Evaluator
     {
         public delegate int Lookup(String v);
