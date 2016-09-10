@@ -478,5 +478,192 @@ namespace PS2GradingTests
                 Assert.IsTrue(dees[i].SetEquals(new HashSet<string>(t.GetDependees(letters[i]))));
             }
         }
+
+        /**************************** My Tests ****************************/
+
+        /*
+         * Size Tests
+         */
+        [TestMethod()]
+        public void SizeEmptyGraph()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.AreEqual(0, t.Size);
+        }
+
+        [TestMethod()]
+        public void SizeOneItem()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            Assert.AreEqual(1, t.Size);
+        }
+
+        [TestMethod()]
+        public void SizeSeveralItems()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("D", "E");
+            t.AddDependency("E", "D");
+            t.AddDependency("A", "A");
+            Assert.AreEqual(5, t.Size);
+        }
+
+        [TestMethod()]
+        public void SizeAddingAndRemoving()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("D", "E");
+            t.AddDependency("E", "D");
+            t.AddDependency("A", "A");
+            t.RemoveDependency("D", "E");
+            Assert.AreEqual(4, t.Size);
+        }
+
+        /*
+         * Indexer Tests
+         */
+
+        // TODO... Indexer Tests
+
+        /*
+         * HasDependents Tests
+         */
+        [TestMethod()]
+        public void HasDependentsNormalCase()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("A", "A");
+            Assert.IsTrue(t.HasDependents("A"));
+        }
+
+        [TestMethod()]
+        public void HasDependentsNoDependents()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("A", "A");
+            Assert.isFalse(t.HasDependents("C"));
+        }
+
+        [TestMethod()]
+        public void HasDependentsNoNode()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("A", "A");
+            Assert.IsFalse(t.HasDependents("D"));
+        }
+
+        [TestMethod()]
+        public void HasDependentsEmptyGraph()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.IsFalse(t.HasDependents("D"));
+        }
+
+
+        /*
+         * HasDependees Tests
+         */
+        [TestMethod()]
+        public void HasDependeesNormalCase()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("A", "A");
+            Assert.IsTrue(t.HasDependees("B"));
+        }
+
+        [TestMethod()]
+        public void HasDependeesNoDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            Assert.IsTrue(t.HasDependees("A"));
+        }
+
+        [TestMethod()]
+        public void HasDependeesNoNode()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            Assert.IsTrue(t.HasDependees("D"));
+        }
+
+        [TestMethod()]
+        public void HasDependeesEmptyGraph()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.IsTrue(t.HasDependees("D"));
+        }
+
+        /*
+         * GetDependents Tests
+         */
+        [TestMethod()]
+        public void GetDependents()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("C", "B");
+
+            Dictionary<int, String> expected = new Dictionary<int, String>();
+
+            Assert.AreEqual( , t.GetDependents("B"));
+        }
+    }
+
+    /// <summary>
+    /// A class that extends Dictionary so that it is easy to check if the output dictionary from DependencyGraph is valid.
+    /// I just added an Equals method so check if the values of the dictionaries are equal.
+    /// </summary>
+    public class MyDict : Dictionary<int, String> {
+
+        /// <summary>
+        /// A Method to check if this dictionary has the same elements as the given dictionary
+        /// </summary>
+        /// <param name="d">a Dictionary object to be checked if it is the same as this one</param>
+        /// <returns>true if</returns>
+        public bool Equals(Dictionary<int, String> d) 
+        {
+            // Make sure they are the same size
+            if (this.Count != d.Count)
+            {
+                return false;
+            }
+
+            // Go through checking to make sure each element in d is in this
+            foreach (KeyValuePair<int, String>  current in d)
+            {
+                if (!this.ContainsValue(current.Value))
+                {
+                    return false;
+                }
+            }
+
+            // Check to make sure every element in this is in d
+            foreach (KeyValuePair<int, String>  current in this)
+            {
+                if (!d.ContainsValue(current.Value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
