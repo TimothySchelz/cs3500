@@ -479,7 +479,12 @@ namespace PS2GradingTests
             }
         }
 
-        /**************************** My Tests ****************************/
+        /*
+         * *************************************************************** *
+         *                                                                 *
+         * *************************** My Tests ************************** *
+         *                                                                 *
+         * *************************************************************** */
 
         /*
          * Size Tests
@@ -550,7 +555,7 @@ namespace PS2GradingTests
             t.AddDependency("A", "B");
             t.AddDependency("B", "C");
             t.AddDependency("A", "A");
-            Assert.isFalse(t.HasDependents("C"));
+            Assert.IsFalse(t.HasDependents("C"));
         }
 
         [TestMethod()]
@@ -613,27 +618,206 @@ namespace PS2GradingTests
          * GetDependents Tests
          */
         [TestMethod()]
-        public void GetDependents()
+        public void GetDependentsNormalCase()
         {
             DependencyGraph t = new DependencyGraph();
             t.AddDependency("A", "B");
             t.AddDependency("B", "C");
             t.AddDependency("C", "B");
 
-            Dictionary<int, String> expected = new Dictionary<int, String>();
+            MyDict expected = new MyDict();
+            expected.Add("C".GetHashCode(), "C");
 
-            Assert.AreEqual( , t.GetDependents("B"));
+            Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
+
+        [TestMethod()]
+        public void GetDependentsNoDependents()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+
+            Assert.IsTrue(expected.Equals(t.GetDependents("C")));
+        }
+
+        [TestMethod()]
+        public void GetDependentsNoNode()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+
+            Assert.IsTrue(expected.Equals(t.GetDependents("w25")));
+        }
+
+        [TestMethod()]
+        public void GetDependentsReferenceToItself()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+            expected.Add("C".GetHashCode(), "C");
+            expected.Add("B".GetHashCode(), "B");
+
+            Assert.IsTrue(expected.Equals(t.GetDependents("B")));
+        }
+
+        /*
+         * GetDependees Test
+         */
+        [TestMethod()]
+        public void GetDependeesNormalCase()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("C", "B");
+
+            MyDict expected = new MyDict();
+            expected.Add("C".GetHashCode(), "C");
+
+            Assert.IsTrue(expected.Equals(t.GetDependees("B")));
+        }
+
+        [TestMethod()]
+        public void GetDependeesNoDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+
+            Assert.IsTrue(expected.Equals(t.GetDependees("A")));
+        }
+
+        [TestMethod()]
+        public void GetDependeesNoNode()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+
+            Assert.IsTrue(expected.Equals(t.GetDependees("S")));
+        }
+
+        [TestMethod()]
+        public void GetDependentsReferenceToItself()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("B", "B");
+
+            MyDict expected = new MyDict();
+            expected.Add("A".GetHashCode(), "A");
+            expected.Add("B".GetHashCode(), "B");
+
+            Assert.IsTrue(expected.Equals(t.GetDependents("B")));
+        }
+
+        /*
+         * AddDependency Tests
+         */
+        [TestMethod()]
+        public void AddDependencyEmptyCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+
+            Assert.AreEqual(1, t.Size);
+        }
+
+        [TestMethod()]
+        public void AddDependencyEmptyCheckDependents()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+
+            Assert.IsTrue(t.HasDependents("A"));
+        }
+
+        [TestMethod()]
+        public void AddDependencyEmptyCheckDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+
+            Assert.IsTrue(t.HasDependees("B"));
+        }
+
+        [TestMethod()]
+        public void AddDependencyRedundantDependency()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "B");
+
+            Assert.AreEqual(1, t.Size);
+        }
+
+        [TestMethod()]
+        public void AddDependencyMultipleTimes()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "C");
+            t.AddDependency("A", "C");
+            t.AddDependency("D", "Q");
+            t.AddDependency("F", "B");
+            t.AddDependency("B", "C");
+
+            Assert.AreEqual(6, t.Size);
+        }
+
+        [TestMethod()]
+        public void AddDependencyDifferentStrings()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("123456789", "Base");
+            t.AddDependency("/*-+~", "C");
+
+            Assert.AreEqual(2, t.Size);
+        }
+
+        /*
+         * RemoveDependency
+         */
+
+        /*
+         * ReplaceDependents
+         */
+
+        /*
+         * ReplaceDependees
+         */
+
     }
 
     /// <summary>
     /// A class that extends Dictionary so that it is easy to check if the output dictionary from DependencyGraph is valid.
-    /// I just added an Equals method so check if the values of the dictionaries are equal.
+    /// I just added an Equals method so check if the values of the dictionaries are equal.  It is pretty inefficient but 
+    /// I don't plan to use it on anything too large.
     /// </summary>
     public class MyDict : Dictionary<int, String> {
 
         /// <summary>
-        /// A Method to check if this dictionary has the same elements as the given dictionary
+        /// A Method to check if this dictionary has the same elements as the given dictionary.  It runs in O(n^2) time.
+        /// I know it is inefficient but I only plan on using it on relatively small data sets.
         /// </summary>
         /// <param name="d">a Dictionary object to be checked if it is the same as this one</param>
         /// <returns>true if</returns>
