@@ -51,7 +51,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int Size
         {
-            get { return 0; }
+            get { return Size; }
         }
 
 

@@ -530,10 +530,43 @@ namespace PS2GradingTests
         }
 
         /*
-         * Indexer Tests
+         * Indexer Tests i.e. the t["a"] thing
          */
+        [TestMethod()]
+        public void IndexerNormalTest()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("A", "A");
+            Assert.AreEqual(3, t["A"]);
+        }
 
-        // TODO... Indexer Tests
+        [TestMethod()]
+        public void IndexerNoDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            Assert.AreEqual(0, t["C"]);
+        }
+
+        [TestMethod()]
+        public void IndexerNoNode()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            Assert.AreEqual(0, t["Slagathor!"]);
+        }
 
         /*
          * HasDependents Tests
@@ -626,7 +659,7 @@ namespace PS2GradingTests
             t.AddDependency("C", "B");
 
             MyDict expected = new MyDict();
-            expected.Add("C".GetHashCode(), "C");
+            expected.Add("C", "C");
 
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
@@ -666,8 +699,8 @@ namespace PS2GradingTests
             t.AddDependency("B", "B");
 
             MyDict expected = new MyDict();
-            expected.Add("C".GetHashCode(), "C");
-            expected.Add("B".GetHashCode(), "B");
+            expected.Add("C", "C");
+            expected.Add("B", "B");
 
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
@@ -684,7 +717,7 @@ namespace PS2GradingTests
             t.AddDependency("C", "B");
 
             MyDict expected = new MyDict();
-            expected.Add("C".GetHashCode(), "C");
+            expected.Add("C", "C");
 
             Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
@@ -724,8 +757,8 @@ namespace PS2GradingTests
             t.AddDependency("B", "B");
 
             MyDict expected = new MyDict();
-            expected.Add("A".GetHashCode(), "A");
-            expected.Add("B".GetHashCode(), "B");
+            expected.Add("A", "A");
+            expected.Add("B", "B");
 
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
@@ -797,31 +830,329 @@ namespace PS2GradingTests
         /*
          * RemoveDependency
          */
+        [TestMethod()]
+        public void RemoveDependencyNormalCheckDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            t.RemoveDependency("C","A");
+            Assert.AreEqual(2, t["A"]);
+        }
+
+        [TestMethod()]
+        public void RemoveDependencyNormalCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            t.RemoveDependency("C", "A");
+            Assert.AreEqual(4, t.Size);
+        }
+
+        [TestMethod()]
+        public void RemoveDependencyDNECheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            t.RemoveDependency("df", "Franklin");
+            Assert.AreEqual(5, t.Size);
+        }
+
+        [TestMethod()]
+        public void RemoveDependencyDNECheckDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("B", "A");
+            t.AddDependency("D", "A");
+            t.AddDependency("E", "D");
+            t.AddDependency("C", "A");
+            t.RemoveDependency("C", "A");
+            Assert.AreEqual(2, t["Escobar"]);
+        }
 
         /*
          * ReplaceDependents
          */
+        [TestMethod()]
+        public void ReplaceDependentsNormalCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(2, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNormalCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(1, t["X"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoOrigDepsCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(1, t["X"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoOrigDepsCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(2, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoNewDepsCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(0, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoNewDepsCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+
+            t.ReplaceDependents("A", newDep);
+
+            Assert.AreEqual(0, t["X"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoNodeCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("Thirteen", newDep);
+
+            Assert.AreEqual(5, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependentsNoNodeCheckDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependents("Thirteen", newDep);
+
+            Assert.AreEqual(1, t["Y"]);
+        }
 
         /*
          * ReplaceDependees
          */
+        [TestMethod()]
+        public void ReplaceDependeesNormalCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
 
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(4, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNormalCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(2, t["A"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoOrigDepsCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(2, t["A"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoOrigDepsCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(2, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoNewDepsCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(2, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoNewDepsCheckdependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+
+            t.ReplaceDependees("A", newDep);
+
+            Assert.AreEqual(0, t["A"]);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoNodeCheckSize()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("Thirteen", newDep);
+
+            Assert.AreEqual(5, t.Size);
+        }
+
+        [TestMethod()]
+        public void ReplaceDependeesNoNodeCheckDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("A", "B");
+            t.AddDependency("A", "C");
+            t.AddDependency("A", "A");
+
+            List<String> newDep = new List<String>();
+            newDep.Add("X");
+            newDep.Add("Y");
+
+            t.ReplaceDependees("Thirteen", newDep);
+
+            Assert.AreEqual(2, t["Thirteen"]);
+        }
     }
 
     /// <summary>
     /// A class that extends Dictionary so that it is easy to check if the output dictionary from DependencyGraph is valid.
-    /// I just added an Equals method so check if the values of the dictionaries are equal.  It is pretty inefficient but 
-    /// I don't plan to use it on anything too large.
+    /// I just added an Equals method so check if the values of the dictionaries are equal.
     /// </summary>
-    public class MyDict : Dictionary<int, String> {
+    public class MyDict : Dictionary<String, String> {
 
         /// <summary>
-        /// A Method to check if this dictionary has the same elements as the given dictionary.  It runs in O(n^2) time.
-        /// I know it is inefficient but I only plan on using it on relatively small data sets.
+        /// A Method to check if this dictionary has the same elements as the given dictionary.
         /// </summary>
         /// <param name="d">a Dictionary object to be checked if it is the same as this one</param>
-        /// <returns>true if</returns>
-        public bool Equals(Dictionary<int, String> d) 
+        /// <returns>true if they contains the same elements</returns>
+        public bool Equals(Dictionary<String, String> d) 
         {
             // Make sure they are the same size
             if (this.Count != d.Count)
@@ -830,18 +1161,18 @@ namespace PS2GradingTests
             }
 
             // Go through checking to make sure each element in d is in this
-            foreach (KeyValuePair<int, String>  current in d)
+            foreach (KeyValuePair<String, String>  current in d)
             {
-                if (!this.ContainsValue(current.Value))
+                if (!this.ContainsKey(current.Key))
                 {
                     return false;
                 }
             }
 
             // Check to make sure every element in this is in d
-            foreach (KeyValuePair<int, String>  current in this)
+            foreach (KeyValuePair<String, String>  current in this)
             {
-                if (!d.ContainsValue(current.Value))
+                if (!d.ContainsKey(current.Key))
                 {
                     return false;
                 }
