@@ -38,13 +38,17 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class DependencyGraph
     {
+        //This holds all those tasty little nodes
+        Dictionary<String, Node> map;
+
         /// <summary>
         /// Creates an empty DependencyGraph.
         /// </summary>
         public DependencyGraph()
         {
+            map = new Dictionary<string, Node>();
+            Size = 0;
         }
-
 
         /// <summary>
         /// The number of ordered pairs in the DependencyGraph.
@@ -52,6 +56,8 @@ namespace SpreadsheetUtilities
         public int Size
         {
             get { return Size; }
+
+            private set;
         }
 
 
@@ -64,7 +70,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int this[string s]
         {
-            get { return 0; }
+            get { return map[s].DeesSize; }
         }
 
 
@@ -73,7 +79,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependents(string s)
         {
-            return false;
+            return map[s].DentsSize != 0;
         }
 
 
@@ -82,7 +88,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependees(string s)
         {
-            return false;
+            return map[s].DeesSize != 0;
         }
 
 
@@ -91,7 +97,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
-            return null;
+            return map[s].Dents;
         }
 
         /// <summary>
@@ -99,7 +105,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
-            return null;
+            return map[s].Dees;
         }
 
 
@@ -115,6 +121,38 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
+            // Keeps track of if we are actually adding a dependency or if it alrteady existed
+            bool addedDependency = false;
+
+            //Checks if s already exists.  If it does simply add the new dependent, if it doesn't then create it and add the dependent.
+            if (map.ContainsKey(s))
+            {
+                addedDependency = map[s].AddDent(t);
+            }
+            else
+            {
+                Node newbie = new Node(s);
+                addedDependency = newbie.AddDent(t);
+                map.Add(s, newbie);
+            }
+
+            //Checks if t already exists.  If it does simply add the new dependee, if it doesn't then create it and add the dependee.
+            if (map.ContainsKey(t))
+            {
+                map[t].AddDee(s);
+            }
+            else
+            {
+                Node newbie = new Node(t);
+                newbie.AddDee(s);
+                map.Add(t, newbie);
+            }
+
+            // If a dependency has been added increment size.
+            if (addedDependency)
+            {
+                Size++;
+            }
         }
 
 
@@ -125,6 +163,34 @@ namespace SpreadsheetUtilities
         /// <param name="t"></param>
         public void RemoveDependency(string s, string t)
         {
+            // Keeps track of if we are actually adding a dependency or if it alrteady existed
+            bool removedDependency = false;
+
+            //Checks if s already exists.  If it does simply remove the dependent, if it doesn't then you are done.
+            if (map.ContainsKey(s))
+            {
+                removedDependency = map[s].RemoveDent(t);
+            }
+            else
+            {
+                return;
+            }
+
+            //Checks if t already exists.  If it does simply remove the dependee, if it doesn't then you are done.
+            if (map.ContainsKey(t))
+            {
+                map[t].RemoveDee(s);
+            }
+            else
+            {
+                return;
+            }
+
+            // If a dependency has been removed decrement size.
+            if (removedDependency)
+            {
+                Size--;
+            }
         }
 
 
@@ -134,6 +200,78 @@ namespace SpreadsheetUtilities
         /// </summary>
         public void ReplaceDependents(string s, IEnumerable<string> newDependents)
         {
+            // check if s exists or if we need to create it
+            if (map.ContainsKey(s))
+            {
+                //pulls the s node out so we don't have to repeatedly look it up and gets it's dependents
+                Node S = map[s];
+                HashSet<String> dependents = S.Dents;
+                
+                // remove old dependencies
+
+                // remove S's collection of dependents
+                S.EraseDents();
+                // go to each of S's dependents and remove s from their dependees
+                foreach (String i in dependents)
+                {
+                    // If something is actually removed decrement size
+                    if (map[i].RemoveDee(s))
+                    {
+                        Size--;
+                    }
+                }
+
+                // add new dependencies
+                foreach (String i in newDependents)
+                {
+                    // Add the current new dependent
+                    S.AddDent(i);
+
+                    //increment size
+                    Size++;
+
+                    //check if the new dependent exists and then add s to it's list of dependees
+                    if (map.ContainsKey(i))
+                    {
+                        map[i].AddDee(s);
+                    }
+                    else
+                    {
+                        Node newbie = new Node(i);
+                        newbie.AddDee(s);
+                        map.Add(i, newbie);
+                    }
+                }
+            }
+            else
+            {
+                // create s
+                Node S = new Node(s);
+
+                foreach (String i in newDependents)
+                {
+                    // add the dependents to s's list of dependents
+                    S.AddDent(i);
+
+                    // increment size
+                    Size++;
+
+                    // if the current dependent exists add s to it's list of dependees otherwise create it
+                    if (map.ContainsKey(i))
+                    {
+                        map[i].AddDee(s);
+                    }
+                    else
+                    {
+                        Node newbie = new Node(i);
+                        newbie.AddDee(s);
+                        map.Add(i, newbie);
+                    }
+                }
+
+                // Add s to the map of nodes
+                map.Add(s, S);
+            }
         }
 
 
@@ -147,4 +285,132 @@ namespace SpreadsheetUtilities
 
     }
 
+    /// <summary>
+    /// A Node to represent the individual cells and remember what it depends on and what depends on it.  Basically the nodes of a directed graph.
+    /// </summary>
+    internal class Node
+    {
+        /// <summary>
+        /// A constructor.  The node needs a name but that is it.
+        /// </summary>
+        /// <param name="name">The name of the node</param>
+        internal Node(String name)
+        {
+            this.name = name;
+            Dents = new HashSet<string>();
+            Dees = new HashSet<string>();
+        }
+
+        /// <summary>
+        /// The name of the node.
+        /// </summary>
+        internal String name
+        {
+            get;
+
+            private set;
+        }
+
+        /// <summary>
+        /// The size of the dependents of this node
+        /// </summary>
+        internal int DentsSize
+        {
+            get;
+
+            private set;
+        }
+
+        /// <summary>
+        /// The size of the dependees of this node
+        /// </summary>
+        internal int DeesSize
+        {
+            get;
+
+            private set;
+        }
+
+        /// <summary>
+        /// A Hashset with the dependents of this node.
+        /// </summary>
+        internal HashSet<String> Dents
+        {
+            get;
+
+            private set;
+        }
+
+        /// <summary>
+        /// A Hashset with the dependees of this node
+        /// </summary>
+        internal HashSet<String> Dees
+        {
+            get;
+
+            private set;
+        }
+
+        /// <summary>
+        /// Adds the string to the dependents
+        /// </summary>
+        /// <param name="s">The string to be added to the dependents</param>
+        internal bool AddDent(String s)
+        {
+            bool success = Dents.Add(s);
+            DentsSize = Dents.Count;
+            return success;
+        }
+
+        /// <summary>
+        /// Adds the string to the dependees
+        /// </summary>
+        /// <param name="s">The string to be added to the dependees</param>
+        internal bool AddDee(String s)
+        {
+            bool success = Dees.Add(s);
+            DeesSize = Dees.Count;
+            return success;
+        }
+
+        /// <summary>
+        /// Removes the string s from the dependents.  If s is not in dependents it does nothing.
+        /// </summary>
+        /// <param name="s">The string to be removed</param>
+        internal bool RemoveDent(String s)
+        {
+            bool success = Dents.Remove(s);
+            DentsSize = Dents.Count;
+            return success;
+        }
+
+        /// <summary>
+        /// Removes the string s from the dependees.  If s is not in dependees it does nothing.
+        /// </summary>
+        /// <param name="s">The string to be removed</param>
+        internal bool RemoveDee(String s)
+        {
+            bool success = Dees.Remove(s);
+            DeesSize = Dees.Count;
+            return success;
+        }
+
+        /// <summary>
+        /// Removes all the dependents of this node
+        /// </summary>
+        internal void EraseDents()
+        {
+            Dents = new HashSet<string>();
+            DentsSize = 0;
+        }
+
+        /// <summary>
+        /// Removes all the dependees of this node
+        /// </summary>
+        internal void EraseDees()
+        {
+            Dees = new HashSet<string>();
+            DeesSize = 0;
+        }
+    }
 }

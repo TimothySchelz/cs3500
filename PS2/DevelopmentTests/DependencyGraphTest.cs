@@ -479,6 +479,8 @@ namespace PS2GradingTests
             }
         }
 
+
+#if True
         /*
          * *************************************************************** *
          *                                                                 *
@@ -749,7 +751,7 @@ namespace PS2GradingTests
         }
 
         [TestMethod()]
-        public void GetDependentsReferenceToItself()
+        public void GetDependeesReferenceToItself()
         {
             DependencyGraph t = new DependencyGraph();
             t.AddDependency("A", "B");
@@ -760,7 +762,7 @@ namespace PS2GradingTests
             expected.Add("A", "A");
             expected.Add("B", "B");
 
-            Assert.IsTrue(expected.Equals(t.GetDependents("B")));
+            Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
 
         /*
@@ -1139,8 +1141,11 @@ namespace PS2GradingTests
 
             Assert.AreEqual(2, t["Thirteen"]);
         }
+
+#endif
     }
 
+#if True
     /// <summary>
     /// A class that extends Dictionary so that it is easy to check if the output dictionary from DependencyGraph is valid.
     /// I just added an Equals method so check if the values of the dictionaries are equal.
@@ -1181,4 +1186,5 @@ namespace PS2GradingTests
             return true;
         }
     }
+#endif
 }
