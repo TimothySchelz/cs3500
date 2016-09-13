@@ -19,6 +19,13 @@ namespace PS2GradingTests
     [TestClass()]
     public class DependencyGraphTest
     {
+        [TestMethod()]
+        public void TestNothing()
+        {
+            DependencyGraph t = new DependencyGraph();
+        }
+
+
         // ************************** TESTS ON EMPTY DGs ************************* //
 
         /// <summary>
@@ -480,7 +487,6 @@ namespace PS2GradingTests
         }
 
 
-#if True
         /*
          * *************************************************************** *
          *                                                                 *
@@ -630,7 +636,7 @@ namespace PS2GradingTests
             DependencyGraph t = new DependencyGraph();
             t.AddDependency("A", "B");
             t.AddDependency("B", "C");
-            Assert.IsTrue(t.HasDependees("A"));
+            Assert.IsFalse(t.HasDependees("A"));
         }
 
         [TestMethod()]
@@ -639,14 +645,14 @@ namespace PS2GradingTests
             DependencyGraph t = new DependencyGraph();
             t.AddDependency("A", "B");
             t.AddDependency("B", "C");
-            Assert.IsTrue(t.HasDependees("D"));
+            Assert.IsFalse(t.HasDependees("D"));
         }
 
         [TestMethod()]
         public void HasDependeesEmptyGraph()
         {
             DependencyGraph t = new DependencyGraph();
-            Assert.IsTrue(t.HasDependees("D"));
+            Assert.IsFalse(t.HasDependees("D"));
         }
 
         /*
@@ -660,8 +666,8 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("C", "B");
 
-            MyDict expected = new MyDict();
-            expected.Add("C", "C");
+            MyHash expected = new MyHash();
+            expected.Add("C");
 
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
@@ -674,7 +680,7 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
+            MyHash expected = new MyHash();
 
             Assert.IsTrue(expected.Equals(t.GetDependents("C")));
         }
@@ -687,7 +693,7 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
+            MyHash expected = new MyHash();
 
             Assert.IsTrue(expected.Equals(t.GetDependents("w25")));
         }
@@ -700,9 +706,9 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
-            expected.Add("C", "C");
-            expected.Add("B", "B");
+            MyHash expected = new MyHash();
+            expected.Add("C");
+            expected.Add("B");
 
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
@@ -718,8 +724,8 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("C", "B");
 
-            MyDict expected = new MyDict();
-            expected.Add("C", "C");
+            MyHash expected = new MyHash();
+            expected.Add("C");
 
             Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
@@ -732,7 +738,7 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
+            MyHash expected = new MyHash();
 
             Assert.IsTrue(expected.Equals(t.GetDependees("A")));
         }
@@ -745,7 +751,7 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
+            MyHash expected = new MyHash();
 
             Assert.IsTrue(expected.Equals(t.GetDependees("S")));
         }
@@ -758,9 +764,9 @@ namespace PS2GradingTests
             t.AddDependency("B", "C");
             t.AddDependency("B", "B");
 
-            MyDict expected = new MyDict();
-            expected.Add("A", "A");
-            expected.Add("B", "B");
+            MyHash expected = new MyHash();
+            expected.Add("A");
+            expected.Add("B");
 
             Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
@@ -814,9 +820,10 @@ namespace PS2GradingTests
             t.AddDependency("A", "C");
             t.AddDependency("D", "Q");
             t.AddDependency("F", "B");
+            //redundent dependency
             t.AddDependency("B", "C");
 
-            Assert.AreEqual(6, t.Size);
+            Assert.AreEqual(5, t.Size);
         }
 
         [TestMethod()]
@@ -881,7 +888,7 @@ namespace PS2GradingTests
             t.AddDependency("E", "D");
             t.AddDependency("C", "A");
             t.RemoveDependency("C", "A");
-            Assert.AreEqual(2, t["Escobar"]);
+            Assert.AreEqual(2, t["A"]);
         }
 
         /*
@@ -1141,23 +1148,20 @@ namespace PS2GradingTests
 
             Assert.AreEqual(2, t["Thirteen"]);
         }
-
-#endif
     }
 
-#if True
     /// <summary>
     /// A class that extends Dictionary so that it is easy to check if the output dictionary from DependencyGraph is valid.
     /// I just added an Equals method so check if the values of the dictionaries are equal.
     /// </summary>
-    public class MyDict : Dictionary<String, String> {
+    public class MyHash : HashSet<String> {
 
         /// <summary>
-        /// A Method to check if this dictionary has the same elements as the given dictionary.
+        /// A Method to check if this HashSet has the same elements as the given Hashset.
         /// </summary>
-        /// <param name="d">a Dictionary object to be checked if it is the same as this one</param>
+        /// <param name="d">a HashSet object to be checked if it is the same as this one</param>
         /// <returns>true if they contains the same elements</returns>
-        public bool Equals(Dictionary<String, String> d) 
+        public bool Equals(HashSet<String> d) 
         {
             // Make sure they are the same size
             if (this.Count != d.Count)
@@ -1166,18 +1170,18 @@ namespace PS2GradingTests
             }
 
             // Go through checking to make sure each element in d is in this
-            foreach (KeyValuePair<String, String>  current in d)
+            foreach (String current in d)
             {
-                if (!this.ContainsKey(current.Key))
+                if (!this.Contains(current))
                 {
                     return false;
                 }
             }
 
             // Check to make sure every element in this is in d
-            foreach (KeyValuePair<String, String>  current in this)
+            foreach (String current in this)
             {
-                if (!d.ContainsKey(current.Key))
+                if (!d.Contains(current))
                 {
                     return false;
                 }
@@ -1186,5 +1190,4 @@ namespace PS2GradingTests
             return true;
         }
     }
-#endif
 }

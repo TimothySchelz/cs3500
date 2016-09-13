@@ -41,13 +41,15 @@ namespace SpreadsheetUtilities
         //This holds all those tasty little nodes
         Dictionary<String, Node> map;
 
+        private int size;
+
         /// <summary>
         /// Creates an empty DependencyGraph.
         /// </summary>
         public DependencyGraph()
         {
             map = new Dictionary<string, Node>();
-            Size = 0;
+            size = 0;
         }
 
         /// <summary>
@@ -55,9 +57,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int Size
         {
-            get { return Size; }
-
-            private set;
+            get { return size; }
         }
 
 
@@ -70,7 +70,14 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int this[string s]
         {
-            get { return map[s].DeesSize; }
+            get
+            {
+                if(!map.ContainsKey(s))
+                {
+                    return 0;
+                }
+                return map[s].DeesSize;
+            }
         }
 
 
@@ -79,7 +86,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependents(string s)
         {
-            return map[s].DentsSize != 0;
+            if (map.ContainsKey(s))
+            {
+                return map[s].DentsSize != 0;
+            }
+
+            return false;
         }
 
 
@@ -88,7 +100,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependees(string s)
         {
-            return map[s].DeesSize != 0;
+            if (map.ContainsKey(s))
+            {
+                return map[s].DeesSize != 0;
+            }
+
+            return false;
         }
 
 
@@ -97,6 +114,10 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
+            if (!map.ContainsKey(s))
+            {
+                return new HashSet<String>();
+            }
             return map[s].Dents;
         }
 
@@ -105,6 +126,10 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
+            if (!map.ContainsKey(s))
+            {
+                return new HashSet<String>();
+            }
             return map[s].Dees;
         }
 
@@ -151,7 +176,7 @@ namespace SpreadsheetUtilities
             // If a dependency has been added increment size.
             if (addedDependency)
             {
-                Size++;
+                size++;
             }
         }
 
@@ -189,7 +214,7 @@ namespace SpreadsheetUtilities
             // If a dependency has been removed decrement size.
             if (removedDependency)
             {
-                Size--;
+                size--;
             }
         }
 
@@ -217,7 +242,7 @@ namespace SpreadsheetUtilities
                     // If something is actually removed decrement size
                     if (map[i].RemoveDee(s))
                     {
-                        Size--;
+                        size--;
                     }
                 }
 
@@ -228,7 +253,7 @@ namespace SpreadsheetUtilities
                     S.AddDent(i);
 
                     //increment size
-                    Size++;
+                    size++;
 
                     //check if the new dependent exists and then add s to it's list of dependees
                     if (map.ContainsKey(i))
@@ -254,7 +279,7 @@ namespace SpreadsheetUtilities
                     S.AddDent(i);
 
                     // increment size
-                    Size++;
+                    size++;
 
                     // if the current dependent exists add s to it's list of dependees otherwise create it
                     if (map.ContainsKey(i))
@@ -281,6 +306,78 @@ namespace SpreadsheetUtilities
         /// </summary>
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
+            // check if s exists or if we need to create it
+            if (map.ContainsKey(s))
+            {
+                //pulls the s node out so we don't have to repeatedly look it up and gets it's dependees
+                Node S = map[s];
+                HashSet<String> dependees = S.Dees;
+
+                // remove old dependencies
+
+                // remove S's collection of dependees
+                S.EraseDees();
+                // go to each of S's dependents and remove s from their dependents
+                foreach (String i in dependees)
+                {
+                    // If something is actually removed decrement size
+                    if (map[i].RemoveDent(s))
+                    {
+                        size--;
+                    }
+                }
+
+                // add new dependencies
+                foreach (String i in newDependees)
+                {
+                    // Add the current new dependee
+                    S.AddDee(i);
+
+                    //increment size
+                    size++;
+
+                    //check if the new dependee exists and then add s to it's list of dependents
+                    if (map.ContainsKey(i))
+                    {
+                        map[i].AddDent(s);
+                    }
+                    else
+                    {
+                        Node newbie = new Node(i);
+                        newbie.AddDent(s);
+                        map.Add(i, newbie);
+                    }
+                }
+            }
+            else
+            {
+                // create s
+                Node S = new Node(s);
+
+                foreach (String i in newDependees)
+                {
+                    // add the dependees to s's list of dependees
+                    S.AddDee(i);
+
+                    // increment size
+                    size++;
+
+                    // if the current dependee exists add s to it's list of dependents otherwise create it
+                    if (map.ContainsKey(i))
+                    {
+                        map[i].AddDent(s);
+                    }
+                    else
+                    {
+                        Node newbie = new Node(i);
+                        newbie.AddDent(s);
+                        map.Add(i, newbie);
+                    }
+                }
+
+                // Add s to the map of nodes
+                map.Add(s, S);
+            }
         }
 
     }
