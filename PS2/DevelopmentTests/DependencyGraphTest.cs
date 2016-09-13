@@ -553,6 +553,9 @@ namespace PS2GradingTests
         /*
          * Indexer Tests i.e. the t["a"] thing
          */
+        /// <summary>
+        /// Checks the indexer on a normal graph in a normal case
+        /// </summary>
         [TestMethod()]
         public void IndexerNormalTest()
         {
@@ -565,6 +568,9 @@ namespace PS2GradingTests
             Assert.AreEqual(3, t["A"]);
         }
 
+        /// <summary>
+        /// Checks the indexer on a node without dependees
+        /// </summary>
         [TestMethod()]
         public void IndexerNoDependees()
         {
@@ -577,6 +583,9 @@ namespace PS2GradingTests
             Assert.AreEqual(0, t["C"]);
         }
 
+        /// <summary>
+        /// chekcs the indexer on a node that doesn't exist
+        /// </summary>
         [TestMethod()]
         public void IndexerNoNode()
         {
@@ -592,6 +601,9 @@ namespace PS2GradingTests
         /*
          * HasDependents Tests
          */
+        /// <summary>
+        /// checks dependents in a normal boring old graph
+        /// </summary>
         [TestMethod()]
         public void HasDependentsNormalCase()
         {
@@ -602,6 +614,9 @@ namespace PS2GradingTests
             Assert.IsTrue(t.HasDependents("A"));
         }
 
+        /// <summary>
+        /// checks the dependents of a node without dependents
+        /// </summary>
         [TestMethod()]
         public void HasDependentsNoDependents()
         {
@@ -612,6 +627,9 @@ namespace PS2GradingTests
             Assert.IsFalse(t.HasDependents("C"));
         }
 
+        /// <summary>
+        /// Checks the dependents of a node that does not exist
+        /// </summary>
         [TestMethod()]
         public void HasDependentsNoNode()
         {
@@ -622,6 +640,9 @@ namespace PS2GradingTests
             Assert.IsFalse(t.HasDependents("D"));
         }
 
+        /// <summary>
+        /// checks dependents in an empty graph
+        /// </summary>
         [TestMethod()]
         public void HasDependentsEmptyGraph()
         {
@@ -633,6 +654,9 @@ namespace PS2GradingTests
         /*
          * HasDependees Tests
          */
+        /// <summary>
+        /// checks the dependees of a node in a big boring case. Blah!
+        /// </summary>
         [TestMethod()]
         public void HasDependeesNormalCase()
         {
@@ -643,6 +667,9 @@ namespace PS2GradingTests
             Assert.IsTrue(t.HasDependees("B"));
         }
 
+        /// <summary>
+        /// checks the dependees fpr a node with no dependees
+        /// </summary>
         [TestMethod()]
         public void HasDependeesNoDependees()
         {
@@ -652,6 +679,9 @@ namespace PS2GradingTests
             Assert.IsFalse(t.HasDependees("A"));
         }
 
+        /// <summary>
+        /// checks the dependees of a node that DNE
+        /// </summary>
         [TestMethod()]
         public void HasDependeesNoNode()
         {
@@ -661,6 +691,9 @@ namespace PS2GradingTests
             Assert.IsFalse(t.HasDependees("D"));
         }
 
+        /// <summary>
+        /// checks the dependees of a node in an empty graph
+        /// </summary>
         [TestMethod()]
         public void HasDependeesEmptyGraph()
         {
@@ -671,6 +704,9 @@ namespace PS2GradingTests
         /*
          * GetDependents Tests
          */
+        /// <summary>
+        /// checks getDependents in a big boring case
+        /// </summary>
         [TestMethod()]
         public void GetDependentsNormalCase()
         {
@@ -685,6 +721,9 @@ namespace PS2GradingTests
             Assert.IsTrue(expected.Equals(t.GetDependents("B")));
         }
 
+        /// <summary>
+        /// checks getDependents on something without dependents
+        /// </summary>
         [TestMethod()]
         public void GetDependentsNoDependents()
         {
@@ -698,6 +737,9 @@ namespace PS2GradingTests
             Assert.IsTrue(expected.Equals(t.GetDependents("C")));
         }
 
+        /// <summary>
+        /// check getDependents of a node that DNE
+        /// </summary>
         [TestMethod()]
         public void GetDependentsNoNode()
         {
@@ -711,6 +753,9 @@ namespace PS2GradingTests
             Assert.IsTrue(expected.Equals(t.GetDependents("w25")));
         }
 
+        /// <summary>
+        /// checks getDependents on a node that is dependent on itself
+        /// </summary>
         [TestMethod()]
         public void GetDependentsReferenceToItself()
         {
@@ -729,6 +774,9 @@ namespace PS2GradingTests
         /*
          * GetDependees Test
          */
+        /// <summary>
+        /// checks getDependees in a boring case
+        /// </summary>
         [TestMethod()]
         public void GetDependeesNormalCase()
         {
@@ -744,6 +792,9 @@ namespace PS2GradingTests
             Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
 
+        /// <summary>
+        /// check it on a node without dependees
+        /// </summary>
         [TestMethod()]
         public void GetDependeesNoDependees()
         {
@@ -761,6 +812,9 @@ namespace PS2GradingTests
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// check it on a nonexistent node
+        /// </summary>
         [TestMethod()]
         public void GetDependeesNoNode()
         {
@@ -774,6 +828,9 @@ namespace PS2GradingTests
             Assert.IsTrue(expected.Equals(t.GetDependees("S")));
         }
 
+        /// <summary>
+        /// checks it on a node that is dependent on itself
+        /// </summary>
         [TestMethod()]
         public void GetDependeesReferenceToItself()
         {
@@ -792,6 +849,9 @@ namespace PS2GradingTests
         /*
          * AddDependency Tests
          */
+        /// <summary>
+        /// checks it on a previously empty graph by looking at size
+        /// </summary>
         [TestMethod()]
         public void AddDependencyEmptyCheckSize()
         {
@@ -801,6 +861,9 @@ namespace PS2GradingTests
             Assert.AreEqual(1, t.Size);
         }
 
+        /// <summary>
+        /// checks it on origianlly empty graph by looing at dependees
+        /// </summary>
         [TestMethod()]
         public void AddDependencyEmptyCheckDependents()
         {
@@ -810,6 +873,9 @@ namespace PS2GradingTests
             Assert.IsTrue(t.HasDependents("A"));
         }
 
+        /// <summary>
+        /// checks the dependees to make sure add works
+        /// </summary>
         [TestMethod()]
         public void AddDependencyEmptyCheckDependees()
         {
@@ -819,6 +885,9 @@ namespace PS2GradingTests
             Assert.IsTrue(t.HasDependees("B"));
         }
 
+        /// <summary>
+        /// ugh I hate writing these redundant comments
+        /// </summary>
         [TestMethod()]
         public void AddDependencyRedundantDependency()
         {
@@ -829,6 +898,9 @@ namespace PS2GradingTests
             Assert.AreEqual(1, t.Size);
         }
 
+        /// <summary>
+        /// Just check the name of the method
+        /// </summary>
         [TestMethod()]
         public void AddDependencyMultipleTimes()
         {
@@ -844,6 +916,9 @@ namespace PS2GradingTests
             Assert.AreEqual(5, t.Size);
         }
 
+        /// <summary>
+        /// It has the name of the method being tested and other info about the special case
+        /// </summary>
         [TestMethod()]
         public void AddDependencyDifferentStrings()
         {
@@ -857,6 +932,9 @@ namespace PS2GradingTests
         /*
          * RemoveDependency
          */
+        /// <summary>
+        /// This is the last comment I am going to write
+        /// </summary>
         [TestMethod()]
         public void RemoveDependencyNormalCheckDependees()
         {
@@ -870,6 +948,9 @@ namespace PS2GradingTests
             Assert.AreEqual(2, t["A"]);
         }
 
+        /// <summary>
+        /// I lied!  Bye bye
+        /// </summary>
         [TestMethod()]
         public void RemoveDependencyNormalCheckSize()
         {
