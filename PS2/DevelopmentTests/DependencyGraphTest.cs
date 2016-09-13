@@ -497,6 +497,10 @@ namespace PS2GradingTests
         /*
          * Size Tests
          */
+
+        /// <summary>
+        /// chekcs size on an empty graph
+        /// </summary>
         [TestMethod()]
         public void SizeEmptyGraph()
         {
@@ -504,6 +508,9 @@ namespace PS2GradingTests
             Assert.AreEqual(0, t.Size);
         }
 
+        /// <summary>
+        /// checks size on a graph with 1 item
+        /// </summary>
         [TestMethod()]
         public void SizeOneItem()
         {
@@ -512,6 +519,9 @@ namespace PS2GradingTests
             Assert.AreEqual(1, t.Size);
         }
 
+        /// <summary>
+        /// check's size on a graph with a few entries
+        /// </summary>
         [TestMethod()]
         public void SizeSeveralItems()
         {
@@ -524,6 +534,9 @@ namespace PS2GradingTests
             Assert.AreEqual(5, t.Size);
         }
 
+        /// <summary>
+        /// checks size after adding and removing things
+        /// </summary>
         [TestMethod()]
         public void SizeAddingAndRemoving()
         {
@@ -726,6 +739,7 @@ namespace PS2GradingTests
 
             MyHash expected = new MyHash();
             expected.Add("C");
+            expected.Add("A");
 
             Assert.IsTrue(expected.Equals(t.GetDependees("B")));
         }
@@ -740,7 +754,11 @@ namespace PS2GradingTests
 
             MyHash expected = new MyHash();
 
-            Assert.IsTrue(expected.Equals(t.GetDependees("A")));
+            IEnumerable<String> thing = t.GetDependees("A");
+
+            bool result = expected.Equals(thing);
+
+            Assert.IsTrue(result);
         }
 
         [TestMethod()]
@@ -1161,8 +1179,10 @@ namespace PS2GradingTests
         /// </summary>
         /// <param name="d">a HashSet object to be checked if it is the same as this one</param>
         /// <returns>true if they contains the same elements</returns>
-        public bool Equals(HashSet<String> d) 
+        public bool Equals(IEnumerable<String> input) 
         {
+            HashSet<String> d = (HashSet<String>) input;
+
             // Make sure they are the same size
             if (this.Count != d.Count)
             {
