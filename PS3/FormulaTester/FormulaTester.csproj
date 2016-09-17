@@ -53,6 +53,12 @@
     <Compile Include="FormulaTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Formula\Formula.csproj">
+      <Project>{7f868318-b043-4c63-a82c-54f1975a294e}</Project>
+      <Name>Formula</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
