@@ -17,7 +17,7 @@ namespace FormulaTester
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
-        public void Con1InvalidNonsense()
+        public void PublicCon1InvalidNonsense()
         {
             Formula f = new Formula("+++");
         }
@@ -27,7 +27,7 @@ namespace FormulaTester
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
-        public void Con1InvalidInvalidCharacter()
+        public void PublicCon1InvalidInvalidCharacter()
         {
             Formula f = new Formula("4 ^ 15");
         }
@@ -37,7 +37,7 @@ namespace FormulaTester
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
-        public void Con1InvalidNoTokens()
+        public void PublicCon1InvalidNoTokens()
         {
             Formula f = new Formula("");
         }
@@ -47,7 +47,7 @@ namespace FormulaTester
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
-        public void Con1InvalidVariablesNoOperations()
+        public void PublicCon1InvalidVariablesNoOperations()
         {
             Formula f = new Formula("x y + y x");
         }
@@ -56,7 +56,7 @@ namespace FormulaTester
         /// Tests the small constructor with a formula with no variables
         /// </summary>
         [TestMethod]
-        public void Con1NoVariableInput()
+        public void PublicCon1NoVariableInput()
         {
             Formula f = new Formula("13 - 15*(1/2)");
 
@@ -67,7 +67,7 @@ namespace FormulaTester
         /// Checks the itty bitty constructor with a formula with variables
         /// </summary>
         [TestMethod]
-        public void Con1YesVariableInput()
+        public void PublicCon1YesVariableInput()
         {
             Formula f = new Formula("A1 - b2*(Df900/2)");
 
@@ -82,7 +82,7 @@ namespace FormulaTester
         /// Checks the rotund constructor's use of the normalizer
         /// </summary>
         [TestMethod]
-        public void Con2NormalizerChangesFormula()
+        public void PublicCon2NormalizerChangesFormula()
         {
             Formula f = new Formula("a1 + a1 * c3 / c3 - e5", s => s.ToUpper(), s => true);
 
@@ -93,7 +93,7 @@ namespace FormulaTester
         /// Checks the rotund constructor's use of the normalizer on things that don't need it
         /// </summary>
         [TestMethod]
-        public void Con2NormalizerIsUnnecessary()
+        public void PublicCon2NormalizerIsUnnecessary()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
 
@@ -104,7 +104,7 @@ namespace FormulaTester
         /// Checks that the IsValid delegate is used correcty on a valid variable
         /// </summary>
         [TestMethod]
-        public void Con2IsValidCheckOnValidVariable()
+        public void PublicCon2IsValidCheckOnValidVariable()
         {
             Formula f = new Formula("A1 + A1 * 5", s => s.ToUpper(), s => s == "A1");
 
@@ -116,7 +116,7 @@ namespace FormulaTester
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
-        public void Con2IsValidFormulaFormatExceptionThrowDown()
+        public void PublicCon2IsValidFormulaFormatExceptionThrowDown()
         {
             Formula f = new Formula("A2 + B1 * 5", s => s.ToUpper(), s => s == "A1");
         }
@@ -140,7 +140,7 @@ namespace FormulaTester
         /// Checks the method in a typical case with a few variables to be returned
         /// </summary>
         [TestMethod]
-        public void GetVariablesNormalCase()
+        public void PublicGetVariablesNormalCase()
         {
             Formula f = new Formula("A1 + B2 * C3 / D4 - E5");
 
@@ -162,7 +162,7 @@ namespace FormulaTester
         /// Checks the method when there are no variables to be gotten
         /// </summary>
         [TestMethod]
-        public void GetVariablesEmptyCase()
+        public void PublicGetVariablesEmptyCase()
         {
             Formula f = new Formula("5 + 4 - 3");
 
@@ -178,7 +178,7 @@ namespace FormulaTester
         /// Checks to make sure that when there are variables that are normalized to the same thing only 1 copy of it is returned
         /// </summary>
         [TestMethod]
-        public void GetVariablesNormalizedRedundentVariables()
+        public void PublicGetVariablesNormalizedRedundentVariables()
         {
             Formula f = new Formula("A1 + a1 * C3 / c3 - E5", s => s.ToUpper(), s => true);
 
@@ -204,7 +204,7 @@ namespace FormulaTester
         /// Checks to make sure there is no whitespace in the returned string
         /// </summary>
         [TestMethod]
-        public void ToStringCheckForSpaces()
+        public void PublicToStringCheckForSpaces()
         {
             Formula f = new Formula("5 + B2 - 3");
 
@@ -215,7 +215,7 @@ namespace FormulaTester
         /// Checks to make the formula created by the string is the same as the original formula
         /// </summary>
         [TestMethod]
-        public void ToStringResultingFormulaEquality()
+        public void PublicToStringResultingFormulaEquality()
         {
             Formula f = new Formula("5 + B2 - 3");
             Formula g = new Formula(f.ToString());
@@ -231,7 +231,7 @@ namespace FormulaTester
         /// Checks that it returns true when both are null
         /// </summary>
         [TestMethod]
-        public void EqualsBothNull()
+        public void PublicEqualsBothNull()
         {
             Formula f = null;
             Formula g = null;
@@ -243,7 +243,7 @@ namespace FormulaTester
         /// Checks that it returns false when the calling object is null
         /// </summary>
         [TestMethod]
-        public void EqualsCallingNull()
+        public void PublicEqualsCallingNull()
         {
             Formula f = null;
             Formula g = new Formula("5 + 3");
@@ -255,7 +255,7 @@ namespace FormulaTester
         /// Checks that it returns false when the parameter object is null
         /// </summary>
         [TestMethod]
-        public void EqualsParameterNull()
+        public void PublicEqualsParameterNull()
         {
             Formula f = new Formula("5 + 3");
             Formula g = null;
@@ -267,7 +267,7 @@ namespace FormulaTester
         /// Checks equals on a non Formula Obj
         /// </summary>
         [TestMethod]
-        public void EqualsNonFormulaParameter()
+        public void PublicEqualsNonFormulaParameter()
         {
             Formula f = new Formula("5 + 3");
 
@@ -278,7 +278,7 @@ namespace FormulaTester
         /// Checks equality of formulas whose strings are not equal but their normalized versions are
         /// </summary>
         [TestMethod]
-        public void EqualsNormalizedEquality()
+        public void PublicEqualsNormalizedEquality()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - e5", s => s.ToUpper(), s => true);
             Formula g = new Formula("a1 + a1 * c3 / c3 - E5", s => s.ToUpper(), s => true);
@@ -291,7 +291,7 @@ namespace FormulaTester
         /// Checks the equals method on a boring typical example
         /// </summary>
         [TestMethod]
-        public void EqualsBoring()
+        public void PublicEqualsBoring()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
@@ -304,7 +304,7 @@ namespace FormulaTester
         /// Checks equals in a case where they are not equal
         /// </summary>
         [TestMethod]
-        public void EqualsNotEqual()
+        public void PublicEqualsNotEqual()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("B3*5", s => s.ToUpper(), s => true);
@@ -317,7 +317,7 @@ namespace FormulaTester
         /// Checks equals in a case where one of the doubles is so slightly larger than a double that they will be equal
         /// </summary>
         [TestMethod]
-        public void EqualsCheckMinusculeNumberDifferences()
+        public void PublicEqualsCheckMinusculeNumberDifferences()
         {
             Formula f = new Formula("A1 * 2.0000000000000000001", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 * 2.0", s => s.ToUpper(), s => true);
@@ -334,7 +334,7 @@ namespace FormulaTester
         /// Checks == in a boring typical case
         /// </summary>
         [TestMethod]
-        public void EQBoring()
+        public void PublicEQBoring()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
@@ -347,12 +347,14 @@ namespace FormulaTester
         /// Checks == in a boring typical case
         /// </summary>
         [TestMethod]
-        public void EQNotEqual()
+        public void PublicEQNotEqual()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("B3*5", s => s.ToUpper(), s => true);
 
-            Assert.IsFalse(f == g);
+            bool result = f == g;
+
+            Assert.IsFalse(result);
             Assert.IsFalse(g == f);
         }
 
@@ -360,7 +362,7 @@ namespace FormulaTester
         /// Checks that it returns true when both are null
         /// </summary>
         [TestMethod]
-        public void EQBothNull()
+        public void PublicEQBothNull()
         {
             Formula f = null;
             Formula g = null;
@@ -372,7 +374,7 @@ namespace FormulaTester
         /// Checks that it returns flase when the calling object is null
         /// </summary>
         [TestMethod]
-        public void EQCallingNull()
+        public void PublicEQCallingNull()
         {
             Formula f = null;
             Formula g = new Formula("5 + 3");
@@ -384,7 +386,7 @@ namespace FormulaTester
         /// Checks that it returns false when the parameter object is null
         /// </summary>
         [TestMethod]
-        public void EQParameterNull()
+        public void PublicEQParameterNull()
         {
             Formula f = null;
             Formula g = new Formula("5 + 3");
@@ -400,7 +402,7 @@ namespace FormulaTester
         /// Checks != in a boring typical case
         /// </summary>
         [TestMethod]
-        public void NEQBoring()
+        public void PublicNEQBoring()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A3 - E5", s => s.ToUpper(), s => true);
@@ -413,7 +415,7 @@ namespace FormulaTester
         /// Checks != in a boring typical case
         /// </summary>
         [TestMethod]
-        public void NEQEqual()
+        public void PublicNEQEqual()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
@@ -426,7 +428,7 @@ namespace FormulaTester
         /// Checks that it returns false when both are null
         /// </summary>
         [TestMethod]
-        public void NEQBothNull()
+        public void PublicNEQBothNull()
         {
             Formula f = null;
             Formula g = null;
@@ -438,7 +440,7 @@ namespace FormulaTester
         /// Checks that it returns true when the calling object is null
         /// </summary>
         [TestMethod]
-        public void NEQCallingNull()
+        public void PublicNEQCallingNull()
         {
             Formula f = null;
             Formula g = new Formula("5 + 3");
@@ -450,7 +452,7 @@ namespace FormulaTester
         /// Checks that it returns true when the parameter object is null
         /// </summary>
         [TestMethod]
-        public void NEQParameterNull()
+        public void PublicNEQParameterNull()
         {
             Formula f = null;
             Formula g = new Formula("5 + 3");
@@ -466,7 +468,7 @@ namespace FormulaTester
         /// Checks that two different formulas have different Hashcodes.  This might fail in rare instances but shouldn't fail dependably
         /// </summary>
         [TestMethod]
-        public void GetHashCodeStressTest()
+        public void PublicGetHashCodeStressTest()
         {
             Random rando = new Random();
 
@@ -489,7 +491,7 @@ namespace FormulaTester
         /// Checks to make sure that when two formulas equal each other their hashcodes also equal each other.
         /// </summary>
         [TestMethod]
-        public void GetHashCodeSameNormalizedFormulasSameHashCode()
+        public void PublicGetHashCodeSameNormalizedFormulasSameHashCode()
         {
             Formula f = new Formula("a1 + a1 * c3 / c3 - e5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
@@ -501,7 +503,7 @@ namespace FormulaTester
         /// Checks to make sure that when two formulas equal each other exactly their hashcodes also equal each other.
         /// </summary>
         [TestMethod]
-        public void GetHashCodeSameFormulasSameHashCode()
+        public void PublicGetHashCodeSameFormulasSameHashCode()
         {
             Formula f = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);
             Formula g = new Formula("A1 + A1 * C3 / C3 - E5", s => s.ToUpper(), s => true);

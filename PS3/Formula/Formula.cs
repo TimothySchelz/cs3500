@@ -9,7 +9,7 @@
 //  (Version 1.1) Changed specification of second constructor to
 //                clarify description of how validation works
 
-// Skeleton fleshed out by Timothy Schelz, 9/16/2016
+// Skeleton fleshed out by Timothy Schelz, 9/22/2016
 
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,9 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class Formula
     {
+        private LinkedList<String> formula; // Holds each token of the formula.  Each token should be normalized, in a valid order, and each variable should be valid.
+        private HashSet<String> variables; // A HashSet of all the variables.  They should all be normalized to prevent duplicates and a big ol mess.
+
         /// <summary>
         /// Creates a Formula from a string that consists of an infix expression written as
         /// described in the class comment.  If the expression is syntactically invalid,
@@ -75,6 +78,152 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
+            //Some variables that will be used in each loop
+            String normed; // The current token after it has been normalized
+            int tokenType; // The current token's type
+            int parens = 0; // The number of parenthesis that have been opened but not closed
+            int previousType = -1; // The type of the previous token.  The -1 means it hasn't been used yet
+
+            this.formula = new LinkedList<String>();
+            variables = new HashSet<string>();
+
+            // check to make sure it is breaking any rules.  All my tokens play by the rules.  I don't tolerate any loose cannons.
+            // also puts the token into a linked list to be stored.  Goes through and does this for each token that GetTokens returns.
+            foreach (String current in GetTokens(formula))
+            {
+                normed = normalize(current);
+                tokenType = CategorizeToken(normed, isValid);
+
+                // Checks to see if the token is empty space.  I ignore empty space because I hate it and never want to see it again
+                if (tokenType == 0)
+                {
+                    continue;
+                }
+                
+                //Check if the previous token was a parenthesis or an operator
+                //Syntax rule 7
+                if ((previousType == 5 || previousType == 3 || previousType == 4) 
+                    && !(tokenType == 1 || tokenType == 2 || tokenType == 5))
+                {
+                    throw new FormulaFormatException("The Parenthesis Following Rule was broken.  An invalid token followed an opening parenthesis or operation");
+                }
+
+                //Check if the previous token was a number variable or closing parens
+                //Syntax rule 8
+                if ((previousType == 1 || previousType == 2 || previousType == 6) 
+                    && !(tokenType == 3 || tokenType == 4 || tokenType == 6))
+                {
+                    throw new FormulaFormatException("The Extra Following Rule was broken.  An invalid token followed a variable, closing parenthesis or a number.");
+                }
+
+                // Add values to the variables HashSet if we come across any variables
+                if (tokenType == 2)
+                {
+                    variables.Add(normed);
+                }
+
+                //increments or decrements the number of opened parenthesis
+                // Syntax rule 3
+                if (tokenType == 5)
+                {
+                    parens++;
+                }
+                else if (tokenType == 6)
+                {
+                    parens--;
+                }
+                //Check at each step that the number of closing parenthesis doesn't outpace the number of opening parenthesis.
+                if (parens < 0)
+                {
+                    throw new FormulaFormatException("The number of closing parenthesis was larger than the number of opening parenthesis.  Check the number of opening and closing parenthesis.");
+                }
+
+                // Add this sucker into the permanent formula and put it's type in the previous pile
+                this.formula.AddLast(normed);
+                previousType = tokenType;
+            }
+
+            //Checks if the resulting formula is empty
+            //Syntax rule 2
+            if (this.formula.Count() == 0)
+            {
+                throw new FormulaFormatException("There were no tokens in the given formula.  Please enter a formula");
+            }
+
+            // Checks to makes sure each parenthesis ended up with a match
+            // Syntax rule 4
+            if (parens != 0)
+            {
+                throw new FormulaFormatException("There is an open parenthesis without a closing one to match.");
+            }
+
+            //Checks if the first token is a valid token.  From the previous conditional we know formula is not empty
+            //Syntax rule 5
+            tokenType = CategorizeToken(this.formula.First(), isValid);
+            if (!(tokenType == 1 || tokenType == 2 || tokenType == 5)) {
+                throw new FormulaFormatException("The first token is not a valid starting token.  It should be a number, variable, or an opening parenthesis.");
+            }
+
+            //Checks if the last token is a valid token.  From the previous conditional we know formula is not empty
+            //Syntax rule 6
+            tokenType = CategorizeToken(this.formula.First(), isValid);
+            if (!(tokenType == 1 || tokenType == 2 || tokenType == 6))
+            {
+                throw new FormulaFormatException("The last token is not a valid ending token.  It should be a number, variable, or a closing parenthesis.");
+            }
+        }
+
+        /// <summary>
+        /// This method looks at a token, caegorizes it, and returns a corresponding int.
+        /// 0 = empty buffer string.  Disregards
+        /// 1 = double
+        /// 2 = variable
+        /// 3 = + or -
+        /// 4 = * or /
+        /// 5 = (
+        /// 6 = )
+        /// 
+        /// throws an FormulaFormatException if it is not one of the listed types
+        /// 
+        /// </summary>
+        /// <param name="s"> The String token to be categorized</param>
+        /// <param name="isValid"> A delegate to check to make sure a variable has the proper format</param>
+        /// <returns> An int corresponding with one of the cases above</returns>
+        private static int CategorizeToken(String s, Func<string, bool> isValid)
+        {
+            // Checks to see which case the current token falls into
+            double number;
+            if (Double.TryParse(s, out number))
+            {
+                return 1;
+            }
+            else if (s.Equals("+") || s.Equals("-"))
+            {
+                return 3;
+            }
+            else if (s.Equals("*") || s.Equals("/"))
+            {
+                return 4;
+            }
+            else if (s.Equals("("))
+            {
+                return 5;
+            }
+            else if (s.Equals(")"))
+            {
+                return 6;
+            }
+            else if (s.Equals(""))
+            {
+                return 0;
+            }
+            else if (isValid(s))
+            {
+                return 2;
+            }
+
+            //Syntax rule 1
+            throw new FormulaFormatException(s + " is not a valid type of token.  Please turn it into a double, variable, (, ), +, -, *, or /");
         }
 
         /// <summary>
@@ -116,7 +265,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<String> GetVariables()
         {
-            return null;
+            return variables.ToList<String>();
         }
 
         /// <summary>
@@ -131,7 +280,13 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override string ToString()
         {
-            return null;
+            String output = "";
+            foreach (String current in formula)
+            {
+                output = output + current;
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -152,6 +307,18 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
+            // Returns false if obj is null or not a formula
+            if (obj == null || !(obj is Formula))
+            {
+                return false;
+            }
+
+            // Checks to see if their to strings are the same.  If they are then they should be equal
+            if (this.ToString() == obj.ToString())
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -162,7 +329,18 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            return false;
+            // Check the weird null cases
+            if (f1.Equals(null) && f2.Equals(null)) 
+            {
+                return true;
+            }
+            else if (f1.Equals(null) || f2.Equals(null))
+            {
+                return false;
+            }
+
+            // return if they are equal
+            return f1.Equals(f2);
         }
 
         /// <summary>
@@ -172,7 +350,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator !=(Formula f1, Formula f2)
         {
-            return false;
+            return !(f1 == f2);
         }
 
         /// <summary>
@@ -182,7 +360,16 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
-            return 0;
+            int total = 0;
+            foreach (String s in formula)
+            {
+                foreach (char c in s)
+                {
+                    total += c;
+                }
+            }
+
+            return total * 103;
         }
 
         /// <summary>
