@@ -160,6 +160,7 @@ namespace FormulaTester
         {
             Formula f = new Formula("(A2 + B1) * 5(", s => s.ToUpper(), s => s == "A1");
         }
+
         /// <summary>
         /// Checks that it throws an exception when there are too many closing parenthesis at some point. the extra one is in the middle
         /// </summary>
@@ -179,7 +180,6 @@ namespace FormulaTester
         {
             Formula f = new Formula("A2 + B1) * (5)", s => s.ToUpper(), s => s == "A1");
         }
-
 
         /*
          * Evaluate Tests
