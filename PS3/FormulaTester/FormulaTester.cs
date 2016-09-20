@@ -86,7 +86,17 @@ namespace FormulaTester
         {
             Formula f = new Formula("a1 + a1 * c3 / c3 - e5", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual("A1 + A1 * C3 / C3 - E5", f.ToString());
+            Assert.AreEqual("A1+A1*C3/C3-E5", f.ToString());
+        }
+
+        /// <summary>
+        /// Checks the rotund constructor's use of the normalizer
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2EmptyStringInput()
+        {
+            Formula f = new Formula("", s => s.ToUpper(), s => true);
         }
 
         /// <summary>
@@ -121,6 +131,55 @@ namespace FormulaTester
             Formula f = new Formula("A2 + B1 * 5", s => s.ToUpper(), s => s == "A1");
         }
 
+        /// <summary>
+        /// Checks that it throws an exception when there are too many closing parenthesis at some point.  the extra one is at the end
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2TooManyClosingParenthesis1()
+        {
+            Formula f = new Formula("(A2 + B1 * 5))", s => s.ToUpper(), s => s == "A1");
+        }
+
+        /// <summary>
+        /// Checks that it throws an exception when there are too many closing parenthesis at some point. the extra one is in the middle
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2TooManyClosingParenthesis2()
+        {
+            Formula f = new Formula("A2 + B1) * (5)", s => s.ToUpper(), s => s == "A1");
+        }
+
+        /// <summary>
+        /// Checks that it throws an exception when there are too many closing parenthesis at some point. the extra one is in the middle
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2BreaksRule4()
+        {
+            Formula f = new Formula("(A2 + B1) * 5(", s => s.ToUpper(), s => s == "A1");
+        }
+        /// <summary>
+        /// Checks that it throws an exception when there are too many closing parenthesis at some point. the extra one is in the middle
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2BreaksRule5()
+        {
+            Formula f = new Formula("A2 + B1) * (5)", s => s.ToUpper(), s => s == "A1");
+        }
+
+        /// <summary>
+        /// Checks that it throws an exception when there are too many closing parenthesis at some point. the extra one is in the middle
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2BreaksRule6()
+        {
+            Formula f = new Formula("A2 + B1) * (5)", s => s.ToUpper(), s => s == "A1");
+        }
+
 
         /*
          * Evaluate Tests
@@ -146,7 +205,7 @@ namespace FormulaTester
 
             HashSet<String> expected = new HashSet<String> { "A1", "B2", "C3", "D4", "E5" };
 
-            HashSet<String> result = (HashSet<String>) f.GetVariables();
+            List<String> result = (List<String>) f.GetVariables();
 
             //Check size equality
             Assert.AreEqual(expected.Count, result.Count);
@@ -159,7 +218,7 @@ namespace FormulaTester
         }
 
         /// <summary>
-        /// Checks the method when there are no variables to be gotten
+        /// Checks the method when there are no variables to be gotten.  just checks that the sizes are equal.  The should be 0.
         /// </summary>
         [TestMethod]
         public void PublicGetVariablesEmptyCase()
@@ -168,7 +227,7 @@ namespace FormulaTester
 
             HashSet<String> expected = new HashSet<String> {};
 
-            HashSet<String> result = (HashSet<String>)f.GetVariables();
+            List<String> result = (List<String>)f.GetVariables();
 
             //Check size equality
             Assert.AreEqual(expected.Count, result.Count);
@@ -184,7 +243,7 @@ namespace FormulaTester
 
             HashSet<String> expected = new HashSet<String> { "A1", "C3", "E5" };
 
-            HashSet<String> result = (HashSet<String>)f.GetVariables();
+            List<String> result = (List<String>)f.GetVariables();
 
             //Check size equality
             Assert.AreEqual(expected.Count, result.Count);
@@ -228,30 +287,6 @@ namespace FormulaTester
          */
 
         /// <summary>
-        /// Checks that it returns true when both are null
-        /// </summary>
-        [TestMethod]
-        public void PublicEqualsBothNull()
-        {
-            Formula f = null;
-            Formula g = null;
-
-            Assert.IsTrue(f.Equals(g));
-        }
-
-        /// <summary>
-        /// Checks that it returns false when the calling object is null
-        /// </summary>
-        [TestMethod]
-        public void PublicEqualsCallingNull()
-        {
-            Formula f = null;
-            Formula g = new Formula("5 + 3");
-
-            Assert.IsTrue(f.Equals(g));
-        }
-
-        /// <summary>
         /// Checks that it returns false when the parameter object is null
         /// </summary>
         [TestMethod]
@@ -260,7 +295,7 @@ namespace FormulaTester
             Formula f = new Formula("5 + 3");
             Formula g = null;
 
-            Assert.IsTrue(f.Equals(g));
+            Assert.IsFalse(f.Equals(g));
         }
 
         /// <summary>
@@ -371,7 +406,7 @@ namespace FormulaTester
         }
 
         /// <summary>
-        /// Checks that it returns flase when the calling object is null
+        /// Checks that it returns false when the calling object is null
         /// </summary>
         [TestMethod]
         public void PublicEQCallingNull()
@@ -473,13 +508,13 @@ namespace FormulaTester
             Random rando = new Random();
 
             // checks a bunch of different pairs of 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 10; i++)
             {
-                int charint1 = rando.Next(25) + 34;
+                int charint1 = rando.Next(25) + 65;
                 char char1 = (char) charint1;
                 Formula f = new Formula("" + char1 + rando.Next(10000));
 
-                int charint2 = rando.Next(25) + 34;
+                int charint2 = rando.Next(25) + 65;
                 char char2 = (char)charint2;
                 Formula g = new Formula("" + char2 + rando.Next(10000));
 

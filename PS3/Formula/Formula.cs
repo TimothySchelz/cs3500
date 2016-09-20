@@ -94,10 +94,10 @@ namespace SpreadsheetUtilities
                 normed = normalize(current);
                 tokenType = CategorizeToken(normed, isValid);
 
-                // Checks to see if the token is empty space.  I ignore empty space because I hate it and never want to see it again
-                if (tokenType == 0)
+                // If we are dealing with a number we cast it as a double
+                if (tokenType == 1)
                 {
-                    continue;
+                    normed = "" + Double.Parse(normed);
                 }
                 
                 //Check if the previous token was a parenthesis or an operator
@@ -217,13 +217,13 @@ namespace SpreadsheetUtilities
             {
                 return 0;
             }
-            else if (isValid(s))
+            else if ((s[0].Equals('_') || (s.ToUpper()[0] >= 65 && s.ToUpper()[0] <= 90) && isValid(s)))
             {
                 return 2;
             }
 
             //Syntax rule 1
-            throw new FormulaFormatException(s + " is not a valid type of token.  Please turn it into a double, variable, (, ), +, -, *, or /");
+            throw new FormulaFormatException(s + " is not a valid type of token.  Please turn it into a double, variable, (, ), +, -, *, or /.  Remember Variables must start with a letter or underscore");
         }
 
         /// <summary>
@@ -330,12 +330,13 @@ namespace SpreadsheetUtilities
         public static bool operator ==(Formula f1, Formula f2)
         {
             // Check the weird null cases
-            if (f1.Equals(null) && f2.Equals(null)) 
+            if (object.Equals(f1, f2))
             {
                 return true;
             }
-            else if (f1.Equals(null) || f2.Equals(null))
-            {
+
+            // Check to see if f1 is null
+            if (object.Equals(f1, null)) {
                 return false;
             }
 
