@@ -166,7 +166,7 @@ namespace SpreadsheetUtilities
 
             //Checks if the last token is a valid token.  From the previous conditional we know formula is not empty
             //Syntax rule 6
-            tokenType = CategorizeToken(this.formula.First(), isValid);
+            tokenType = CategorizeToken(this.formula.Last(), isValid);
             if (!(tokenType == 1 || tokenType == 2 || tokenType == 6))
             {
                 throw new FormulaFormatException("The last token is not a valid ending token.  It should be a number, variable, or a closing parenthesis.");
@@ -278,9 +278,8 @@ namespace SpreadsheetUtilities
                         if (operations.Peek().Equals('*') || operations.Peek() == '/')
                         {
                             Multiplication(values, operations, currentNumber);
-
                             //Checks for division by zero
-                            if (operations.Peek() == 'u')
+                            if (operations.Count() > 0 && operations.Peek() == 'u')
                             {
                                 return new FormulaError("You divided by zero. Shame on you!");
                             }
@@ -293,7 +292,14 @@ namespace SpreadsheetUtilities
 
                     // Variable
                     case 2:
-                        currentNumber = lookup(current);
+                        try
+                        {
+                            currentNumber = lookup(current);
+                        }
+                        catch
+                        {
+                            return new FormulaError("The variable " + current + " does not exist.");
+                        }
 
                         // Check if the operation stack is empty before peeking
                         if (operations.Count == 0)
@@ -304,11 +310,11 @@ namespace SpreadsheetUtilities
                         }
 
                         // Check if multiplication is at the top
-                        if ((operations.Count > 0) && (operations.Peek().Equals('*') || operations.Peek() == '/'))
+                        if ((operations.Peek().Equals('*') || operations.Peek() == '/'))
                         {
                             Multiplication(values, operations, currentNumber);
                             //Checks for division by zero
-                            if (operations.Peek() == 'u')
+                            if (operations.Count() > 0 && operations.Peek() == 'u')
                             {
                                 return new FormulaError("You divided by zero. Shame on you!");
                             }
@@ -362,7 +368,7 @@ namespace SpreadsheetUtilities
 
                             Multiplication(values, operations, currentNumber);
                             //Checks for division by zero
-                            if (operations.Peek() == 'u')
+                            if (operations.Count() > 0 && operations.Peek() == 'u')
                             {
                                 return new FormulaError("You divided by zero. Shame on you!");
                             }
@@ -407,7 +413,7 @@ namespace SpreadsheetUtilities
         private static void Addition(Stack<double> values, Stack<char> operations)
         {
             // Check if the previous stuff was also addition/subtraction
-            if (operations.Peek().Equals('+') || operations.Peek() == '-')
+            if ((operations.Count() > 0) && (operations.Peek().Equals('+') || operations.Peek() == '-'))
             {
                 // Pop everything out
                 double num1 = values.Pop();

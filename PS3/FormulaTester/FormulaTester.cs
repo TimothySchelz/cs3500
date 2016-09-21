@@ -529,7 +529,7 @@ namespace FormulaTester
             Random rando = new Random();
 
             // checks a bunch of different pairs of 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 int charint1 = rando.Next(25) + 65;
                 char char1 = (char) charint1;
@@ -569,7 +569,7 @@ namespace FormulaTester
 
 
         /*
-         * Here are my copied tests.  I will have to throw out / alter most
+         * Here are my copied tests.
          */
 
         /// <summary>
@@ -581,7 +581,7 @@ namespace FormulaTester
 
             Formula f = new Formula("2 + 5", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(7, f.Evaluate(s=>0));
+            Assert.AreEqual(7.0, f.Evaluate(s=>0));
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace FormulaTester
         public void PublicEvaluateNoOperations()
         {
             Formula f = new Formula("2", s => s.ToUpper(), s => true);
-            Assert.AreEqual(2, f.Evaluate(s=>0));
+            Assert.AreEqual(2.0, f.Evaluate(s=>0));
         }
 
         /// <summary>
@@ -602,7 +602,7 @@ namespace FormulaTester
         {
             Formula f = new Formula("4-1", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(3, f.Evaluate(s=>0));
+            Assert.AreEqual(3.0, f.Evaluate(s=>0));
         }
 
         /// <summary>
@@ -613,7 +613,7 @@ namespace FormulaTester
         {
             Formula f = new Formula("2-5", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(-3, f.Evaluate(s => 0));
+            Assert.AreEqual(-3.0, f.Evaluate(s => 0));
         }
 
         /// <summary>
@@ -624,57 +624,78 @@ namespace FormulaTester
         {
             Formula f = new Formula("2 - 5 + 15-64+45+13", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(6, f.Evaluate(s => 0));
+            Assert.AreEqual(6.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Just uses evaluate on a simple division problem
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateDivision()
         {
             Formula f = new Formula("4 /2", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(2, f.Evaluate(s => 0));
+            Assert.AreEqual(2.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Evaluate on a simple multiplication problem
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateMultiplication()
         {
             Formula f = new Formula("4* 2", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(8, f.Evaluate(s => 0));
+            Assert.AreEqual(8.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Performs evaluate on a formula with a few multiplications
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateMultipleMultiplications()
         {
             Formula f = new Formula("4 /2*5", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(10, f.Evaluate(s => 0));
+            Assert.AreEqual(10.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Performs evaluate on a formula nothing but a number in parenthesis
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateSimpleParenthesis()
         {
             Formula f = new Formula("(5)", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(5, f.Evaluate(s => 0));
+            Assert.AreEqual(5.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Performs evaluate on a formula with a single operation in parenthesis
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateOperationinParenthesis()
         {
             Formula f = new Formula("(4 /2)", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(2, f.Evaluate(s => 0));
+            Assert.AreEqual(2.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Performs evaluate on a formula with a few parenthesis throughout it
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateThrowInSomeParenthesis()
         {
             Formula f = new Formula("(4 /2) - (10*3)/15", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(0, f.Evaluate(s => 0));
+            Assert.AreEqual(0.0, f.Evaluate(s => 0));
         }
 
+        /// <summary>
+        /// Checks division by zero.  It should return an error
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateDivideByZero()
         {
@@ -687,92 +708,122 @@ namespace FormulaTester
         /*
          * Tests with variables
          */
+
+        /// <summary>
+        /// Performs evaluate on a formula with some weirdo tokens
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateWeirdTokens1()
         {
-            Formula f = new Formula("spaghetti - 3&@sd", s => s.ToUpper(), s => true);
+            Formula f = new Formula("spaghetti - _5_sd", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(0, f.Evaluate(s => 0));
+            Assert.AreEqual(0.0, f.Evaluate(s => 0));
         }
 
-        // Just using the zero lookup
+        /// <summary>
+        /// Simple formula to be evaluated using a lookup that just returns 0
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateSimpleUsingZero()
         {
             Formula f = new Formula("5*A1 + 2", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(2, f.Evaluate(s => 0));
+            Assert.AreEqual(2.0, f.Evaluate(s => 0));
         }
 
-        // Using the limited lookup
+        /// <summary>
+        /// Checks the proper use of the lookup delegate
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateJustLookUp1()
         {
             Formula f = new Formula("A1", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(2, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(2.0, f.Evaluate(LimitedLookup));
         }
 
-        // Using the limited lookup
+        /// <summary>
+        /// Checks the proper use of the lookup delegate
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateJustLookUp2()
         {
             Formula f = new Formula("C3", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(6, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(6.0, f.Evaluate(LimitedLookup));
         }
 
-        // Using the limited lookup
+        /// <summary>
+        /// Checks the proper use of the lookup delegate
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateJustLookUp3()
         {
             Formula f = new Formula("XyZ321", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(85, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(85.0, f.Evaluate(LimitedLookup));
         }
 
+        /// <summary>
+        /// Checks evaluate on a simple formula with a variable and an actual lookup delegate
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateOneVariableLimited()
         {
             Formula f = new Formula("(D4+4)/3", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(4, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(4.0, f.Evaluate(LimitedLookup));
         }
 
+        /// <summary>
+        /// Checks evaluate on a simple formula with some variables and an actual lookup delegate
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateMultipleVariablesLimited()
         {
             Formula f = new Formula("(C3+B2)/A1", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(5, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(5.0, f.Evaluate(LimitedLookup));
         }
 
+        /// <summary>
+        /// Checks to make sure evaluate is working when using parenthesis and variables
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateMultipleOperationsInParenthesisLimited()
         {
             Formula f = new Formula("(C3+B2*B2+C3)/A1", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(14, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(14.0, f.Evaluate(LimitedLookup));
         }
 
+        /// <summary>
+        /// Checks division by zero when the divisor is a variable
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateDivideByZeroUsingVariable()
         {
 
             Formula f = new Formula("2 / A1", s => s.ToUpper(), s => true);
 
-            Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
+            Assert.IsTrue(f.Evaluate(s => 0) is FormulaError);
         }
 
+        /// <summary>
+        /// Just checking to make sure the evaluate function (and constructor) works with a formula that is a bit longer
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateLongExpression()
         {
 
             Formula f = new Formula("5+13*(A1+16)/9+D4*3-84+B2+(13*0)", s => s.ToUpper(), s => true);
 
-            Assert.AreEqual(-25, f.Evaluate(LimitedLookup));
+            Assert.AreEqual(-25.0, f.Evaluate(LimitedLookup));
         }
 
+        /// <summary>
+        /// Makes sure we get a FormulaError when there is a variable that does not exist
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateEmptyVariable1()
         {
@@ -782,6 +833,9 @@ namespace FormulaTester
             Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
         }
 
+        /// <summary>
+        /// Makes sure we get a FormulaError when there is a variable that does not exist.  This time with a few variables being used.
+        /// </summary>
         [TestMethod]
         public void PublicEvaluateEmptyVariable2()
         {
@@ -798,11 +852,11 @@ namespace FormulaTester
         /// <returns> the variable's name</returns>
         public static double LimitedLookup(String s)
         {
-            if (s == "A1") { return 2; }
-            if (s == "B2") { return 4; }
-            if (s == "C3") { return 6; }
-            if (s == "D4") { return 8; }
-            if (s == "XyZ321") { return 85; }
+            if (s == "A1") { return 2.0; }
+            if (s == "B2") { return 4.0; }
+            if (s == "C3") { return 6.0; }
+            if (s == "D4") { return 8.0; }
+            if (s == "XYZ321") { return 85.0; }
             throw new ArgumentException("Variable DNE");
         }
     }
