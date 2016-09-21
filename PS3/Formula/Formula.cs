@@ -249,7 +249,209 @@ namespace SpreadsheetUtilities
         /// </summary>
         public object Evaluate(Func<string, double> lookup)
         {
-            return null;
+            //Create the stacks
+            Stack<double> values = new Stack<double>();
+            Stack<char> operations = new Stack<char>();
+
+            double currentNumber;
+            char currentOperation;
+
+            foreach (String current in formula)
+            {
+                //It is ok to use a true validator here since they have all already been validated
+                switch (CategorizeToken(current, s => true))
+                {
+                    // Double
+                    case 1:
+                        //Turn it from a string into a int
+                        currentNumber = Double.Parse(current);
+
+                        // Check if the operation stack is empty before peeking
+                        if (operations.Count == 0)
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                            break;
+                        }
+
+                        // Check if multiplication is at the top
+                        if (operations.Peek().Equals('*') || operations.Peek() == '/')
+                        {
+                            Multiplication(values, operations, currentNumber);
+
+                            //Checks for division by zero
+                            if (operations.Peek() == 'u')
+                            {
+                                return new FormulaError("You divided by zero. Shame on you!");
+                            }
+                        } else
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                        }
+                        break;
+
+                    // Variable
+                    case 2:
+                        currentNumber = lookup(current);
+
+                        // Check if the operation stack is empty before peeking
+                        if (operations.Count == 0)
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                            break;
+                        }
+
+                        // Check if multiplication is at the top
+                        if ((operations.Count > 0) && (operations.Peek().Equals('*') || operations.Peek() == '/'))
+                        {
+                            Multiplication(values, operations, currentNumber);
+                            //Checks for division by zero
+                            if (operations.Peek() == 'u')
+                            {
+                                return new FormulaError("You divided by zero. Shame on you!");
+                            }
+                        }
+                        else
+                        {
+                            // Push the current integer onto the stack
+                            values.Push(currentNumber);
+                        }
+                        break;
+
+                    // Addition or subtraction
+                    case 3:
+                        Addition(values, operations);
+
+                        // Push the current operation onto the operations stack
+                        currentOperation = Char.Parse(current);
+                        operations.Push(currentOperation);
+                        break;
+
+                    // Multiplication or division
+                    case 4:
+                        // Turn the token into a char
+                        currentOperation = Char.Parse(current);
+
+                        // Push it onto the stack
+                        operations.Push(currentOperation);
+                        break;
+
+                    // Opening Parenthesis
+                    case 5:
+                        currentOperation = Char.Parse(current);
+
+                        // Push it onto the stack
+                        operations.Push(currentOperation);
+                        break;
+
+                    // Closing Parenthesis
+                    case 6:
+                        // Does the first step(addition)
+                        Addition(values, operations);
+
+                        // Pops the opening parenthesis
+                        operations.Pop();
+
+                        // Makes sure we are doing muliplication/division
+                        if (operations.Count > 0 && (operations.Peek() == '*' || operations.Peek() == '/'))
+                        {
+                            // Doing the multiplication and pushes the result
+                            currentNumber = values.Pop();
+
+                            Multiplication(values, operations, currentNumber);
+                            //Checks for division by zero
+                            if (operations.Peek() == 'u')
+                            {
+                                return new FormulaError("You divided by zero. Shame on you!");
+                            }
+                        }
+                        break;
+                }
+            }
+
+            
+            // Now that we are done parsing we do the finishing touches
+             
+            // Check if the operations stack is empty or not
+            if (operations.Count == 0)
+            {
+                return values.Pop();
+            }
+            else
+            {
+                if (operations.Pop() == '+')
+                {
+                    currentNumber = values.Pop();
+                    double previousNumber = values.Pop();
+
+                    return previousNumber + currentNumber;
+                }
+                else
+                {
+                    currentNumber = values.Pop();
+                    double previousNumber = values.Pop();
+
+                    return previousNumber - currentNumber;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Performs the section of the algorithm that does addition or subtraction.  It pops 2 entries from values and one entry from operations and then performs the operation.
+        /// If there are not enough entries in either stack it will throw an ArgumentException.
+        /// </summary>
+        /// <param name="values">The values stack</param>
+        /// <param name="operations">The operations stack</param>
+        private static void Addition(Stack<double> values, Stack<char> operations)
+        {
+            // Check if the previous stuff was also addition/subtraction
+            if (operations.Peek().Equals('+') || operations.Peek() == '-')
+            {
+                // Pop everything out
+                double num1 = values.Pop();
+                double num2 = values.Pop();
+                char oper = operations.Pop();
+
+                // Perform the previous addition or subtraction
+                if (oper == '+')
+                {
+                    values.Push(num2 + num1);
+                }
+                else
+                {
+                    values.Push(num2 - num1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Performs the part of the operation where you multiply or divide values.  It will pop one entry off of values and one off of operations.
+        /// It will push a 'u' on the operations stack if there is a division by zero. Make sure to deal with it!
+        /// </summary>
+        /// <param name="values">The values stack</param>
+        /// <param name="operations">the operations stack.  Seriously why don't I just change the permissions.</param>
+        /// <param name="currentNumber"> The second number in the operation. i.e. the number you would divide by.</param>
+        private static void Multiplication(Stack<double> values, Stack<char> operations, double currentNumber)
+        {
+            double lastNumber = values.Pop();
+            char operation = operations.Pop();
+
+            // Checks for division by zero
+            if (currentNumber == 0 && operation == '/')
+            {
+                operations.Push('u');
+            }
+            // Multiply or divide and push
+            if (operation == '*')
+            {
+                values.Push(lastNumber * currentNumber);
+            }
+            else
+            {
+                values.Push(lastNumber / currentNumber);
+            }
         }
 
         /// <summary>
