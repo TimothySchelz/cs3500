@@ -182,6 +182,16 @@ namespace FormulaTester
         }
 
         /// <summary>
+        /// Checks that it throws an exception when the starting token is not a valid starting token
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2BreaksRule53()
+        {
+            Formula f = new Formula(") A2 + B1 * (5)", s => s.ToUpper(), s => s == "A1");
+        }
+
+        /// <summary>
         /// Checks that it throws an exception when the last token is not a valid ending token
         /// </summary>
         [TestMethod]
@@ -199,6 +209,16 @@ namespace FormulaTester
         public void PublicCon2BreaksRule62()
         {
             Formula f = new Formula("(A2 + B1) * (5) +", s => s.ToUpper(), s => s == "A1");
+        }
+
+        /// <summary>
+        /// Checks that it throws an exception when the last token is not a valid ending token
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void PublicCon2BreaksRule63()
+        {
+            Formula f = new Formula("(A2 + B1) * (5) (", s => s.ToUpper(), s => s == "A1");
         }
 
 
@@ -843,6 +863,105 @@ namespace FormulaTester
             Formula f = new Formula("A2 + 3*(B1/15)", s => s.ToUpper(), s => true);
 
             Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
+        }
+
+        /// <summary>
+        /// Makes sure we get a FormulaError we divide by zero
+        /// </summary>
+        [TestMethod]
+        public void PublicEvaluateDivideByZeroWithParenthesis2()
+        {
+
+            Formula f = new Formula("3/(0)", s => s.ToUpper(), s => true);
+
+            Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
+        }
+
+        /// <summary>
+        /// Makes sure we get a FormulaError we divide by zero
+        /// </summary>
+        [TestMethod]
+        public void PublicEvaluateDivideByZeroWithParenthesis1()
+        {
+
+            Formula f = new Formula("3/(0 - 0)", s => s.ToUpper(), s => true);
+
+            Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
+        }
+
+        /// <summary>
+        /// Makes sure we get a FormulaError we divide by zero
+        /// </summary>
+        [TestMethod]
+        public void PublicEvaluateDivideByZeroWithParenthesis3()
+        {
+
+            Formula f = new Formula("0/(0)", s => s.ToUpper(), s => true);
+
+            Assert.IsTrue(f.Evaluate(LimitedLookup) is FormulaError);
+        }
+
+        /*
+         * Some clean up tests to complete coverage
+         */
+        /// <summary>
+        /// Makes sure the parens variable inside the constructor becomes negative.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+
+        public void PublicCon2GetNegativeNumberOfParens1()
+        {
+
+            Formula f = new Formula("(A1) + 3) - 2", s => s.ToUpper(), s => true);
+        }
+
+        /// <summary>
+        /// Makes sure the parens variable inside the constructor becomes negative.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+
+        public void PublicCon2GetNegativeNumberOfParens2()
+        {
+
+            Formula f = new Formula("(A1 + 3) - 2)", s => s.ToUpper(), s => true);
+        }
+
+        /// <summary>
+        /// Makes sure the parens variable inside the constructor becomes negative.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+
+        public void PublicCon2GetNegativeNumberOfParens3()
+        {
+
+            Formula f = new Formula("A1 + (3) - 2)", s => s.ToUpper(), s => true);
+        }
+
+        /// <summary>
+        /// Makes sure we check to make sure every parenthesis has a match
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+
+        public void PublicCon2UnmatchedParenthesis1()
+        {
+
+            Formula f = new Formula("(A1)) + (3) - 2)", s => s.ToUpper(), s => true);
+        }
+
+        /// <summary>
+        /// Makes sure we check to make sure every parenthesis has a match
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+
+        public void PublicCon2UnmatchedParenthesis2()
+        {
+
+            Formula f = new Formula("()(A1))", s => s.ToUpper(), s => true);
         }
 
         /// <summary>
