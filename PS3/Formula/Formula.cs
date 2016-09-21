@@ -361,16 +361,16 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
-            int total = 0;
+            int total = 11;
             foreach (String s in formula)
             {
                 foreach (char c in s)
                 {
-                    total += c;
+                    total = 7 * total + c;
                 }
             }
 
-            return total * 103;
+            return total;
         }
 
         /// <summary>
