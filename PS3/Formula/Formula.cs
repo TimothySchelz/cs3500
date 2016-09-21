@@ -9,7 +9,7 @@
 //  (Version 1.1) Changed specification of second constructor to
 //                clarify description of how validation works
 
-// Skeleton fleshed out by Timothy Schelz, 9/22/2016
+// Skeleton fleshed out by Timothy Schelz, 9/21/2016
 
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,10 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class Formula
     {
-        private LinkedList<String> formula; // Holds each token of the formula.  Each token should be normalized, in a valid order, and each variable should be valid.
-        private HashSet<String> variables; // A HashSet of all the variables.  They should all be normalized to prevent duplicates and a big ol mess.
+        private LinkedList<String> formula; // Holds each token of the formula.  Each token should be 
+                                            // normalized, in a valid order, and each variable should be valid.
+        private HashSet<String> variables; // A HashSet of all the variables.  They should all be 
+                                           //normalized to prevent duplicates and a big ol mess.
 
         /// <summary>
         /// Creates a Formula from a string that consists of an infix expression written as
@@ -74,7 +76,8 @@ namespace SpreadsheetUtilities
         /// 
         /// new Formula("x2+y3", N, V) should succeed
         /// new Formula("x+y3", N, V) should throw an exception, since V(N("x")) is false
-        /// new Formula("2x+y3", N, V) should throw an exception, since "2x+y3" is syntactically incorrect.
+        /// new Formula("2x+y3", N, V) should throw an exception, since "2x+y3" is syntactically 
+        /// incorrect.
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
@@ -82,13 +85,16 @@ namespace SpreadsheetUtilities
             String normed; // The current token after it has been normalized
             int tokenType; // The current token's type
             int parens = 0; // The number of parenthesis that have been opened but not closed
-            int previousType = -1; // The type of the previous token.  The -1 means it hasn't been used yet
+            int previousType = -1; // The type of the previous token.  The -1 means it hasn't been 
+                                   // used yet
 
             this.formula = new LinkedList<String>();
             variables = new HashSet<string>();
 
-            // check to make sure it is breaking any rules.  All my tokens play by the rules.  I don't tolerate any loose cannons.
-            // also puts the token into a linked list to be stored.  Goes through and does this for each token that GetTokens returns.
+            // check to make sure it is breaking any rules.  All my tokens play by the rules.  I don't 
+            // tolerate any loose cannons.
+            // also puts the token into a linked list to be stored.  Goes through and does this for 
+            // each token that GetTokens returns.
             foreach (String current in GetTokens(formula))
             {
                 normed = normalize(current);
@@ -99,21 +105,23 @@ namespace SpreadsheetUtilities
                 {
                     normed = "" + Double.Parse(normed);
                 }
-                
+
                 //Check if the previous token was a parenthesis or an operator
                 //Syntax rule 7
-                if ((previousType == 5 || previousType == 3 || previousType == 4) 
+                if ((previousType == 5 || previousType == 3 || previousType == 4)
                     && !(tokenType == 1 || tokenType == 2 || tokenType == 5))
                 {
-                    throw new FormulaFormatException("The Parenthesis Following Rule was broken.  An invalid token followed an opening parenthesis or operation");
+                    throw new FormulaFormatException("The Parenthesis Following Rule was broken." + 
+                        "  An invalid token followed an opening parenthesis or operation");
                 }
 
                 //Check if the previous token was a number variable or closing parens
                 //Syntax rule 8
-                if ((previousType == 1 || previousType == 2 || previousType == 6) 
+                if ((previousType == 1 || previousType == 2 || previousType == 6)
                     && !(tokenType == 3 || tokenType == 4 || tokenType == 6))
                 {
-                    throw new FormulaFormatException("The Extra Following Rule was broken.  An invalid token followed a variable, closing parenthesis or a number.");
+                    throw new FormulaFormatException("The Extra Following Rule was broken.  " + 
+                        "An invalid token followed a variable, closing parenthesis or a number.");
                 }
 
                 // Add values to the variables HashSet if we come across any variables
@@ -132,10 +140,13 @@ namespace SpreadsheetUtilities
                 {
                     parens--;
                 }
-                //Check at each step that the number of closing parenthesis doesn't outpace the number of opening parenthesis.
+                //Check at each step that the number of closing parenthesis doesn't outpace the number 
+                //of opening parenthesis.
                 if (parens < 0)
                 {
-                    throw new FormulaFormatException("The number of closing parenthesis was larger than the number of opening parenthesis.  Check the number of opening and closing parenthesis.");
+                    throw new FormulaFormatException("The number of closing parenthesis was larger " + 
+                        "than the number of opening parenthesis.  Check the number of opening and " + 
+                        "closing parenthesis.");
                 }
 
                 // Add this sucker into the permanent formula and put it's type in the previous pile
@@ -147,29 +158,8 @@ namespace SpreadsheetUtilities
             //Syntax rule 2
             if (this.formula.Count() == 0)
             {
-                throw new FormulaFormatException("There were no tokens in the given formula.  Please enter a formula");
-            }
-
-            // Checks to makes sure each parenthesis ended up with a match
-            // Syntax rule 4
-            if (parens != 0)
-            {
-                throw new FormulaFormatException("There is an open parenthesis without a closing one to match.");
-            }
-
-            //Checks if the first token is a valid token.  From the previous conditional we know formula is not empty
-            //Syntax rule 5
-            tokenType = CategorizeToken(this.formula.First(), isValid);
-            if (!(tokenType == 1 || tokenType == 2 || tokenType == 5)) {
-                throw new FormulaFormatException("The first token is not a valid starting token.  It should be a number, variable, or an opening parenthesis.");
-            }
-
-            //Checks if the last token is a valid token.  From the previous conditional we know formula is not empty
-            //Syntax rule 6
-            tokenType = CategorizeToken(this.formula.Last(), isValid);
-            if (!(tokenType == 1 || tokenType == 2 || tokenType == 6))
-            {
-                throw new FormulaFormatException("The last token is not a valid ending token.  It should be a number, variable, or a closing parenthesis.");
+                throw new FormulaFormatException("There were no tokens in the given formula.  " + 
+                    "Please enter a formula");
             }
         }
 
@@ -187,7 +177,8 @@ namespace SpreadsheetUtilities
         /// 
         /// </summary>
         /// <param name="s"> The String token to be categorized</param>
-        /// <param name="isValid"> A delegate to check to make sure a variable has the proper format</param>
+        /// <param name="isValid"> A delegate to check to make sure a variable has the proper format
+        ///     </param>
         /// <returns> An int corresponding with one of the cases above</returns>
         private static int CategorizeToken(String s, Func<string, bool> isValid)
         {
@@ -213,17 +204,17 @@ namespace SpreadsheetUtilities
             {
                 return 6;
             }
-            else if (s.Equals(""))
-            {
-                return 0;
-            }
-            else if ((s[0].Equals('_') || (s.ToUpper()[0] >= 65 && s.ToUpper()[0] <= 90) && isValid(s)))
+            else if ((s[0].Equals('_') || 
+                (s.ToUpper()[0] >= 65 && s.ToUpper()[0] <= 90) && isValid(s)))
             {
                 return 2;
             }
 
             //Syntax rule 1
-            throw new FormulaFormatException(s + " is not a valid type of token.  Please turn it into a double, variable, (, ), +, -, *, or /.  Remember Variables must start with a letter or underscore");
+            throw new FormulaFormatException(s + 
+                " is not a valid type of token.  Please turn it into a double," + 
+                " variable, (, ), +, -, *, or /.  Remember Variables must start with " + 
+                "a letter or underscore");
         }
 
         /// <summary>
@@ -283,7 +274,8 @@ namespace SpreadsheetUtilities
                             {
                                 return new FormulaError("You divided by zero. Shame on you!");
                             }
-                        } else
+                        }
+                        else
                         {
                             // Push the current integer onto the stack
                             values.Push(currentNumber);
@@ -361,7 +353,8 @@ namespace SpreadsheetUtilities
                         operations.Pop();
 
                         // Makes sure we are doing muliplication/division
-                        if (operations.Count > 0 && (operations.Peek() == '*' || operations.Peek() == '/'))
+                        if (operations.Count > 0 && (operations.Peek() == '*' 
+                            || operations.Peek() == '/'))
                         {
                             // Doing the multiplication and pushes the result
                             currentNumber = values.Pop();
@@ -377,9 +370,9 @@ namespace SpreadsheetUtilities
                 }
             }
 
-            
+
             // Now that we are done parsing we do the finishing touches
-             
+
             // Check if the operations stack is empty or not
             if (operations.Count == 0)
             {
@@ -405,7 +398,9 @@ namespace SpreadsheetUtilities
         }
 
         /// <summary>
-        /// Performs the section of the algorithm that does addition or subtraction.  It pops 2 entries from values and one entry from operations and then performs the operation.
+        /// Performs the section of the algorithm that does addition or subtraction.  It pops 2 entries 
+        /// from values and one entry from operations and then performs the operation.
+        /// 
         /// If there are not enough entries in either stack it will throw an ArgumentException.
         /// </summary>
         /// <param name="values">The values stack</param>
@@ -433,12 +428,18 @@ namespace SpreadsheetUtilities
         }
 
         /// <summary>
-        /// Performs the part of the operation where you multiply or divide values.  It will pop one entry off of values and one off of operations.
-        /// It will push a 'u' on the operations stack if there is a division by zero. Make sure to deal with it!
+        /// Performs the part of the operation where you multiply or divide values.  It will pop one 
+        /// entry off of values and one off of operations.
+        /// 
+        /// It will push a 'u' on the operations stack if there is a division by zero. Make sure to 
+        /// deal with it!
+        /// 
         /// </summary>
         /// <param name="values">The values stack</param>
-        /// <param name="operations">the operations stack.  Seriously why don't I just change the permissions.</param>
-        /// <param name="currentNumber"> The second number in the operation. i.e. the number you would divide by.</param>
+        /// <param name="operations">the operations stack.  Seriously why don't I just change the 
+        ///     permissions.</param>
+        /// <param name="currentNumber"> The second number in the operation. i.e. the number you would 
+        ///     divide by.</param>
         private static void Multiplication(Stack<double> values, Stack<char> operations, double currentNumber)
         {
             double lastNumber = values.Pop();
@@ -544,7 +545,8 @@ namespace SpreadsheetUtilities
             }
 
             // Check to see if f1 is null
-            if (object.Equals(f1, null)) {
+            if (object.Equals(f1, null))
+            {
                 return false;
             }
 

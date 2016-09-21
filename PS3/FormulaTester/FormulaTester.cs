@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Tests for the Formula class
+// Written by Timothy Schelz, 9/21/16
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpreadsheetUtilities;
 using System.Collections.Generic;
