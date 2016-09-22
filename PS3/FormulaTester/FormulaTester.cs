@@ -1,5 +1,5 @@
 ﻿// Tests for the Formula class
-// Written by Timothy Schelz, 9/21/16
+// Written by Timothy Schelz, u0851027, 9/22/16
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -223,17 +223,6 @@ namespace FormulaTester
         {
             Formula f = new Formula("(A2 + B1) * (5) (", s => s.ToUpper(), s => s == "A1");
         }
-
-
-        /*
-         * Evaluate Tests
-         * 
-         * 
-         * Ugh I guess I will start by just stealing some tests from PS1 and then checking doubles
-         * 
-         * 
-         */
-
 
         /*
          * GetVariables Tests
@@ -552,7 +541,7 @@ namespace FormulaTester
             Random rando = new Random();
 
             // checks a bunch of different pairs of 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 int charint1 = rando.Next(25) + 65;
                 char char1 = (char) charint1;

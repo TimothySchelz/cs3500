@@ -9,7 +9,7 @@
 //  (Version 1.1) Changed specification of second constructor to
 //                clarify description of how validation works
 
-// Skeleton fleshed out by Timothy Schelz, 9/21/2016
+// Skeleton fleshed out by Timothy Schelz, u0851027, 9/22/2016
 
 using System;
 using System.Collections.Generic;
@@ -54,6 +54,7 @@ namespace SpreadsheetUtilities
         public Formula(String formula) :
             this(formula, s => s, s => true)
         {
+            // It just has to basically do the other constructor so this doesn't need to do anything
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace SpreadsheetUtilities
                 // If we are dealing with a number we cast it as a double
                 if (tokenType == 1)
                 {
-                    normed = "" + Double.Parse(normed);
+                    normed = "" + Double.Parse(normed); //already parsed inside of CategorizeTokens() so we know it is a double
                 }
 
                 //Check if the previous token was a parenthesis or an operator
@@ -255,7 +256,7 @@ namespace SpreadsheetUtilities
                     // Double
                     case 1:
                         //Turn it from a string into a int
-                        currentNumber = Double.Parse(current);
+                        currentNumber = Double.Parse(current);//already parsed in constructor so we know it is a double
 
                         // Check if the operation stack is empty before peeking
                         if (operations.Count == 0)
@@ -323,14 +324,16 @@ namespace SpreadsheetUtilities
                         Addition(values, operations);
 
                         // Push the current operation onto the operations stack
-                        currentOperation = Char.Parse(current);
+                        currentOperation = Char.Parse(current); //already parsed inside of CategorizeTokens() so we know
+                                                                //it is an addition or subtraction
                         operations.Push(currentOperation);
                         break;
 
                     // Multiplication or division
                     case 4:
                         // Turn the token into a char
-                        currentOperation = Char.Parse(current);
+                        currentOperation = Char.Parse(current);//already parsed inside of CategorizeTokens() so we know 
+                                                               //it is a * or /
 
                         // Push it onto the stack
                         operations.Push(currentOperation);
@@ -338,7 +341,8 @@ namespace SpreadsheetUtilities
 
                     // Opening Parenthesis
                     case 5:
-                        currentOperation = Char.Parse(current);
+                        currentOperation = Char.Parse(current); //already parsed inside of CategorizeTokens() so we know
+                                                                //it is an (
 
                         // Push it onto the stack
                         operations.Push(currentOperation);
@@ -571,16 +575,8 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
-            int total = 11;
-            foreach (String s in formula)
-            {
-                foreach (char c in s)
-                {
-                    total = 7 * total + c;
-                }
-            }
-
-            return total;
+            // Just returns the defining string's hashcode
+            return this.ToString().GetHashCode();
         }
 
         /// <summary>
