@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Written by Timothy Schelz, u0851027, September 2016
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

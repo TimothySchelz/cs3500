@@ -1,5 +1,7 @@
 ﻿// Written by Joe Zachary for CS 3500, September 2013
 
+// Updated by Timothy Schelz, u0851027, September 2016
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -174,15 +176,21 @@ namespace SS
         /// </summary>
         protected IEnumerable<String> GetCellsToRecalculate(ISet<String> names)
         {
+            // Changed holds the cells that need to be recalculated because a varaible they depend on has changed
+            // visited keeps track of what cells have already been visited
             LinkedList<String> changed = new LinkedList<String>();
             HashSet<String> visited = new HashSet<String>();
+
+            // Goes through each cell in the set of names
             foreach (String name in names)
             {
+                // If the current cell has not been visited it visits it
                 if (!visited.Contains(name))
                 {
                     Visit(name, name, visited, changed);
                 }
             }
+            // returns a list of cells that need to be changed
             return changed;
         }
 
@@ -193,6 +201,7 @@ namespace SS
         /// </summary>
         protected IEnumerable<String> GetCellsToRecalculate(String name)
         {
+            // Pretty self explanatory
             return GetCellsToRecalculate(new HashSet<String>() { name });
         }
 
@@ -204,18 +213,26 @@ namespace SS
         /// </summary>
         private void Visit(String start, String name, ISet<String> visited, LinkedList<String> changed)
         {
+            // adds the current name to the visited list since we are visiting it
             visited.Add(name);
+
+            // Goes through each of the direct dependents of name and visits them
             foreach (String n in GetDirectDependents(name))
             {
+                // if we end up where we started then we have a loop and need to throw an exception
                 if (n.Equals(start))
                 {
                     throw new CircularException();
                 }
+                // If the current dependent has not been visited yet then we visit it.
                 else if (!visited.Contains(n))
                 {
                     Visit(start, n, visited, changed);
                 }
             }
+            // Adds the current cell to the list of cells that need to be changed.  Since this method is recursive we 
+            // will add cells that do not depend on anything first and then add the ones that depend on it next and so
+            // forth.  This is what gives us the order that we need.
             changed.AddFirst(name);
         }
 
