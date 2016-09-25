@@ -9,8 +9,12 @@ using SpreadsheetUtilities;
 
 namespace SS
 {
-    class Spreadsheet : AbstractSpreadsheet
+    public class Spreadsheet : AbstractSpreadsheet
     {
+        /// <summary>
+        /// A public constructor to create a new Spreadsheet object.  It just creates an empty 
+        /// spreadsheet.  It should not have any filled cells.  Nothing special
+        /// </summary>
         public Spreadsheet()
         {
             throw new NotImplementedException();
