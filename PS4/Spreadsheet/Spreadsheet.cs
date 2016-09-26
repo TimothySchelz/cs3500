@@ -11,41 +11,79 @@ namespace SS
 {
     public class Spreadsheet : AbstractSpreadsheet
     {
-        private Dictionary<String, Cell> cells = new Dictionary<String, Cell>();
+        // A dictionary to hold each of the cells with their name as a key
+        private Dictionary<String, Cell> cells;
+
+        // A DependencyGraph that will hold dependency relationship between the cells.
+        private DependencyGraph depGraph;
+
         /// <summary>
         /// A public constructor to create a new Spreadsheet object.  It just creates an empty 
         /// spreadsheet.  It should not have any filled cells.  Nothing special
         /// </summary>
         public Spreadsheet()
         {
-            throw new NotImplementedException();
+            cells = new Dictionary<String, Cell>();
+            depGraph = new DependencyGraph();
         }
 
+        /// <summary>
+        /// Gets the contents of the specified cell
+        /// </summary>
+        /// <param name="name">The cell</param>
+        /// <returns>the contents in name</returns>
         public override object GetCellContents(string name)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Returns a IEnumeralble with a list of every nonempty cell
+        /// </summary>
+        /// <returns></returns>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets the content of a specific cell
+        /// </summary>
+        /// <param name="name">The cell to be set</param>
+        /// <param name="formula">The contents to be put in the cell</param>
+        /// <returns></returns>
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets the content of a specific cell
+        /// </summary>
+        /// <param name="name">The cell to be set</param>
+        /// <param name="text">The content to be put in the cell</param>
+        /// <returns></returns>
         public override ISet<string> SetCellContents(string name, string text)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets the content of a specific cell
+        /// </summary>
+        /// <param name="name">The cell to be set</param>
+        /// <param name="number">The content to be put in the cell</param>
+        /// <returns></returns>
         public override ISet<string> SetCellContents(string name, double number)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets a list of the direct dependents on the given cell
+        /// </summary>
+        /// <param name="name">The cell</param>
+        /// <returns>a list of direct dependents of name</returns>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
             throw new NotImplementedException();
