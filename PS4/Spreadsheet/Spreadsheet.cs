@@ -34,7 +34,18 @@ namespace SS
         /// <returns>the contents in name</returns>
         public override object GetCellContents(string name)
         {
-            throw new NotImplementedException();
+            // confirms that the name is valid
+            NameValidator(name);
+            //Checks if the name has been used and has a cell in it
+            if (cells.ContainsKey(name))
+            {
+                //if it does it return the contents of the cell
+                return cells[name].getContents();
+            } else
+            {
+                //if it doesn't it returns an empty string
+                return "";
+            }
         }
 
         /// <summary>
@@ -43,7 +54,9 @@ namespace SS
         /// <returns></returns>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
-            throw new NotImplementedException();
+            // The names of the nonempty cells are the keys to cells so we just 
+            // return those.
+            return cells.Keys;
         }
 
         /// <summary>
@@ -87,6 +100,16 @@ namespace SS
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks to make sure the name is not null or invalid.  If it is null or invalid
+        /// it throws an InvalidNameException.
+        /// </summary>
+        /// <param name="name"></param>
+        private void NameValidator(String name)
+        {
+            if (name == null || (name[0] ))
         }
     }
 
