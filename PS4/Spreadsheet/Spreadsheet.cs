@@ -41,7 +41,8 @@ namespace SS
             {
                 //if it does it return the contents of the cell
                 return cells[name].getContents();
-            } else
+            }
+            else
             {
                 //if it doesn't it returns an empty string
                 return "";
@@ -54,11 +55,15 @@ namespace SS
         /// <returns></returns>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
-            // The names of the nonempty cells are the keys to cells so we just 
-            // return those.
+            // Makes a copy of the keys.  I am not sure is cells.Keys would return a copy of the keys
+            // or just the keys themselves.  Better safe than sorry
+            List<String> copy = new List<string>();
+            foreach(String s in cells.Keys)
+            {
+                copy.Add(s);
+            }
 
-            //Is this ok or do I also need to make a copy
-            return cells.Keys;
+            return copy;
         }
 
         /// <summary>
@@ -77,10 +82,24 @@ namespace SS
         /// </summary>
         /// <param name="name">The cell to be set</param>
         /// <param name="text">The content to be put in the cell</param>
-        /// <returns></returns>
+        /// <returns>A set of variable that might be effected by the change</returns>
         public override ISet<string> SetCellContents(string name, string text)
         {
-            throw new NotImplementedException();
+            NameValidator(name);
+
+            //check if there is something already there
+            if(cells.ContainsKey(name))
+            {
+                //get rid of any dependees of the old cell
+                depGraph.ReplaceDependees(name, new List<String>());
+                //remove from the hashmap
+                cells.Remove(name);
+            }
+
+            //create a new cell and add it to cells
+            cells.Add(name, new Cell(text));
+
+            return (ISet<string>)GetCellsToRecalculate(name);
         }
 
         /// <summary>
@@ -101,6 +120,14 @@ namespace SS
         /// <returns>a list of direct dependents of name</returns>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
+            // check if it is null for this one weird case for this one weird method.
+            if (name == null)
+            {
+                throw new ArgumentNullException();
+            }
+            //chech if the name is valid
+            NameValidator(name);
+            // return dependents
             return depGraph.GetDependents(name);
         }
 
@@ -132,7 +159,7 @@ namespace SS
 
         // The lookup delegate to be used
         Func<string, Double> variableFinder;
-        
+
         /// <summary>
         /// The type of cell it is.  It will be "String" if there is a string in the cell
         /// It will be "Formula" if there is a Formula in the cell.
@@ -195,7 +222,8 @@ namespace SS
             if (Type == "String")
             {
                 return StringContent;
-            } else
+            }
+            else
             {
                 return FormContent;
             }

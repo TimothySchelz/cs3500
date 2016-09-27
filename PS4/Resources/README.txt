@@ -15,3 +15,6 @@ handy later in PS5.
 The naming scheme of the tests is Public_NameofMethodBeingTested_SpecificCase().  So if I wanted to test GetCellContents on a 
 cell that is empty it would be called Public_GetCellContents_EmptyCell().  Numbers can also follow the specific case if I have
 a few methods testing the same thing in slightly different ways for some reason.
+
+According to a TA's(Matthew) directive I am not worrying about instances where a formula depends on a variable that has a
+String in it.  i.e. A1 = "Hello", B2 = A1 - 5.
