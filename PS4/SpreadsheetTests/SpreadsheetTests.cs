@@ -8,19 +8,15 @@ using System.Collections.Generic;
 
 namespace SpreadsheetTests
 {
-    [TestClass]
-    public class SpreadsheetTests
-    {
-
         /*
          * Constructor Tests
          * 
          * Not much to test here.  Just going to make sure it is empty
          */
-         /// <summary>
-         /// Makes sure a new spreadsheet is empty.  Since IEnumerable does not have a
-         /// count or size or anything we have to use the loop
-         /// </summary>
+        /// <summary>
+        /// Makes sure a new spreadsheet is empty.  Since IEnumerable does not have a
+        /// count or size or anything we have to use the loop
+        /// </summary>
         [TestMethod]
         public void Public_Con_MakeSureItIsEmpty()
         {

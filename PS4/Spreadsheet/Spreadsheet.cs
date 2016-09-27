@@ -56,6 +56,8 @@ namespace SS
         {
             // The names of the nonempty cells are the keys to cells so we just 
             // return those.
+
+            //Is this ok or do I also need to make a copy
             return cells.Keys;
         }
 
@@ -99,7 +101,7 @@ namespace SS
         /// <returns>a list of direct dependents of name</returns>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            throw new NotImplementedException();
+            return depGraph.GetDependents(name);
         }
 
         /// <summary>
@@ -109,7 +111,11 @@ namespace SS
         /// <param name="name"></param>
         private void NameValidator(String name)
         {
-            if (name == null || (name[0] ))
+            //Throw exception if it is not valid
+            if (name == null || !((Char.ToUpper(name[0]) <= 90 && Char.ToUpper(name[0]) >= 65) || name[0] == '_'))
+            {
+                throw new InvalidNameException();
+            }
         }
     }
 
@@ -208,6 +214,22 @@ namespace SS
             else
             {
                 return FormContent.Evaluate(variableFinder);
+            }
+        }
+
+        /// <summary>
+        /// Get the varialbes that this cell depends on.
+        /// </summary>
+        /// <returns>A list of variables this cell depends on</returns>
+        internal IEnumerable<String> getDependees()
+        {
+            if (Type == "String")
+            {
+                return new List<String>();
+            }
+            else
+            {
+                return FormContent.GetVariables();
             }
         }
     }
