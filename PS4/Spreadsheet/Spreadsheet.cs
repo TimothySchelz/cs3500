@@ -74,7 +74,23 @@ namespace SS
         /// <returns></returns>
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
-            throw new NotImplementedException();
+            NameValidator(name);
+
+            //check if there is something already there
+            if (cells.ContainsKey(name))
+            {
+                //get rid of any dependees of the old cell
+                depGraph.ReplaceDependees(name, new List<String>());
+                //remove from the hashmap
+                cells.Remove(name);
+            }
+
+            //A func to put into the cell as a lookup delegate.
+            Func<String, Double> lookup = ;
+            //create a new cell and add it to cells, and then updates the dependency graph
+            cells.Add(name, new Cell(formula, s => cells));
+
+            return (ISet<string>)GetCellsToRecalculate(name);
         }
 
         /// <summary>
@@ -107,10 +123,24 @@ namespace SS
         /// </summary>
         /// <param name="name">The cell to be set</param>
         /// <param name="number">The content to be put in the cell</param>
-        /// <returns></returns>
+        /// <returns> A set of cells to be recalculated</returns>
         public override ISet<string> SetCellContents(string name, double number)
         {
-            throw new NotImplementedException();
+            NameValidator(name);
+
+            //check if there is something already there
+            if (cells.ContainsKey(name))
+            {
+                //get rid of any dependees of the old cell
+                depGraph.ReplaceDependees(name, new List<String>());
+                //remove from the hashmap
+                cells.Remove(name);
+            }
+
+            //create a new cell and add it to cells
+            cells.Add(name, new Cell(number));
+
+            return (ISet<string>)GetCellsToRecalculate(name);
         }
 
         /// <summary>
@@ -135,7 +165,7 @@ namespace SS
         /// Checks to make sure the name is not null or invalid.  If it is null or invalid
         /// it throws an InvalidNameException.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">the name to be validated</param>
         private void NameValidator(String name)
         {
             //Throw exception if it is not valid
@@ -226,22 +256,6 @@ namespace SS
             else
             {
                 return FormContent;
-            }
-        }
-
-        /// <summary>
-        /// Get the value of the Cell
-        /// </summary>
-        /// <returns>The value of the cell</returns>
-        internal object getValue()
-        {
-            if (Type == "String")
-            {
-                return StringContent;
-            }
-            else
-            {
-                return FormContent.Evaluate(variableFinder);
             }
         }
 
