@@ -58,7 +58,7 @@ namespace SS
             // Makes a copy of the keys.  I am not sure is cells.Keys would return a copy of the keys
             // or just the keys themselves.  Better safe than sorry
             List<String> copy = new List<string>();
-            foreach(String s in cells.Keys)
+            foreach (String s in cells.Keys)
             {
                 copy.Add(s);
             }
@@ -76,21 +76,41 @@ namespace SS
         {
             NameValidator(name);
 
-            //check if there is something already there
-            if (cells.ContainsKey(name))
+            //Check if formula is null
+            if (formula == null)
             {
-                //get rid of any dependees of the old cell
-                depGraph.ReplaceDependees(name, new List<String>());
-                //remove from the hashmap
-                cells.Remove(name);
+                throw new ArgumentNullException();
             }
 
-            //A func to put into the cell as a lookup delegate.
-            Func<String, Double> lookup = ;
-            //create a new cell and add it to cells, and then updates the dependency graph
-            cells.Add(name, new Cell(formula, s => cells));
+            //remove old thing from the hashmap
+            cells.Remove(name);
 
-            return (ISet<string>)GetCellsToRecalculate(name);
+            //get rid of any dependees of the old cell and replace them with the new ones
+            depGraph.ReplaceDependees(name, formula.GetVariables());
+
+            //create a new cell and add it to cells
+            cells.Add(name, new Cell(formula));
+
+            // Return the cells to be recalculated as a set
+            return ConvertToSet(GetCellsToRecalculate(name));
+        }
+
+        /// <summary>
+        /// A method to convert an IEnumerable into a ISet.
+        /// </summary>
+        /// <param name="enumer">The IEnumerable to be converted</param>
+        /// <returns>The ISet will all the elements of the IEnumerable</returns>
+        private ISet<String> ConvertToSet(IEnumerable<String> enumer)
+        {
+            // create a new set
+            ISet<String> result = new HashSet<String>();
+            // Go through and put each item in our enumer into the set
+            foreach (String s in enumer)
+            {
+                result.Add(s);
+            }
+            //return the set
+            return result;
         }
 
         /// <summary>
@@ -103,19 +123,21 @@ namespace SS
         {
             NameValidator(name);
 
-            //check if there is something already there
-            if(cells.ContainsKey(name))
+            //Check if formula is null
+            if (text == null)
             {
-                //get rid of any dependees of the old cell
-                depGraph.ReplaceDependees(name, new List<String>());
-                //remove from the hashmap
-                cells.Remove(name);
+                throw new ArgumentNullException();
             }
+
+            //get rid of any dependees of the old cell
+            depGraph.ReplaceDependees(name, new List<String>());
+            //remove old cell from the hashmap
+            cells.Remove(name);
 
             //create a new cell and add it to cells
             cells.Add(name, new Cell(text));
 
-            return (ISet<string>)GetCellsToRecalculate(name);
+            return ConvertToSet(GetCellsToRecalculate(name));
         }
 
         /// <summary>
@@ -128,19 +150,16 @@ namespace SS
         {
             NameValidator(name);
 
-            //check if there is something already there
-            if (cells.ContainsKey(name))
-            {
-                //get rid of any dependees of the old cell
-                depGraph.ReplaceDependees(name, new List<String>());
-                //remove from the hashmap
-                cells.Remove(name);
-            }
+            //get rid of any dependees of the old cell
+            depGraph.ReplaceDependees(name, new List<String>());
+
+            //remove old cell from the hashmap
+            cells.Remove(name);
 
             //create a new cell and add it to cells
             cells.Add(name, new Cell(number));
 
-            return (ISet<string>)GetCellsToRecalculate(name);
+            return ConvertToSet(GetCellsToRecalculate(name));
         }
 
         /// <summary>
@@ -153,6 +172,8 @@ namespace SS
             // check if it is null for this one weird case for this one weird method.
             if (name == null)
             {
+                //This is actually unreachable so the code coverage will flag this.
+                //I am going to keep it encase something else needs to call it later on.
                 throw new ArgumentNullException();
             }
             //chech if the name is valid
@@ -177,24 +198,24 @@ namespace SS
     }
 
     /// <summary>
-    /// A class to act as one cell in a spreadsheet.  It can hold either a String or a Formula.
+    /// A class to act as one cell in a spreadsheet.  It can hold either a String, a double or a Formula.
     /// Let's try to make it immutable.  This way when it gets replaced by something it just 
     /// makes a new one.
     /// </summary>
     internal class Cell
     {
-        // This cell holds either a String or a Formula
+        // This cell holds either a String, a double, or a Formula
         private String StringContent;
+        public Double DoubleContent;
         private Formula FormContent;
 
-        // The lookup delegate to be used
-        Func<string, Double> variableFinder;
-
         /// <summary>
-        /// The type of cell it is.  It will be "String" if there is a string in the cell
-        /// It will be "Formula" if there is a Formula in the cell.
+        /// The type of cell it is.
+        /// 1 for String
+        /// 2 for Double
+        /// 3 for Formula
         /// </summary>
-        internal String Type
+        internal int Type
         {
             get;
 
@@ -207,7 +228,8 @@ namespace SS
         /// <param name="s">The string to go in the cell</param>
         internal Cell(String s)
         {
-            Type = "String";
+            //sets the type to string and then the contents to the given value
+            Type = 1;
             StringContent = s;
         }
 
@@ -217,11 +239,11 @@ namespace SS
         /// <param name="f"></param>
         /// <param name="l">The delegate used to look up varaibles.  Takes a string and
         /// returns a double</param>
-        internal Cell(Formula f, Func<string, Double> l)
+        internal Cell(Formula f)
         {
-            Type = "Formula";
+            //sets the type to formula and then the contents to the given value
+            Type = 3;
             FormContent = f;
-            variableFinder = l;
         }
 
         /// <summary>
@@ -230,17 +252,9 @@ namespace SS
         /// <param name="d">The double to be put into a cell</param>
         internal Cell(double d)
         {
-            Type = "Formula";
-            FormContent = new Formula("" + d);
-        }
-
-        /// <summary>
-        /// A no argument Constructor
-        /// </summary>
-        internal Cell()
-        {
-            Type = "String";
-            StringContent = "";
+            //sets the type to double and then the contents to the given value
+            Type = 2;
+            DoubleContent = d;
         }
 
         /// <summary>
@@ -249,29 +263,18 @@ namespace SS
         /// <returns>The Content of the cell</returns>
         internal object getContents()
         {
-            if (Type == "String")
+            if (Type == 1)
             {
                 return StringContent;
             }
-            else
+            else if (Type == 2)
             {
-                return FormContent;
-            }
-        }
-
-        /// <summary>
-        /// Get the varialbes that this cell depends on.
-        /// </summary>
-        /// <returns>A list of variables this cell depends on</returns>
-        internal IEnumerable<String> getDependees()
-        {
-            if (Type == "String")
-            {
-                return new List<String>();
+                return DoubleContent;
             }
             else
             {
-                return FormContent.GetVariables();
+                //create a new formula to keep it immutable
+                return new Formula(FormContent.ToString());
             }
         }
     }

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace SpreadsheetTests
 {
+    [TestClass]
+    public class SpreadsheetTests
+    {
         /*
          * Constructor Tests
          * 
@@ -150,10 +153,10 @@ namespace SpreadsheetTests
         }
 
         /// <summary>
-        /// Tests a null name.  It should throw an ArgumentNullException
+        /// Tests a null name.  It should throw an InvalidNameException
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(InvalidNameException))]
         public void Public_GetCellContents_NullName()
         {
             Spreadsheet s = new Spreadsheet();
@@ -220,7 +223,7 @@ namespace SpreadsheetTests
         /// Tests a null name.  It should throw an ArgumentNullException
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(InvalidNameException))]
         public void Public_SetCellContents_DoubleNullName()
         {
             Spreadsheet s = new Spreadsheet();
@@ -304,7 +307,7 @@ namespace SpreadsheetTests
             Spreadsheet s = new Spreadsheet();
             s.SetCellContents("A1", "String 1");
             s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
+            s.SetCellContents("C3", new Formula("B2"));
 
             ISet<String> result = s.SetCellContents("D4", 1.0);
 
@@ -319,15 +322,58 @@ namespace SpreadsheetTests
             }
         }
 
+        /// <summary>
+        /// checks to make sure any old dependencies are removed and replaced
+        /// </summary>
+        [TestMethod]
+        public void Public_SetCellContents_DoubleDependentsReplaced()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", 3);
+            s.SetCellContents("B2", new Formula("2+2"));
+            s.SetCellContents("C3", new Formula("B2 + A1"));
+            s.SetCellContents("C3", 1.0);
+
+            ISet<String> result = s.SetCellContents("A1", 5);
+
+            ISet<String> expected = new HashSet<String>();
+            expected.Add("A1");
+
+            // Makes sure they are the same size and then that each element of one is in the other
+            Assert.AreEqual(result.Count, expected.Count);
+            foreach (String name in result)
+            {
+                Assert.IsTrue(expected.Contains(name));
+            }
+        }
+
         /*
          * SetCellContents to String Tests
          */
+        /// <summary>
+        /// Tests when a null string is put in for the text
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Public_SetCellContents_StringNullText()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", "String 1");
+            s.SetCellContents("B2", new Formula("2+2"));
+            s.SetCellContents("C3", new Formula("B2+D4"));
+            s.SetCellContents("D4", 1.0);
+
+            String input ="";
+            input = null;
+            s.SetCellContents("E5", input);
+        }
+
 
         /// <summary>
         /// Tests a null name.  It should throw an ArgumentNullException
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(InvalidNameException))]
         public void Public_SetCellContents_StringNullName()
         {
             Spreadsheet s = new Spreadsheet();
@@ -378,6 +424,7 @@ namespace SpreadsheetTests
         public void Public_SetCellContents_StringCreatesNewCells()
         {
             Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", "String 1");
             s.SetCellContents("B2", new Formula("2+2"));
             s.SetCellContents("C3", new Formula("B2+D4"));
             s.SetCellContents("D4", 1.0);
@@ -424,15 +471,59 @@ namespace SpreadsheetTests
             }
         }
 
+        /// <summary>
+        /// Makes that the dependencies are replaced when we write over C3
+        /// </summary>
+        [TestMethod]
+        public void Public_SetCellContents_StringReplaceDependents()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", 3);
+            s.SetCellContents("B2", new Formula("2+2"));
+            s.SetCellContents("C3", new Formula("A1+D4"));
+            s.SetCellContents("C3", "Hello");
+
+            ISet<String> result = s.SetCellContents("A1", 5);
+
+            ISet<String> expected = new HashSet<String>();
+            expected.Add("A1");
+
+            // Makes sure they are the same size and then that each element of one is in the other
+            Assert.AreEqual(result.Count, expected.Count);
+            foreach (String name in result)
+            {
+                Assert.IsTrue(expected.Contains(name));
+            }
+        }
+
         /*
          * SetCellContents to Formula Tests
          */
 
         /// <summary>
-        /// Tests a null name.  It should throw an ArgumentNullException
+        /// Tests if a null formula is put in.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        public void Public_SetCellContents_FormulaNullFormula()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", "String 1");
+            s.SetCellContents("B2", new Formula("2+2"));
+            s.SetCellContents("C3", new Formula("B2+D4"));
+            s.SetCellContents("D4", 1.0);
+
+            Formula input = new Formula("3");
+            input = null;
+
+            s.SetCellContents("E5", input);
+        }
+
+        /// <summary>
+        /// Tests a null name.  It should throw an ArgumentNullException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
         public void Public_SetCellContents_FormulaNullName()
         {
             Spreadsheet s = new Spreadsheet();
@@ -485,15 +576,15 @@ namespace SpreadsheetTests
             Spreadsheet s = new Spreadsheet();
             s.SetCellContents("A1", "String 1");
             s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
+            s.SetCellContents("C3", new Formula("B2"));
 
-            ISet<String> result = s.SetCellContents("D4", 1.0);
+            ISet<String> result = s.SetCellContents("D4", new Formula("1.0"));
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
 
             // Makes sure they are the same size and then that each element of one is in the other
-            Assert.AreEqual(result.Count, expected.Count);
+            Assert.AreEqual(expected.Count, result.Count);
             foreach (String name in result)
             {
                 Assert.IsTrue(expected.Contains(name));
@@ -508,10 +599,10 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet();
             s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("D4", 1.0);
+            s.SetCellContents("B2", new Formula("C3"));
+            s.SetCellContents("D4", new Formula("C3+3"));
 
-            ISet<String> result = s.SetCellContents("C3", new Formula("B2+D4"));
+            ISet<String> result = s.SetCellContents("C3", new Formula("3"));
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -519,7 +610,7 @@ namespace SpreadsheetTests
             expected.Add("C3");
 
             // Makes sure they are the same size and then that each element of one is in the other
-            Assert.AreEqual(result.Count, expected.Count);
+            Assert.AreEqual(expected.Count, result.Count);
             foreach (String name in result)
             {
                 Assert.IsTrue(expected.Contains(name));
@@ -533,11 +624,11 @@ namespace SpreadsheetTests
         public void Public_SetCellContents_FormulaIndirectDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", 5);
+            s.SetCellContents("A1", new Formula("C3"));
             s.SetCellContents("B2", new Formula("A1"));
-            s.SetCellContents("D4", 1.0);
+            s.SetCellContents("D4", new Formula("C3"));
 
-            ISet<String> result = s.SetCellContents("C3", new Formula("B2+D4"));
+            ISet<String> result = s.SetCellContents("C3", new Formula("5"));
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -546,7 +637,7 @@ namespace SpreadsheetTests
             expected.Add("A1");
 
             // Makes sure they are the same size and then that each element of one is in the other
-            Assert.AreEqual(result.Count, expected.Count);
+            Assert.AreEqual(expected.Count, result.Count);
             foreach (String name in result)
             {
                 Assert.IsTrue(expected.Contains(name));
@@ -561,12 +652,10 @@ namespace SpreadsheetTests
         public void Public_SetCellContents_FormulaCircularDependency()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "D4");
+            s.SetCellContents("A1", new Formula("D4"));
             s.SetCellContents("B2", new Formula("A1"));
             s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", "B2");
-
-            s.SetCellContents("&&&", new Formula("5+A1"));
+            s.SetCellContents("D4", new Formula("B2"));
         }
 
         /// <summary>
@@ -577,8 +666,59 @@ namespace SpreadsheetTests
         public void Public_SetCellContents_FormulaDirectCircularDependency()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "D4");
-            s.SetCellContents("D4", "A1");
+            s.SetCellContents("A1", new Formula("D4"));
+            s.SetCellContents("D4", new Formula("A1"));
         }
+
+        /// <summary>
+        /// Makes that the dependencies are replaced when we write over C3
+        /// </summary>
+        [TestMethod]
+        public void Public_SetCellContents_FormulaReplaceDependents()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", 3);
+            s.SetCellContents("B2", new Formula("2+2"));
+            s.SetCellContents("C3", new Formula("A1+D4"));
+            s.SetCellContents("C3", new Formula("5"));
+
+            ISet<String> result = s.SetCellContents("A1", 5);
+
+            ISet<String> expected = new HashSet<String>();
+            expected.Add("A1");
+
+            // Makes sure they are the same size and then that each element of one is in the other
+            Assert.AreEqual(result.Count, expected.Count);
+            foreach (String name in result)
+            {
+                Assert.IsTrue(expected.Contains(name));
+            }
+        }
+
+        /// <summary>
+        /// This test just makes sure that if someone gets accces to this method it will throw the correct error.
+        /// I wouldn't usually test this but since it it protected I probably should.  Someone might come by and 
+        /// inherit from my class and muck everything up.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Protected_GetDirectDependents_MakeSureItWillThrowError()
+        {
+            SpecialSS s = new SpecialSS();
+
+            s.PassNullToGetDirectDependents(null);
+        }
+
+        /// <summary>
+        /// A class just to check the protected members
+        /// </summary>
+        public class SpecialSS : Spreadsheet
+        {
+            public void PassNullToGetDirectDependents(String name)
+            {
+                this.GetDirectDependents(name);
+            }
+        }
+
     }
 }

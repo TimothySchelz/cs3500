@@ -60,10 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Resources\Resources.csproj">
-      <Project>{4c5c2177-2120-46a5-86a1-d5fe57ef32e2}</Project>
-      <Name>Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Spreadsheet\Spreadsheet.csproj">
       <Project>{e13a4354-9e94-4e18-a27b-9b40af10f7ed}</Project>
       <Name>Spreadsheet</Name>
