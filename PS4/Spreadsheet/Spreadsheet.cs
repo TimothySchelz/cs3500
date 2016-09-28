@@ -123,7 +123,7 @@ namespace SS
         {
             NameValidator(name);
 
-            //Check if formula is null
+            //Check if text is null
             if (text == null)
             {
                 throw new ArgumentNullException();
@@ -131,11 +131,16 @@ namespace SS
 
             //get rid of any dependees of the old cell
             depGraph.ReplaceDependees(name, new List<String>());
+
             //remove old cell from the hashmap
             cells.Remove(name);
 
-            //create a new cell and add it to cells
-            cells.Add(name, new Cell(text));
+            // If the text is empty then we don't add it.  There is nothing in it.
+            if (!text.Equals(""))
+            {
+                //create a new cell and add it to cells
+                cells.Add(name, new Cell(text));
+            }
 
             return ConvertToSet(GetCellsToRecalculate(name));
         }

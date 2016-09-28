@@ -671,6 +671,24 @@ namespace SpreadsheetTests
         }
 
         /// <summary>
+        /// Checks to make sure an exception is thrown when there is a circular dependency
+        /// </summary>
+        [TestMethod]
+        public void TestToMakeSureEmptyStringCellsAreNotCreated()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", "");
+            s.SetCellContents("D4", "");
+
+            HashSet<String> expected = new HashSet<string>();
+
+            foreach (String name in s.GetNamesOfAllNonemptyCells())
+            {
+                Assert.IsTrue(expected.Contains(name));
+            }
+        }
+
+        /// <summary>
         /// Makes that the dependencies are replaced when we write over C3
         /// </summary>
         [TestMethod]
