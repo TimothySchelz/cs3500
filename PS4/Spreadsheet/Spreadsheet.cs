@@ -88,8 +88,15 @@ namespace SS
                 throw new ArgumentNullException();
             }
 
+            object old;
             // Stores the old cell's contents so that we can put it back in if necessary
-            object old = cells[name].getContents();
+            if (cells.ContainsKey(name))
+            {
+                old = cells[name].getContents();
+            } else
+            {
+                old = "";
+            }
 
             //remove old thing from the hashmap
             cells.Remove(name);
