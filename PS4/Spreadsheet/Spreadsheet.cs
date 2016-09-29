@@ -88,8 +88,8 @@ namespace SS
                 throw new ArgumentNullException();
             }
 
-            object old;
             // Stores the old cell's contents so that we can put it back in if necessary
+            object old;
             if (cells.ContainsKey(name))
             {
                 old = cells[name].getContents();
@@ -134,26 +134,7 @@ namespace SS
             }
             
             // Return the cells to be recalculated as a set
-            return ConvertToSet(cellsToChange);
-        }
-
-        /// <summary>
-        /// A method to convert an IEnumerable into a ISet.
-        /// 
-        /// </summary>
-        /// <param name="enumer">The IEnumerable to be converted</param>
-        /// <returns>The ISet will all the elements of the IEnumerable</returns>
-        private ISet<String> ConvertToSet(IEnumerable<String> enumer)
-        {
-            // create a new set
-            ISet<String> result = new HashSet<String>();
-            // Go through and put each item in our enumer into the set
-            foreach (String s in enumer)
-            {
-                result.Add(s);
-            }
-            //return the set
-            return result;
+            return new HashSet<String>(cellsToChange);
         }
 
         /// <summary>
@@ -190,7 +171,7 @@ namespace SS
                 cells.Add(name, new Cell(text));
             }
 
-            return ConvertToSet(GetCellsToRecalculate(name));
+            return new HashSet<String>(GetCellsToRecalculate(name));
         }
 
         /// <summary>
@@ -215,7 +196,7 @@ namespace SS
             //create a new cell and add it to cells
             cells.Add(name, new Cell(number));
 
-            return ConvertToSet(GetCellsToRecalculate(name));
+            return new HashSet<String>(GetCellsToRecalculate(name));
         }
 
         /// <summary>
