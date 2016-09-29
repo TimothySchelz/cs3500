@@ -499,6 +499,27 @@ namespace SpreadsheetTests
         /*
          * SetCellContents to Formula Tests
          */
+        /// <summary>
+        /// Tests to make sure adding something with a circular dependency does not change the SS
+        /// </summary>
+        [TestMethod]
+        public void Public_SetCellContents_FormulaCircularDoesntChangeSS()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetCellContents("A1", new Formula("B2"));
+            s.SetCellContents("B2", new Formula("C3"));
+            s.SetCellContents("C3", new Formula("D4"));
+            s.SetCellContents("D4", 5);
+            try
+            {
+                s.SetCellContents("D4", new Formula("A1"));
+            } catch (CircularException)
+            {
+                //Dont do anything
+            }
+            Assert.AreEqual(5.0, s.GetCellContents("D4"));
+        }
+
 
         /// <summary>
         /// Tests if a null formula is put in.
