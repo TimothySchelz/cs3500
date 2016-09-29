@@ -88,6 +88,9 @@ namespace SS
                 throw new ArgumentNullException();
             }
 
+            // Stores the old cell's contents so that we can put it back in if necessary
+            object old = cells[name].getContents();
+
             //remove old thing from the hashmap
             cells.Remove(name);
 
@@ -97,8 +100,34 @@ namespace SS
             //create a new cell and add it to cells
             cells.Add(name, new Cell(formula));
 
+            // Check for a circular dependency
+            IEnumerable<string> cellsToChange = new List<String>();
+            try
+            {
+                cellsToChange = GetCellsToRecalculate(name);
+            } catch (CircularException)
+            {
+                //We got a circular dependency 
+                // Put the old stuff back in
+                if (old is Formula)
+                {
+                    SetCellContents(name, (Formula)old);
+                }
+                else if (old is String)
+                {
+                    SetCellContents(name, (String)old);
+                }
+                else
+                {
+                    SetCellContents(name, (Double)old);
+                }
+
+                //rethrow the exception
+                throw new CircularException();
+            }
+            
             // Return the cells to be recalculated as a set
-            return ConvertToSet(GetCellsToRecalculate(name));
+            return ConvertToSet(cellsToChange);
         }
 
         /// <summary>
