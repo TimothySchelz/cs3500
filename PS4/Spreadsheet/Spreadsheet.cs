@@ -19,7 +19,7 @@ namespace SS
 
         /// <summary>
         /// A public constructor to create a new Spreadsheet object.  It just creates an empty 
-        /// spreadsheet.  It should not have any filled cells.  Nothing special
+        /// spreadsheet.  It will not have any filled cells.  Nothing special
         /// </summary>
         public Spreadsheet()
         {
@@ -28,7 +28,10 @@ namespace SS
         }
 
         /// <summary>
-        /// Gets the contents of the specified cell
+        /// Gets the contents of the specified cell.  
+        /// 
+        ///  If name is null or invalid, throws an InvalidNameException.
+        ///  
         /// </summary>
         /// <param name="name">The cell</param>
         /// <returns>the contents in name</returns>
@@ -52,7 +55,7 @@ namespace SS
         /// <summary>
         /// Returns a IEnumeralble with a list of every nonempty cell
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An IEnumerable with the names of every non empty cell</returns>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
             // Makes a copy of the keys.  I am not sure is cells.Keys would return a copy of the keys
@@ -68,6 +71,9 @@ namespace SS
 
         /// <summary>
         /// Sets the content of a specific cell
+        /// 
+        /// If name is null or invalid, throws an InvalidNameException.
+        /// 
         /// </summary>
         /// <param name="name">The cell to be set</param>
         /// <param name="formula">The contents to be put in the cell</param>
@@ -97,6 +103,7 @@ namespace SS
 
         /// <summary>
         /// A method to convert an IEnumerable into a ISet.
+        /// 
         /// </summary>
         /// <param name="enumer">The IEnumerable to be converted</param>
         /// <returns>The ISet will all the elements of the IEnumerable</returns>
@@ -115,6 +122,11 @@ namespace SS
 
         /// <summary>
         /// Sets the content of a specific cell
+        /// 
+        /// If text is null, throws an ArgumentNullException.
+        /// 
+        /// Otherwise, if name is null or invalid, throws an InvalidNameException.
+        /// 
         /// </summary>
         /// <param name="name">The cell to be set</param>
         /// <param name="text">The content to be put in the cell</param>
@@ -147,6 +159,9 @@ namespace SS
 
         /// <summary>
         /// Sets the content of a specific cell
+        /// 
+        /// If name is null or invalid, throws an InvalidNameException.
+        /// 
         /// </summary>
         /// <param name="name">The cell to be set</param>
         /// <param name="number">The content to be put in the cell</param>
@@ -169,6 +184,11 @@ namespace SS
 
         /// <summary>
         /// Gets a list of the direct dependents on the given cell
+        /// 
+        /// If name is null, throws an ArgumentNullException.
+        /// 
+        /// Otherwise, if name isn't a valid cell name, throws an InvalidNameException.
+        /// 
         /// </summary>
         /// <param name="name">The cell</param>
         /// <returns>a list of direct dependents of name</returns>
