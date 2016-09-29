@@ -3,7 +3,8 @@ Last Updated 9/29/16
 Timothy Schelz, u0851027
 
 The Spreadsheet class is implemented using a HashMap of each cell and a DependencyGraph with relationships between the cells in
-the hashmap.  
+the hashmap.  There is an internal Cell class that will be the contents of the Hashmap. Each cell contains one of the valid entries.
+When the cell only contain "" it will not even be stored.
 
 I am using the versions of PS2 and PS3 that I turned in but I had to update them to the .NET Framework 4.5.2
 I changed them over and committed them on 9/27/2016.

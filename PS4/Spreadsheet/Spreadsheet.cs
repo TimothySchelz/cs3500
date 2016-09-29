@@ -203,7 +203,7 @@ namespace SS
             }
             //chech if the name is valid
             NameValidator(name);
-            // return dependents
+            // return dependents.
             return depGraph.GetDependents(name);
         }
 
@@ -224,8 +224,7 @@ namespace SS
 
     /// <summary>
     /// A class to act as one cell in a spreadsheet.  It can hold either a String, a double or a Formula.
-    /// Let's try to make it immutable.  This way when it gets replaced by something it just 
-    /// makes a new one.
+    /// Each cell is immutable.
     /// </summary>
     internal class Cell
     {
@@ -235,7 +234,8 @@ namespace SS
         private Formula FormContent;
 
         /// <summary>
-        /// The type of cell it is.
+        /// The type of cell it is.  getContents returns this type.
+        /// 
         /// 1 for String
         /// 2 for Double
         /// 3 for Formula
@@ -298,8 +298,9 @@ namespace SS
             }
             else
             {
-                //create a new formula to keep it immutable
-                return new Formula(FormContent.ToString());
+                //Formulas are immutable so we can just return it and not worry about 
+                //data protection.
+                return FormContent;
             }
         }
     }
