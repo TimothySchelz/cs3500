@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpreadsheetUtilities;
+using System.Xml;
 
 namespace SS
 {
@@ -179,7 +180,19 @@ namespace SS
 
         public override void Save(string filename)
         {
-            throw new NotImplementedException();
+            using (XmlWriter writer = XmlWriter.Create(filename))
+            {
+                writer.WriteStartDocument();
+                //Header of the Document
+                writer.WriteStartElement("spreadsheet");
+                writer.WriteAttributeString("version", Version);
+
+
+                //Write the cells
+
+                //Ending of the document
+                writer.WriteEndElement();
+            }
         }
 
         /// <summary>
