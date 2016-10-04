@@ -162,6 +162,29 @@ namespace SpreadsheetUtilities
                 throw new FormulaFormatException("There were no tokens in the given formula.  " + 
                     "Please enter a formula");
             }
+
+            //Checks if there were no extra parenthesis
+            // Syntax Rule 4
+            if (parens != 0)
+            {
+                throw new FormulaFormatException("There was an extra opening parenthesis that was not closed.");
+            }
+
+            //Checks the first entry of the formula to make sure it is a valid token
+            // Syntax rule 5
+            int firstToken = CategorizeToken(this.formula.First(), isValid);
+            if (!(firstToken == 1 || firstToken == 2 || firstToken == 5))
+            {
+                throw new FormulaFormatException("The first token is not a valid starting token");
+            }
+
+            //Checks the last entry of the formula to make sure it is a valid token
+            // Syntax rule 5
+            int lastToken = CategorizeToken(this.formula.Last(), isValid);
+            if (!(lastToken == 1 || lastToken == 2 || lastToken == 6))
+            {
+                throw new FormulaFormatException("The ending token is not a valid ending token");
+            }
         }
 
         /// <summary>
