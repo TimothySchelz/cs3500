@@ -15,16 +15,14 @@ namespace SpreadsheetTests
     public class SpreadsheetTests
     {
         /*
-         * Constructor Tests
-         * 
-         * Not much to test here.  Just going to make sure it is empty
+         * 0 arg Constructor Tests
          */
         /// <summary>
         /// Makes sure a new spreadsheet is empty.  Since IEnumerable does not have a
         /// count or size or anything we have to use the loop
         /// </summary>
         [TestMethod]
-        public void Public_Con_MakeSureItIsEmpty()
+        public void Public_0argCon_MakeSureItIsEmpty()
         {
             Spreadsheet s = new Spreadsheet();
 
@@ -34,6 +32,26 @@ namespace SpreadsheetTests
             }
             Assert.IsTrue(true);
         }
+        
+        /*
+         * 3 Arg Constructor
+         */
+
+        /*
+         * 4 arg Constructor
+         */
+
+        /*
+         * GetSavedVersion Tests
+         */
+
+        /*
+         * Save Tests
+         */
+
+        /*
+         * GetCellValue Tests
+         */
 
         /*
          * GetNamesOfAllNonemptyCells Tests
@@ -60,10 +78,10 @@ namespace SpreadsheetTests
         public void Public_GetNamesOfAllNonemptyCells_StandardCase()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             HashSet<String> expected = new HashSet<string>();
             expected.Add("A1");
@@ -84,12 +102,12 @@ namespace SpreadsheetTests
         public void Public_GetNamesOfAllNonemptyCells_ResetVariable()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
-            s.SetCellContents("D4", 2.0);
-            s.SetCellContents("D4", 3.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
+            s.SetContentsOfCell("D4", "2.0");
+            s.SetContentsOfCell("D4", "3.0");
 
             HashSet<String> expected = new HashSet<string>();
             expected.Add("A1");
@@ -117,10 +135,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_StringCell()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue("String 1".Equals(s.GetCellContents("A1")));
         }
@@ -132,10 +150,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_DoubleCell()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("D4").Equals(1.0));
         }
@@ -147,10 +165,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_FormulaCell()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("C3").Equals(new Formula("B2+D4")));
         }
@@ -163,10 +181,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_NullName()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             s.GetCellContents(null);
         }
@@ -179,10 +197,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_InvalidName1()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             s.GetCellContents("12_sdf");
         }
@@ -195,10 +213,10 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_InvalidName2()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             s.GetCellContents("&&&");
         }
@@ -210,16 +228,16 @@ namespace SpreadsheetTests
         public void Public_GetCellContents_EmptyCell()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("E5").Equals(""));
         }
 
         /*
-         * SetCellContents to double Tests
+         * SetContentsOfCell to double Tests
          */
 
         /// <summary>
@@ -227,15 +245,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_DoubleNullName()
+        public void Public_SetContentsOfCell_DoubleNullName()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents(null, 2.52);
+            s.SetContentsOfCell(null, "2.52");
         }
 
         /// <summary>
@@ -243,15 +261,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_DoubleInvalidName1()
+        public void Public_SetContentsOfCell_DoubleInvalidName1()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("12_sdf", 2.52);
+            s.SetContentsOfCell("12_sdf", "2.52");
         }
 
         /// <summary>
@@ -259,28 +277,28 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_DoubleInvalidName2()
+        public void Public_SetContentsOfCell_DoubleInvalidName2()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("&&&", 2.52);
+            s.SetContentsOfCell("&&&", "2.52");
         }
 
         /// <summary>
         /// Tests to make sure that the method can create new cells with the correct contents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_DoubleCreatesNewCells()
+        public void Public_SetContentsOfCell_DoubleCreatesNewCells()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("D4").Equals(1.0));
         }
@@ -289,14 +307,14 @@ namespace SpreadsheetTests
         /// Tests to make sure that the method can overwrite cells
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_DoubleOverwriteCells()
+        public void Public_SetContentsOfCell_DoubleOverwriteCells()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
-            s.SetCellContents("D4", 15.2);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
+            s.SetContentsOfCell("D4", "15.2");
 
             Assert.IsTrue(s.GetCellContents("D4").Equals(15.2));
         }
@@ -305,14 +323,14 @@ namespace SpreadsheetTests
         /// Makes sure it returns a set with just this cell's name if it has no dependents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_DoubleNoDependents()
+        public void Public_SetContentsOfCell_DoubleNoDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2"));
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2");
 
-            ISet<String> result = s.SetCellContents("D4", 1.0);
+            ISet<String> result = s.SetContentsOfCell("D4", "1.0");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -329,15 +347,15 @@ namespace SpreadsheetTests
         /// checks to make sure any old dependencies are removed and replaced
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_DoubleDependentsReplaced()
+        public void Public_SetContentsOfCell_DoubleDependentsReplaced()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", 3);
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2 + A1"));
-            s.SetCellContents("C3", 1.0);
+            s.SetContentsOfCell("A1", "3");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2 + A1");
+            s.SetContentsOfCell("C3", "1.0");
 
-            ISet<String> result = s.SetCellContents("A1", 5);
+            ISet<String> result = s.SetContentsOfCell("A1", "5");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("A1");
@@ -351,24 +369,24 @@ namespace SpreadsheetTests
         }
 
         /*
-         * SetCellContents to String Tests
+         * SetContentsOfCell to String Tests
          */
         /// <summary>
         /// Tests when a null string is put in for the text
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Public_SetCellContents_StringNullText()
+        public void Public_SetContentsOfCell_StringNullText()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             String input ="";
             input = null;
-            s.SetCellContents("E5", input);
+            s.SetContentsOfCell("E5", input);
         }
 
 
@@ -377,15 +395,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_StringNullName()
+        public void Public_SetContentsOfCell_StringNullName()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents(null, "Hello");
+            s.SetContentsOfCell(null, "Hello");
         }
 
         /// <summary>
@@ -393,15 +411,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_StringInvalidName1()
+        public void Public_SetContentsOfCell_StringInvalidName1()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("12_sdf", "Hello");
+            s.SetContentsOfCell("12_sdf", "Hello");
         }
 
         /// <summary>
@@ -409,28 +427,28 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_StringInvalidName2()
+        public void Public_SetContentsOfCell_StringInvalidName2()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("&&&", "Hello");
+            s.SetContentsOfCell("&&&", "Hello");
         }
 
         /// <summary>
         /// Tests to make sure that the method can create new cells with the correct contents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_StringCreatesNewCells()
+        public void Public_SetContentsOfCell_StringCreatesNewCells()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("A1").Equals("String 1"));
         }
@@ -439,13 +457,13 @@ namespace SpreadsheetTests
         /// Tests to make sure that the method can overwrite cells
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_StringOverwriteCells()
+        public void Public_SetContentsOfCell_StringOverwriteCells()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("A1", "String 2");
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("A1", "String 2");
 
 
             Assert.IsTrue(s.GetCellContents("A1").Equals("String 2"));
@@ -455,13 +473,13 @@ namespace SpreadsheetTests
         /// Makes sure it returns a set with just this cell's name if it has no dependents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_StringNoDependents()
+        public void Public_SetContentsOfCell_StringNoDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
 
-            ISet<String> result = s.SetCellContents("A1", "String 1");
+            ISet<String> result = s.SetContentsOfCell("A1", "String 1");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("A1");
@@ -478,15 +496,15 @@ namespace SpreadsheetTests
         /// Makes that the dependencies are replaced when we write over C3
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_StringReplaceDependents()
+        public void Public_SetContentsOfCell_StringReplaceDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", 3);
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("A1+D4"));
-            s.SetCellContents("C3", "Hello");
+            s.SetContentsOfCell("A1", "3");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "A1+D4");
+            s.SetContentsOfCell("C3", "Hello");
 
-            ISet<String> result = s.SetCellContents("A1", 5);
+            ISet<String> result = s.SetContentsOfCell("A1", "5");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("A1");
@@ -500,22 +518,22 @@ namespace SpreadsheetTests
         }
 
         /*
-         * SetCellContents to Formula Tests
+         * SetContentsOfCell to Formula Tests
          */
         /// <summary>
         /// Tests to make sure adding something with a circular dependency does not change the SS
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaCircularDoesntChangeSS1()
+        public void Public_SetContentsOfCell_FormulaCircularDoesntChangeSS1()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("B2"));
-            s.SetCellContents("B2", new Formula("C3"));
-            s.SetCellContents("C3", new Formula("D4"));
-            s.SetCellContents("D4", 5);
+            s.SetContentsOfCell("A1", "B2");
+            s.SetContentsOfCell("B2", "C3");
+            s.SetContentsOfCell("C3", "D4");
+            s.SetContentsOfCell("D4", "5");
             try
             {
-                s.SetCellContents("D4", new Formula("A1"));
+                s.SetContentsOfCell("D4", "A1");
             } catch (CircularException)
             {
                 //Dont do anything
@@ -527,16 +545,16 @@ namespace SpreadsheetTests
         /// Tests to make sure adding something with a circular dependency does not change the SS
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaCircularDoesntChangeSS2()
+        public void Public_SetContentsOfCell_FormulaCircularDoesntChangeSS2()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("B2"));
-            s.SetCellContents("B2", new Formula("C3"));
-            s.SetCellContents("C3", new Formula("D4"));
-            s.SetCellContents("D4", "Hello");
+            s.SetContentsOfCell("A1", "B2");
+            s.SetContentsOfCell("B2", "C3");
+            s.SetContentsOfCell("C3", "D4");
+            s.SetContentsOfCell("D4", "Hello");
             try
             {
-                s.SetCellContents("D4", new Formula("A1"));
+                s.SetContentsOfCell("D4", "A1");
             }
             catch (CircularException)
             {
@@ -549,16 +567,16 @@ namespace SpreadsheetTests
         /// Tests to make sure adding something with a circular dependency does not change the SS
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaCircularDoesntChangeSS3()
+        public void Public_SetContentsOfCell_FormulaCircularDoesntChangeSS3()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("B2"));
-            s.SetCellContents("B2", new Formula("C3"));
-            s.SetCellContents("C3", new Formula("D4"));
-            s.SetCellContents("D4", new Formula("5 + 4"));
+            s.SetContentsOfCell("A1", "B2");
+            s.SetContentsOfCell("B2", "C3");
+            s.SetContentsOfCell("C3", "D4");
+            s.SetContentsOfCell("D4", "5 + 4");
             try
             {
-                s.SetCellContents("D4", new Formula("A1"));
+                s.SetContentsOfCell("D4", "A1");
             }
             catch (CircularException)
             {
@@ -571,15 +589,15 @@ namespace SpreadsheetTests
         /// Tests to make sure adding something with a circular dependency does not change the SS
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaCircularDoesntChangeSS4()
+        public void Public_SetContentsOfCell_FormulaCircularDoesntChangeSS4()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("B2"));
-            s.SetCellContents("B2", new Formula("C3"));
-            s.SetCellContents("C3", new Formula("D4"));
+            s.SetContentsOfCell("A1", "B2");
+            s.SetContentsOfCell("B2", "C3");
+            s.SetContentsOfCell("C3", "D4");
             try
             {
-                s.SetCellContents("D4", new Formula("A1"));
+                s.SetContentsOfCell("D4", "A1");
             }
             catch (CircularException)
             {
@@ -593,18 +611,18 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Public_SetCellContents_FormulaNullFormula()
+        public void Public_SetContentsOfCell_FormulaNullFormula()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            Formula input = new Formula("3");
+            String input = new Formula("3").ToString();
             input = null;
 
-            s.SetCellContents("E5", input);
+            s.SetContentsOfCell("E5", input);
         }
 
         /// <summary>
@@ -612,15 +630,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_FormulaNullName()
+        public void Public_SetContentsOfCell_FormulaNullName()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents(null, new Formula("5+A1"));
+            s.SetContentsOfCell(null, "5+A1");
         }
 
         /// <summary>
@@ -628,15 +646,15 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_FormulaInvalidName1()
+        public void Public_SetContentsOfCell_FormulaInvalidName1()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("12_sdf", new Formula("5+A1"));
+            s.SetContentsOfCell("12_sdf", "5+A1");
         }
 
         /// <summary>
@@ -644,29 +662,29 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_SetCellContents_FormulaInvalidName2()
+        public void Public_SetContentsOfCell_FormulaInvalidName2()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", 1.0);
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "1.0");
 
-            s.SetCellContents("&&&", new Formula("5+A1"));
+            s.SetContentsOfCell("&&&", "5+A1");
         }
 
         /// <summary>
         /// Makes sure it returns a set with just this cell's name if it has no dependents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaNoDependents()
+        public void Public_SetContentsOfCell_FormulaNoDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("B2"));
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "B2");
 
-            ISet<String> result = s.SetCellContents("D4", new Formula("1.0"));
+            ISet<String> result = s.SetContentsOfCell("D4", "1.0");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -683,14 +701,14 @@ namespace SpreadsheetTests
         /// Makes sure it returns a set with itself, and direct dependents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaDirectDependents()
+        public void Public_SetContentsOfCell_FormulaDirectDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "String 1");
-            s.SetCellContents("B2", new Formula("C3"));
-            s.SetCellContents("D4", new Formula("C3+3"));
+            s.SetContentsOfCell("A1", "String 1");
+            s.SetContentsOfCell("B2", "C3");
+            s.SetContentsOfCell("D4", "C3+3");
 
-            ISet<String> result = s.SetCellContents("C3", new Formula("3"));
+            ISet<String> result = s.SetContentsOfCell("C3", "3");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -709,14 +727,14 @@ namespace SpreadsheetTests
         /// Makes sure it returns a set with itself, and direct dependents, and indirect dependents
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaIndirectDependents()
+        public void Public_SetContentsOfCell_FormulaIndirectDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("C3"));
-            s.SetCellContents("B2", new Formula("A1"));
-            s.SetCellContents("D4", new Formula("C3"));
+            s.SetContentsOfCell("A1", "C3");
+            s.SetContentsOfCell("B2", "A1");
+            s.SetContentsOfCell("D4", "C3");
 
-            ISet<String> result = s.SetCellContents("C3", new Formula("5"));
+            ISet<String> result = s.SetContentsOfCell("C3", "5");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("D4");
@@ -737,13 +755,13 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(CircularException))]
-        public void Public_SetCellContents_FormulaCircularDependency()
+        public void Public_SetContentsOfCell_FormulaCircularDependency()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("D4"));
-            s.SetCellContents("B2", new Formula("A1"));
-            s.SetCellContents("C3", new Formula("B2+D4"));
-            s.SetCellContents("D4", new Formula("B2"));
+            s.SetContentsOfCell("A1", "D4");
+            s.SetContentsOfCell("B2", "A1");
+            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("D4", "B2");
         }
 
         /// <summary>
@@ -751,11 +769,11 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(CircularException))]
-        public void Public_SetCellContents_FormulaDirectCircularDependency()
+        public void Public_SetContentsOfCell_FormulaDirectCircularDependency()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", new Formula("D4"));
-            s.SetCellContents("D4", new Formula("A1"));
+            s.SetContentsOfCell("A1", "D4");
+            s.SetContentsOfCell("D4", "A1");
         }
 
         /// <summary>
@@ -765,8 +783,8 @@ namespace SpreadsheetTests
         public void TestToMakeSureEmptyStringCellsAreNotCreated()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", "");
-            s.SetCellContents("D4", "");
+            s.SetContentsOfCell("A1", "");
+            s.SetContentsOfCell("D4", "");
 
             HashSet<String> expected = new HashSet<string>();
 
@@ -780,15 +798,15 @@ namespace SpreadsheetTests
         /// Makes that the dependencies are replaced when we write over C3
         /// </summary>
         [TestMethod]
-        public void Public_SetCellContents_FormulaReplaceDependents()
+        public void Public_SetContentsOfCell_FormulaReplaceDependents()
         {
             Spreadsheet s = new Spreadsheet();
-            s.SetCellContents("A1", 3);
-            s.SetCellContents("B2", new Formula("2+2"));
-            s.SetCellContents("C3", new Formula("A1+D4"));
-            s.SetCellContents("C3", new Formula("5"));
+            s.SetContentsOfCell("A1", "3");
+            s.SetContentsOfCell("B2", "2+2");
+            s.SetContentsOfCell("C3", "A1+D4");
+            s.SetContentsOfCell("C3", "5");
 
-            ISet<String> result = s.SetCellContents("A1", 5);
+            ISet<String> result = s.SetContentsOfCell("A1", "5");
 
             ISet<String> expected = new HashSet<String>();
             expected.Add("A1");

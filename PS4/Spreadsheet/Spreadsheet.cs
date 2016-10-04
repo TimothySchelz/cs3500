@@ -1,5 +1,16 @@
 ﻿// Written by Timothy Schelz, u0851027, October 2016
 
+// Branched from PS4
+//           Made the three SetCellContents methods protected
+//           Added a new method SetContentsOfCell.
+//           Added a new method GetCellValue.
+//           Added a new property Changed.
+//           Added a new method Save.
+//           Added a new method GetSavedVersion.
+//           Added a new class SpreadsheetReadWriteException.
+//           Added IsValid, Normalize, and Version properties
+//           Added a constructor for AbstractSpreadsheet
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +20,10 @@ using SpreadsheetUtilities;
 
 namespace SS
 {
+    /// <summary>
+    /// A class to do all the back end of a spreadsheet such as storing values evaluating the 
+    /// contents and recalculating when necessary
+    /// </summary>
     public class Spreadsheet : AbstractSpreadsheet
     {
         // A dictionary to hold each of the cells with their name as a key
