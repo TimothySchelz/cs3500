@@ -356,7 +356,7 @@ namespace SS
 
     /// <summary>
     /// A class to act as one cell in a spreadsheet.  It can hold either a String, a double or a Formula.
-    /// Each cell is immutable.
+    /// Each cell is Sort of Immutable.  The contents of a cell never change but the value will.
     /// </summary>
     internal class Cell
     {
@@ -450,6 +450,19 @@ namespace SS
             }
         }
 
+        internal void recalculate(Dictionary<String, Cell> cells)
+        {
+            //Only need to recalculate if it is a Formula object
+            if (Type == 3)
+            {
+                //If the delegate throws an exception due to the casting as a double it should
+                // be caught in the evaluate function and turn it into an FormulaError.
+                Value = FormContent.Evaluate(s=>(Double)cells[s].getValue());
+            }
+        }
+
+
+
         /// <summary>
         /// A ToString method.  returns the content of the cell.  If it is a formula it also puts a = in front.
         /// </summary>
@@ -466,6 +479,7 @@ namespace SS
             }
             else
             {
+                // We have to append the '=' on the beginning
                 return "=" + FormContent.ToString();
             }
         }
