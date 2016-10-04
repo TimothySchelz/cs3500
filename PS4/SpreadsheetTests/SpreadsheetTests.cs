@@ -1,4 +1,4 @@
-﻿// Written by Timothy Schelz, u0851027, September 2016
+﻿// Written by Timothy Schelz, u0851027, October 2016
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
