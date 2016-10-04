@@ -121,7 +121,9 @@ namespace SS
         }
 
         /// <summary>
-        /// The lookup function to be passed into the Evaluate method of Formula.
+        /// The lookup function to be passed into the Evaluate method of Formula.  Recusively finds the value
+        /// of the cells that this variable depends on.  So it should go through and calculate the dependees
+        /// before the dependent.
         /// </summary>
         /// <param name="name">The name of a variable to be looked up</param>
         /// <returns>The double that is in the varaible</returns>
@@ -436,6 +438,26 @@ namespace SS
                 //Formulas are immutable so we can just return it and not worry about 
                 //data protection.
                 return FormContent;
+            }
+        }
+
+        /// <summary>
+        /// A ToString method.  returns the content of the cell.  If it is a formula it also puts a = in front.
+        /// </summary>
+        /// <returns>The string representing the cell</returns>
+        public override String ToString()
+        {
+            if (Type == 1)
+            {
+                return StringContent;
+            }
+            else if (Type == 2)
+            {
+                return DoubleContent.ToString();
+            }
+            else
+            {
+                return "=" + FormContent.ToString();
             }
         }
     }
