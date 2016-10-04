@@ -135,33 +135,74 @@ namespace SS
             return copy;
         }
 
+        /// <summary>
+        /// Returns the version information of the spreadsheet saved in the named file.
+        /// If there are any problems opening, reading, or closing the file, the method
+        /// should throw a SpreadsheetReadWriteException with an explanatory message.
+        /// </summary>
+        /// <param name="filename">the filelocation of the spreadsheet</param>
+        /// <returns>The version</returns>
         public override string GetSavedVersion(string filename)
         {
-            throw new NotImplementedException();
+            //The version that wil be returned
+            String fileVersion = null;
+            try
+            {
+                using (XmlReader reader = XmlReader.Create(filename))
+                {
+                    
+                    //Make sure there is something to be read
+                    if (reader.Read())
+                    {
+                        fileVersion = reader.GetAttribute("version");
+                    } else
+                    {
+                        throw new SpreadsheetReadWriteException("File is Empty");
+                    }
+
+                    //Check if it successfully found the version
+                    if (fileVersion == null)
+                    {
+                        throw new SpreadsheetReadWriteException("Could not find version information");
+                    }
+                }
+            } catch(Exception e)
+            {
+                throw new SpreadsheetReadWriteException(e.Message);
+            }
+
+            return fileVersion;
         }
 
         public override void Save(string filename)
         {
-            using (XmlWriter writer = XmlWriter.Create(filename))
+            //Try so that we can catch and throw the proper exception
+            try
             {
-                //The thing that we need to start writing to an .XML
-                writer.WriteStartDocument();
-
-                //Header of the Document
-                writer.WriteStartElement("spreadsheet");
-                writer.WriteAttributeString("version", Version);
-
-                //Write the cells
-                foreach (KeyValuePair<String, Cell> pair in cells)
+                using (XmlWriter writer = XmlWriter.Create(filename))
                 {
-                    writer.WriteStartElement("cell");
-                    writer.WriteElementString("name", pair.Key);
-                    writer.WriteElementString("contents", pair.Value.ToString());
+                    //The thing that we need to start writing to an .XML
+                    writer.WriteStartDocument();
+
+                    //Header of the Document
+                    writer.WriteStartElement("spreadsheet");
+                    writer.WriteAttributeString("version", Version);
+
+                    //Write the cells
+                    foreach (KeyValuePair<String, Cell> pair in cells)
+                    {
+                        writer.WriteStartElement("cell");
+                        writer.WriteElementString("name", pair.Key);
+                        writer.WriteElementString("contents", pair.Value.ToString());
+                        writer.WriteEndElement();
+                    }
+
+                    //Ending of the document
                     writer.WriteEndElement();
                 }
-
-                //Ending of the document
-                writer.WriteEndElement();
+            } catch (Exception e)
+            {
+                throw new SpreadsheetReadWriteException(e.Message);
             }
         }
 
