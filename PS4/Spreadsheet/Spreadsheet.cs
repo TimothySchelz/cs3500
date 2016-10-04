@@ -106,8 +106,6 @@ namespace SS
             // Make sure the name is valid
             NameValidator(name);
 
-            lookup variableLookup = ;
-
             //Check if it is an empty cell
             if (!cells.ContainsKey(name))
             {
@@ -115,28 +113,43 @@ namespace SS
             } else if(cells[name].Type == 3)
             {
                 Formula result = (Formula) cells[name].getContents();
-                return result.Evaluate(new lookup(findVariable));
+                return result.Evaluate(findVariable);
             } else
             {
                 return cells[name];
             }
         }
 
-        //The type of lookup delegate for the evaluate function in Formula
-        private delegate double lookup(String s);
-
-        //The Lookup function used ofr Evaluate.
+        /// <summary>
+        /// The lookup function to be passed into the Evaluate method of Formula.
+        /// </summary>
+        /// <param name="name">The name of a variable to be looked up</param>
+        /// <returns>The double that is in the varaible</returns>
         private double findVariable(String name)
         {
+            // Check if it is a formula
             if (cells.ContainsKey(name) && cells[name].Type == 3)
             {
+                //if it is check if evaluate is a FormulaError
                 Formula contents = (Formula) cells[name].getContents();
                 object value = contents.Evaluate(findVariable);
                 if (value is FormulaError)
                 {
-                    throw new 
+                    // if it is throw an exception so that the evaluate that this method is being called
+                    // in also returns an FormulaError
+                    throw new InvalidNameException();
                 }
-                return ;
+                //otherwise return what the formula evaluates to
+                return (double)value;
+            //if the cell contains a double
+            } else if (cells.ContainsKey(name) && cells[name].Type == 2)
+            {
+                //just return the value of the double
+                return (double)cells[name].getContents();
+            } else {
+                //If it didn't fall into the above cases it is either a String or empty.
+                // Either way we have a problem and need to throw an exception
+                throw new InvalidNameException();
             }
         }
 
@@ -176,7 +189,7 @@ namespace SS
         /// <param name="name">The cell to be set</param>
         /// <param name="formula">The contents to be put in the cell</param>
         /// <returns></returns>
-        public override ISet<string> SetCellContents(string name, Formula formula)
+        protected override ISet<string> SetCellContents(string name, Formula formula)
         {
             NameValidator(name);
 
@@ -248,7 +261,7 @@ namespace SS
         /// <param name="name">The cell to be set</param>
         /// <param name="text">The content to be put in the cell</param>
         /// <returns>A set of variable that might be effected by the change</returns>
-        public override ISet<string> SetCellContents(string name, string text)
+        protected override ISet<string> SetCellContents(string name, string text)
         {
             NameValidator(name);
 
@@ -283,7 +296,7 @@ namespace SS
         /// <param name="name">The cell to be set</param>
         /// <param name="number">The content to be put in the cell</param>
         /// <returns> A set of cells to be recalculated</returns>
-        public override ISet<string> SetCellContents(string name, double number)
+        protected override ISet<string> SetCellContents(string name, double number)
         {
             NameValidator(name);
 
@@ -356,13 +369,6 @@ namespace SS
         private Formula FormContent;
 
         /// <summary>
-        /// A delegate of type lookup to be passed to a cell when we want to look it up
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        internal delegate double LookUp(String name);
-
-        /// <summary>
         /// The type of cell it is.  getContents returns this type.
         /// 
         /// 1 for String
@@ -370,13 +376,6 @@ namespace SS
         /// 3 for Formula
         /// </summary>
         internal int Type
-        {
-            get;
-
-            private set;
-        }
-
-        internal String Name
         {
             get;
 
@@ -392,7 +391,6 @@ namespace SS
             //sets the type to string and then the contents to the given value
             Type = 1;
             StringContent = s;
-            Name = name;
         }
 
         /// <summary>
@@ -406,7 +404,6 @@ namespace SS
             //sets the type to formula and then the contents to the given value
             Type = 3;
             FormContent = f;
-            Name = name;
         }
 
         /// <summary>
@@ -418,7 +415,6 @@ namespace SS
             //sets the type to double and then the contents to the given value
             Type = 2;
             DoubleContent = d;
-            Name = name;
         }
 
         /// <summary>
