@@ -27,10 +27,23 @@ namespace SS
             depGraph = new DependencyGraph();
         }
 
+        public override bool Changed
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            protected set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// Gets the contents of the specified cell.  
         /// 
-        ///  If name is null or invalid, throws an InvalidNameException.
+        /// If name is null or invalid, throws an InvalidNameException.
         ///  
         /// </summary>
         /// <param name="name">The cell</param>
@@ -52,6 +65,11 @@ namespace SS
             }
         }
 
+        public override object GetCellValue(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Returns a IEnumeralble with a list of every nonempty cell
         /// </summary>
@@ -67,6 +85,16 @@ namespace SS
             }
 
             return copy;
+        }
+
+        public override string GetSavedVersion(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Save(string filename)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -197,6 +225,11 @@ namespace SS
             cells.Add(name, new Cell(number));
 
             return new HashSet<String>(GetCellsToRecalculate(name));
+        }
+
+        public override ISet<string> SetContentsOfCell(string name, string content)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

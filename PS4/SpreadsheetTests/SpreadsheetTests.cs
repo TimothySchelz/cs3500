@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace SpreadsheetTests
 {
+    /// <summary>
+    /// A Unit test class for testing the Spreadsheet class from PS5
+    /// </summary>
     [TestClass]
     public class SpreadsheetTests
     {
