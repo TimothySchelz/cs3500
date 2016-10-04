@@ -119,18 +119,6 @@ namespace SS
         }
 
         /// <summary>
-        /// The lookup function to be passed into the Evaluate method of Formula.  Recusively finds the value
-        /// of the cells that this variable depends on.  So it should go through and calculate the dependees
-        /// before the dependent.
-        /// </summary>
-        /// <param name="name">The name of a variable to be looked up</param>
-        /// <returns>The double that is in the varaible</returns>
-        private double findVariable(String name)
-        {
-
-        }
-
-        /// <summary>
         /// Returns a IEnumeralble with a list of every nonempty cell
         /// </summary>
         /// <returns>An IEnumerable with the names of every non empty cell</returns>
@@ -243,6 +231,11 @@ namespace SS
                 throw new CircularException();
             }
 
+            foreach(String current in cellsToChange)
+            {
+                cells[current].recalculate(cells);
+            }
+
             // Return the cells to be recalculated as a set
             return new HashSet<String>(cellsToChange);
         }
@@ -281,7 +274,16 @@ namespace SS
                 cells.Add(name, new Cell(name, text));
             }
 
-            return new HashSet<String>(GetCellsToRecalculate(name));
+            //Go through and recalculate everything!
+            IEnumerable<String> cellsToChange = GetCellsToRecalculate(name);
+
+            foreach (String current in cellsToChange)
+            {
+                cells[current].recalculate(cells);
+            }
+
+            //return a set
+            return new HashSet<String>(cellsToChange);
         }
 
         /// <summary>
@@ -306,12 +308,67 @@ namespace SS
             //create a new cell and add it to cells
             cells.Add(name, new Cell(name, number));
 
-            return new HashSet<String>(GetCellsToRecalculate(name));
+            //Go through and recalculate everything!
+            IEnumerable<String> cellsToChange = GetCellsToRecalculate(name);
+
+            foreach (String current in cellsToChange)
+            {
+                cells[current].recalculate(cells);
+            }
+
+            //return a set
+            return new HashSet<String>(cellsToChange);
         }
 
+        /// <summary>
+        /// If content is null, throws an ArgumentNullException.
+        /// 
+        /// Otherwise, if name is null or invalid, throws an InvalidNameException.
+        /// 
+        /// Otherwise, if content parses as a double, the contents of the named
+        /// cell becomes that double.
+        /// 
+        /// Otherwise, if content begins with the character '=', an attempt is made
+        /// to parse the remainder of content into a Formula f using the Formula
+        /// constructor.  There are then three possibilities:
+        /// 
+        ///   (1) If the remainder of content cannot be parsed into a Formula, a 
+        ///       SpreadsheetUtilities.FormulaFormatException is thrown.
+        ///       
+        ///   (2) Otherwise, if changing the contents of the named cell to be f
+        ///       would cause a circular dependency, a CircularException is thrown.
+        ///       
+        ///   (3) Otherwise, the contents of the named cell becomes f.
+        /// 
+        /// Otherwise, the contents of the named cell becomes content.
+        /// 
+        /// If an exception is not thrown, the method returns a set consisting of
+        /// name plus the names of all other cells whose value depends, directly
+        /// or indirectly, on the named cell.
+        /// 
+        /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
+        /// set {A1, B1, C1} is returned.
+        /// </summary>
+        /// <param name="name">The name of the Cell to be set</param>
+        /// <param name="content">the content the cell will be set too</param>
+        /// <returns>A set of cells that were recalculated</returns>
         public override ISet<string> SetContentsOfCell(string name, string content)
         {
-            throw new NotImplementedException();
+            //For they TryParse
+            double doubleContent;
+            //Checks the different cases
+            //Starts with looking for the '=' then trys parsing, then it puts it into a string
+            if (content[0].Equals('='))
+            {
+                return SetCellContents(name, new Formula(content.Substring(1)));
+            } else if (Double.TryParse(content, out doubleContent))
+            {
+                SetCellContents(name, doubleContent);
+                return SetCellContents(name, doubleContent);
+            } else
+            {
+                return SetCellContents(name, content);
+            }
         }
 
         /// <summary>
@@ -340,14 +397,63 @@ namespace SS
         }
 
         /// <summary>
-        /// Checks to make sure the name is not null or invalid.  If it is null or invalid
-        /// it throws an InvalidNameException.
+        /// Just checks if the string is of the format of a variable.  If it is the wrong format it will throw an InvalidNameException.
+        /// This also checks a 
         /// </summary>
-        /// <param name="name">the name to be validated</param>
-        private void NameValidator(String name)
+        /// <param name="s">The string to be checked</param>
+        /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string or white space</returns>
+        private void NameValidator(string name)
         {
-            //Throw exception if it is not valid
-            if (name == null || !((Char.ToUpper(name[0]) <= 90 && Char.ToUpper(name[0]) >= 65) || name[0] == '_') || !IsValid(name))
+            // Simplifies what needs to be checked.
+            String s = name.ToUpper();
+            char[] variable = s.ToCharArray();
+
+            // Keeps track of when we switch from letters to numbers.
+            bool switchedToNumbers = false;
+
+            // Checks if the first char is a letter and that the last char is an integer.
+            if (!(variable[0] >= 'A' && variable[0] <= 'Z') || !(variable[variable.Length - 1] >= '0' && variable[variable.Length - 1] <= '9'))
+            {
+                throw new InvalidNameException();
+            }
+
+            // Go through one char at a time seeing if it is letters then numbers
+            for (int i = 0; i < variable.Length; i++)
+            {
+                // while still just a series of letters
+                if (!switchedToNumbers)
+                {
+                    // If we are still on a letter move to the next char
+                    if ((variable[i] >= 'A' && variable[i] <= 'Z'))
+                    {
+                        continue;
+                    }
+                    // If we have a number switch to the number part of the variable's name
+                    else if ((variable[i] >= '0' && variable[i] <= '9'))
+                    {
+                        switchedToNumbers = true;
+                        continue;
+                    }
+                    // If it is anything else then it does not fit the scheme
+                    else
+                    {
+                        throw new InvalidNameException();
+                    }
+                    // If we are on the number section of the variable
+                }
+                else
+                {
+                    // If we don't have a number then we have a problem
+                    if (!(variable[i] >= '0' && variable[i] <= '9'))
+                    {
+                        throw new InvalidNameException();
+                    }
+                }
+            }
+
+            //Now that we know it fits the general format of a variable we can now check 
+            //to make sure it passes the variable validator
+            if (IsValid(name))
             {
                 throw new InvalidNameException();
             }
