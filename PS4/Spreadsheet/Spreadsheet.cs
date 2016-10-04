@@ -106,13 +106,37 @@ namespace SS
             // Make sure the name is valid
             NameValidator(name);
 
+            lookup variableLookup = ;
+
             //Check if it is an empty cell
-            if (cells.ContainsKey(name))
-            {
-                return cells[name].getValue(cells);
-            } else
+            if (!cells.ContainsKey(name))
             {
                 return "";
+            } else if(cells[name].Type == 3)
+            {
+                Formula result = (Formula) cells[name].getContents();
+                return result.Evaluate(new lookup(findVariable));
+            } else
+            {
+                return cells[name];
+            }
+        }
+
+        //The type of lookup delegate for the evaluate function in Formula
+        private delegate double lookup(String s);
+
+        //The Lookup function used ofr Evaluate.
+        private double findVariable(String name)
+        {
+            if (cells.ContainsKey(name) && cells[name].Type == 3)
+            {
+                Formula contents = (Formula) cells[name].getContents();
+                object value = contents.Evaluate(findVariable);
+                if (value is FormulaError)
+                {
+                    throw new 
+                }
+                return ;
             }
         }
 
@@ -417,15 +441,6 @@ namespace SS
                 //data protection.
                 return FormContent;
             }
-        }
-
-        /// <summary>
-        /// Returns the value of this cells
-        /// </summary>
-        /// <param name="cells">A List of cells to look things up</param>
-        /// <returns></returns>
-        internal object getValue()
-        {
         }
     }
 }
