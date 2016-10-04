@@ -104,20 +104,17 @@ namespace SS
         /// <returns>the value of the cell</returns>
         public override object GetCellValue(string name)
         {
-            // Make sure the name is valid
+            //check the name
             NameValidator(name);
 
-            //Check if it is an empty cell
-            if (!cells.ContainsKey(name))
-            {
-                return "";
-            } else if(cells[name].Type == 3)
-            {
-                Formula result = (Formula) cells[name].getContents();
-                return result.Evaluate(findVariable);
-            } else
+            //Check if it is a cell
+            if (cells.ContainsKey(name))
             {
                 return cells[name];
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -130,30 +127,7 @@ namespace SS
         /// <returns>The double that is in the varaible</returns>
         private double findVariable(String name)
         {
-            // Check if it is a formula
-            if (cells.ContainsKey(name) && cells[name].Type == 3)
-            {
-                //if it is check if evaluate is a FormulaError
-                Formula contents = (Formula) cells[name].getContents();
-                object value = contents.Evaluate(findVariable);
-                if (value is FormulaError)
-                {
-                    // if it is throw an exception so that the evaluate that this method is being called
-                    // in also returns an FormulaError
-                    throw new InvalidNameException();
-                }
-                //otherwise return what the formula evaluates to
-                return (double)value;
-            //if the cell contains a double
-            } else if (cells.ContainsKey(name) && cells[name].Type == 2)
-            {
-                //just return the value of the double
-                return (double)cells[name].getContents();
-            } else {
-                //If it didn't fall into the above cases it is either a String or empty.
-                // Either way we have a problem and need to throw an exception
-                throw new InvalidNameException();
-            }
+
         }
 
         /// <summary>
@@ -182,13 +156,21 @@ namespace SS
         {
             using (XmlWriter writer = XmlWriter.Create(filename))
             {
+                //The thing that we need to start writing to an .XML
                 writer.WriteStartDocument();
+
                 //Header of the Document
                 writer.WriteStartElement("spreadsheet");
                 writer.WriteAttributeString("version", Version);
 
-
                 //Write the cells
+                foreach (KeyValuePair<String, Cell> pair in cells)
+                {
+                    writer.WriteStartElement("cell");
+                    writer.WriteElementString("name", pair.Key);
+                    writer.WriteElementString("contents", pair.Value.ToString());
+                    writer.WriteEndElement();
+                }
 
                 //Ending of the document
                 writer.WriteEndElement();
@@ -383,6 +365,11 @@ namespace SS
         private Double DoubleContent;
         private Formula FormContent;
 
+        //Can be a String Double or a FormulaError
+        private Object Value;
+
+
+
         /// <summary>
         /// The type of cell it is.  getContents returns this type.
         /// 
@@ -430,6 +417,15 @@ namespace SS
             //sets the type to double and then the contents to the given value
             Type = 2;
             DoubleContent = d;
+        }
+
+        /// <summary>
+        /// Returns the value of the contents of the string.  It can return a string douvle or FormulError.
+        /// </summary>
+        /// <returns>The value of the cell. Either a string, double or FormulaError</returns>
+        internal object getValue()
+        {
+            return Value;
         }
 
         /// <summary>
