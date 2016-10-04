@@ -36,22 +36,35 @@ namespace SS
         /// A public constructor to create a new Spreadsheet object.  It just creates an empty 
         /// spreadsheet.  It will not have any filled cells.  Nothing special
         /// </summary>
-        public Spreadsheet()
+        public Spreadsheet() : this(s => true, s => s, "default")
+        {
+        }
+
+        /// <summary>
+        /// A public 3 argument constructor to create a new Spreadsheet object.  It just 
+        /// creates an empty spreadsheet.  It will not have any filled cells.  Sets the 
+        /// validator, normalizer, and the version.
+        /// </summary>
+        public Spreadsheet(Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             cells = new Dictionary<String, Cell>();
             depGraph = new DependencyGraph();
         }
 
+        /// <summary>
+        /// True if this spreadsheet has been modified since it was created or saved                  
+        /// (whichever happened most recently); false otherwise.
+        /// </summary>
         public override bool Changed
         {
             get
             {
-                throw new NotImplementedException();
+                return Changed;
             }
 
             protected set
             {
-                throw new NotImplementedException();
+                Changed = value;
             }
         }
 
@@ -80,9 +93,27 @@ namespace SS
             }
         }
 
+        /// <summary>
+        /// If name is null or invalid, throws an InvalidNameException.
+        /// 
+        /// Otherwise, returns the value (as opposed to the contents) of the named cell.  The return
+        /// value should be either a string, a double, or a SpreadsheetUtilities.FormulaError.
+        /// </summary>
+        /// <param name="name">The name of the cell</param>
+        /// <returns>the value of the cell</returns>
         public override object GetCellValue(string name)
         {
-            throw new NotImplementedException();
+            // Make sure the name is valid
+            NameValidator(name);
+
+            //Check if it is an empty cell
+            if (cells.ContainsKey(name))
+            {
+                return cells[name].getValue(cells);
+            } else
+            {
+                return "";
+            }
         }
 
         /// <summary>
@@ -136,7 +167,8 @@ namespace SS
             if (cells.ContainsKey(name))
             {
                 old = cells[name].getContents();
-            } else
+            }
+            else
             {
                 old = "";
             }
@@ -148,14 +180,15 @@ namespace SS
             depGraph.ReplaceDependees(name, formula.GetVariables());
 
             //create a new cell and add it to cells
-            cells.Add(name, new Cell(formula));
+            cells.Add(name, new Cell(name, formula));
 
             // Check for a circular dependency
             IEnumerable<string> cellsToChange = new List<String>();
             try
             {
                 cellsToChange = GetCellsToRecalculate(name);
-            } catch (CircularException)
+            }
+            catch (CircularException)
             {
                 //We got a circular dependency 
                 // Put the old stuff back in
@@ -175,7 +208,7 @@ namespace SS
                 //rethrow the exception
                 throw new CircularException();
             }
-            
+
             // Return the cells to be recalculated as a set
             return new HashSet<String>(cellsToChange);
         }
@@ -211,7 +244,7 @@ namespace SS
             if (!text.Equals(""))
             {
                 //create a new cell and add it to cells
-                cells.Add(name, new Cell(text));
+                cells.Add(name, new Cell(name, text));
             }
 
             return new HashSet<String>(GetCellsToRecalculate(name));
@@ -237,7 +270,7 @@ namespace SS
             cells.Remove(name);
 
             //create a new cell and add it to cells
-            cells.Add(name, new Cell(number));
+            cells.Add(name, new Cell(name, number));
 
             return new HashSet<String>(GetCellsToRecalculate(name));
         }
@@ -280,7 +313,7 @@ namespace SS
         private void NameValidator(String name)
         {
             //Throw exception if it is not valid
-            if (name == null || !((Char.ToUpper(name[0]) <= 90 && Char.ToUpper(name[0]) >= 65) || name[0] == '_'))
+            if (name == null || !((Char.ToUpper(name[0]) <= 90 && Char.ToUpper(name[0]) >= 65) || name[0] == '_') || !IsValid(name))
             {
                 throw new InvalidNameException();
             }
@@ -295,8 +328,15 @@ namespace SS
     {
         // This cell holds either a String, a double, or a Formula
         private String StringContent;
-        public Double DoubleContent;
+        private Double DoubleContent;
         private Formula FormContent;
+
+        /// <summary>
+        /// A delegate of type lookup to be passed to a cell when we want to look it up
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal delegate double LookUp(String name);
 
         /// <summary>
         /// The type of cell it is.  getContents returns this type.
@@ -312,15 +352,23 @@ namespace SS
             private set;
         }
 
+        internal String Name
+        {
+            get;
+
+            private set;
+        }
+
         /// <summary>
         /// Constructor to build a Cell from a String
         /// </summary>
         /// <param name="s">The string to go in the cell</param>
-        internal Cell(String s)
+        internal Cell(String name, String s)
         {
             //sets the type to string and then the contents to the given value
             Type = 1;
             StringContent = s;
+            Name = name;
         }
 
         /// <summary>
@@ -329,22 +377,24 @@ namespace SS
         /// <param name="f"></param>
         /// <param name="l">The delegate used to look up varaibles.  Takes a string and
         /// returns a double</param>
-        internal Cell(Formula f)
+        internal Cell(String name, Formula f)
         {
             //sets the type to formula and then the contents to the given value
             Type = 3;
             FormContent = f;
+            Name = name;
         }
 
         /// <summary>
         /// Constructor to build a Cell from a Double
         /// </summary>
         /// <param name="d">The double to be put into a cell</param>
-        internal Cell(double d)
+        internal Cell(String name, double d)
         {
             //sets the type to double and then the contents to the given value
             Type = 2;
             DoubleContent = d;
+            Name = name;
         }
 
         /// <summary>
@@ -367,6 +417,15 @@ namespace SS
                 //data protection.
                 return FormContent;
             }
+        }
+
+        /// <summary>
+        /// Returns the value of this cells
+        /// </summary>
+        /// <param name="cells">A List of cells to look things up</param>
+        /// <returns></returns>
+        internal object getValue()
+        {
         }
     }
 }

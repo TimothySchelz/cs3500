@@ -32,7 +32,7 @@ namespace SpreadsheetTests
             }
             Assert.IsTrue(true);
         }
-        
+
         /*
          * 3 Arg Constructor
          */
@@ -53,12 +53,77 @@ namespace SpreadsheetTests
          * GetCellValue Tests
          */
 
+        /// <summary>
+        /// Checks that it throws an InvalidNameException when the name is null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_NullName()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            s.GetCellValue(null);
+        }
+
+        /// <summary>
+        /// Checks that it throws an InvalidNameException when the name is invalid
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_InvalidName1()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            s.GetCellValue("Eskimo");
+        }
+
+        /// <summary>
+        /// Checks that it throws an InvalidNameException when the name is invalid
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_InvalidName2()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            s.GetCellValue("_Frankfurter");
+        }
+
+        /// <summary>
+        /// Checks that it throws an InvalidNameException when the name is invalid
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_InvalidName3()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            s.GetCellValue("ABC123DEF456");
+        }
+
+        /// <summary>
+        /// Checks that it throws an InvalidNameException when the name does not pass the validator
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_NameDoesntPassValidator()
+        {
+            Spreadsheet s = new Spreadsheet(s=>false, s=>s, "0");
+
+            s.GetCellValue("A1");
+        }
+
+
+        /*
+         * Changed Property
+         */
+
         /*
          * GetNamesOfAllNonemptyCells Tests
          */
-         /// <summary>
-         /// Tests the method on an empty Spreadsheet
-         /// </summary>
+        /// <summary>
+        /// Tests the method on an empty Spreadsheet
+        /// </summary>
         [TestMethod]
         public void Public_GetNamesOfAllNonemptyCells_EmptySS()
         {
