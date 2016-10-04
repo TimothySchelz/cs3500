@@ -58,15 +58,9 @@ namespace SS
         /// </summary>
         public override bool Changed
         {
-            get
-            {
-                return Changed;
-            }
+            get;
 
-            protected set
-            {
-                Changed = value;
-            }
+            protected set;
         }
 
         /// <summary>
