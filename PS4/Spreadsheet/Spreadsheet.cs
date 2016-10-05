@@ -279,6 +279,9 @@ namespace SS
                 throw new CircularException();
             }
 
+            //Change Changed to true
+            Changed = true;
+
             foreach(String current in cellsToChange)
             {
                 cells[current].recalculate(name, lookup);
@@ -326,6 +329,9 @@ namespace SS
             //create a new cell and add it to cells
             cells.Add(name, new Cell(name, text));
 
+            //Change Changed to True
+            Changed = true;
+
             //Go through and recalculate everything!
             IEnumerable<String> cellsToChange = GetCellsToRecalculate(name);
 
@@ -361,6 +367,9 @@ namespace SS
 
             //create a new cell and add it to cells
             cells.Add(name, new Cell(name, number));
+
+            //Change Changed to True
+            Changed = true;
 
             //Go through and recalculate everything!
             IEnumerable<String> cellsToChange = GetCellsToRecalculate(name);
