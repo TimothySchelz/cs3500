@@ -157,6 +157,23 @@ namespace SpreadsheetTests
         /*
          * GetSavedVersion Tests
          */
+        [TestMethod]
+        public void Public_GetSavedVersion_CheckBasicFile()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual("version information goes here", s.GetSavedVersion("CheckGetVersion.xml"));
+        }
+
+        /// <summary>
+        /// Makes sure it throws when the file doesn't exist
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_GetSavedVersion_NoFile()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.GetSavedVersion("HelloWorld.xml");
+        }
 
         /*
          * Save Tests
@@ -241,7 +258,6 @@ namespace SpreadsheetTests
         /// Gets the value of String cell
         /// </summary>
         [TestMethod]
-
         public void Public_GetCellValue_String()
         {
             Spreadsheet s = new Spreadsheet(t => true, t => t, "0");
@@ -254,7 +270,6 @@ namespace SpreadsheetTests
         /// Gets the value of double cell
         /// </summary>
         [TestMethod]
-
         public void Public_GetCellValue_Double()
         {
             Spreadsheet s = new Spreadsheet(t => true, t => t, "0");
@@ -325,8 +340,52 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_NoChange3()
         {
-            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t, "1.0");
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
 
+            Assert.IsFalse(s.Changed);
+        }
+
+        /// <summary>
+        /// Makes sure that it changes when a String is added
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_AddString()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t, "1.0");
+            s.SetContentsOfCell("A1", "Hello");
+            Assert.IsTrue(s.Changed);
+        }
+
+        /// <summary>
+        /// Makes sure that it changes when a Double is added
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_AddDouble()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t, "1.0");
+            s.SetContentsOfCell("A1", "5.8");
+            Assert.IsTrue(s.Changed);
+        }
+
+        /// <summary>
+        /// Makes sure that it changes when a Formula is added
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_AddFormula()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t, "1.0");
+            s.SetContentsOfCell("A1", "=5.8+0.2");
+            Assert.IsTrue(s.Changed);
+        }
+
+        /// <summary>
+        /// Makes sure that changed changes when something is removed
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_RemoveCell()
+        {
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
+            s.SetContentsOfCell("A1", "");
             Assert.IsFalse(s.Changed);
         }
 
@@ -517,6 +576,59 @@ namespace SpreadsheetTests
         /*
          * SetContentsOfCell to double Tests
          */
+         /// <summary>
+         /// Makes sure the strings with just a double end up as doubles
+         /// </summary>
+        [TestMethod]
+        public void Public_SetContentsOfCell_CreateDouble()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            s.SetContentsOfCell("A1", "2.52");
+
+            Assert.AreEqual(2.52, s.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// Makes sure that a string that looks like a formula ends up as a string
+        /// </summary>
+        [TestMethod]
+        public void Public_SetContentsOfCell_CreateString()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B2", "1.5");
+            s.SetContentsOfCell("C3", "=B2*2");
+            s.SetContentsOfCell("A1", "B2+C3");
+
+            Assert.AreEqual("B2+C3", s.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// Makes sure that a string wath an '=' creates a formula 
+        /// </summary>
+        [TestMethod]
+        public void Public_SetContentsOfCell_CreateFormula()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B2", "1.5");
+            s.SetContentsOfCell("C3", "=B2*2");
+            s.SetContentsOfCell("A1", "=B2+C3");
+
+            Assert.AreEqual(new Formula("B2+C3"), s.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// Makes sure that a string starting with '=' throws an exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void Public_SetContentsOfCell_BreakFormula()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B2", "1.5");
+            s.SetContentsOfCell("C3", "=Hey Taako, what is the magic word?");
+        }
+
 
         /// <summary>
         /// Tests a null name.  It should throw an ArgumentNullException
@@ -1110,13 +1222,6 @@ namespace SpreadsheetTests
             SpecialSS s = new SpecialSS();
 
             s.PassNullToGetDirectDependents(null);
-        }
-
-        [TestMethod]
-        public void Public_GetSavedVersion_CheckBasicFile()
-        {
-            Spreadsheet s = new Spreadsheet();
-            Assert.AreEqual("version information goes here", s.GetSavedVersion("CheckGetVersion.xml"));
         }
 
         /// <summary>

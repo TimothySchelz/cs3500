@@ -52,6 +52,11 @@ namespace SS
             depGraph = new DependencyGraph();
         }
 
+        public Spreadsheet(string filename, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// True if this spreadsheet has been modified since it was created or saved                  
         /// (whichever happened most recently); false otherwise.
@@ -645,8 +650,6 @@ namespace SS
                 Value = DoubleContent;
             }
         }
-
-
 
         /// <summary>
         /// A ToString method.  returns the content of the cell.  If it is a formula it also puts a = in front.
