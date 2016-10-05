@@ -117,8 +117,9 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("B2", "Some more content");
             HashSet<String> expected = new HashSet<String>() { "A1", "B2" };
 
+            IEnumerable<String> result = s.GetNamesOfAllNonemptyCells();
 
-            foreach (String name in s.GetNamesOfAllNonemptyCells())
+            foreach (String name in result)
             {
                 Assert.IsTrue(expected.Remove(name));
             }
@@ -259,7 +260,10 @@ namespace SpreadsheetTests
             Spreadsheet s = new Spreadsheet(t => true, t => t, "0");
             s.SetContentsOfCell("A1", "3.5");
 
-            Assert.AreEqual(3.5, s.GetCellValue("A1"));
+            object result = s.GetCellValue("A1");
+            object expected = 3.5;
+
+            Assert.AreEqual(expected, result);
         }
 
         /// <summary>
@@ -273,7 +277,7 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("A1", "5");
             s.SetContentsOfCell("B2", "=A1+6");
 
-            Assert.AreEqual(11, s.GetCellValue("B2"));
+            Assert.AreEqual(11.0, s.GetCellValue("B2"));
         }
 
         /// <summary>
@@ -440,8 +444,8 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "String 1");
-            s.SetContentsOfCell("B2", "2+2");
-            s.SetContentsOfCell("C3", "B2+D4");
+            s.SetContentsOfCell("B2", "=2+2");
+            s.SetContentsOfCell("C3", "=B2+D4");
             s.SetContentsOfCell("D4", "1.0");
 
             Assert.IsTrue(s.GetCellContents("C3").Equals(new Formula("B2+D4")));
@@ -523,9 +527,10 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "String 1");
-            s.SetContentsOfCell("B2", "2+2");
-            s.SetContentsOfCell("C3", "=B2+D4");
+            s.SetContentsOfCell("B2", "=2+2");
             s.SetContentsOfCell("D4", "1.0");
+            s.SetContentsOfCell("C3", "=B2+D4");
+
 
             s.SetContentsOfCell(null, "2.52");
         }
@@ -847,7 +852,7 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("A1", "=B2");
             s.SetContentsOfCell("B2", "=C3");
             s.SetContentsOfCell("C3", "=D4");
-            s.SetContentsOfCell("D4", "5 + 4");
+            s.SetContentsOfCell("D4", "=5 + 4");
             try
             {
                 s.SetContentsOfCell("D4", "=A1");
@@ -1105,6 +1110,13 @@ namespace SpreadsheetTests
             SpecialSS s = new SpecialSS();
 
             s.PassNullToGetDirectDependents(null);
+        }
+
+        [TestMethod]
+        public void Public_GetSavedVersion_CheckBasicFile()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual("version information goes here", s.GetSavedVersion("CheckGetVersion.xml"));
         }
 
         /// <summary>

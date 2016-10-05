@@ -59,7 +59,6 @@ namespace SS
         public override bool Changed
         {
             get;
-
             protected set;
         }
 
@@ -73,8 +72,10 @@ namespace SS
         /// <returns>the contents in name</returns>
         public override object GetCellContents(string name)
         {
-            // confirms that the name is valid
+            //Normalize and validate
+            name = Normalize(name);
             NameValidator(name);
+
             //Checks if the name has been used and has a cell in it
             if (cells.ContainsKey(name))
             {
@@ -98,13 +99,14 @@ namespace SS
         /// <returns>the value of the cell</returns>
         public override object GetCellValue(string name)
         {
-            //check the name
+            //Normalize and validate
+            name = Normalize(name);
             NameValidator(name);
 
             //Check if it is a cell
             if (cells.ContainsKey(name))
             {
-                return cells[name];
+                return cells[name].getValue();
             }
             else
             {
@@ -144,27 +146,31 @@ namespace SS
             {
                 using (XmlReader reader = XmlReader.Create(filename))
                 {
-                    
-                    //Make sure there is something to be read
-                    if (reader.Read())
+                    //Goes through and finds the spreadsheet tag
+                    while (reader.Read())
                     {
-                        fileVersion = reader.GetAttribute("version");
-                    } else
-                    {
-                        throw new SpreadsheetReadWriteException("File is Empty");
+                        if (reader.Name == "spreadsheet")
+                        {
+                            //When it is found set the value of the fileVersion and break out.  We are done
+                            fileVersion = reader.GetAttribute("version");
+                            break;
+                        }
                     }
 
-                    //Check if it successfully found the version
-                    if (fileVersion == null)
+                    //Make sure the fileVersion is not null
+                    if(fileVersion == null)
                     {
-                        throw new SpreadsheetReadWriteException("Could not find version information");
+                        //If it is the file whas not properly formated and an exception needs to be thrown
+                        throw new SpreadsheetReadWriteException("Did not find a version for this spreadsheet");
                     }
                 }
             } catch(Exception e)
             {
+                //Catches whatever happened in the file and then throws a new exception with the same error
                 throw new SpreadsheetReadWriteException(e.Message);
             }
 
+            //If nothing went wrong then just return the fileVersion
             return fileVersion;
         }
 
@@ -211,6 +217,8 @@ namespace SS
         /// <returns></returns>
         protected override ISet<string> SetCellContents(string name, Formula formula)
         {
+            //Normalize and validate
+            name = Normalize(name);
             NameValidator(name);
 
             //Check if formula is null
@@ -268,7 +276,7 @@ namespace SS
 
             foreach(String current in cellsToChange)
             {
-                cells[current].recalculate(cells);
+                cells[current].recalculate(name, lookup);
             }
 
             // Return the cells to be recalculated as a set
@@ -288,6 +296,8 @@ namespace SS
         /// <returns>A set of variable that might be effected by the change</returns>
         protected override ISet<string> SetCellContents(string name, string text)
         {
+            //Normalize and validate
+            name = Normalize(name);
             NameValidator(name);
 
             //Check if text is null
@@ -303,18 +313,20 @@ namespace SS
             cells.Remove(name);
 
             // If the text is empty then we don't add it.  There is nothing in it.
-            if (!text.Equals(""))
+            if (text.Equals(""))
             {
-                //create a new cell and add it to cells
-                cells.Add(name, new Cell(name, text));
+                return new HashSet<String>() { name };
             }
+
+            //create a new cell and add it to cells
+            cells.Add(name, new Cell(name, text));
 
             //Go through and recalculate everything!
             IEnumerable<String> cellsToChange = GetCellsToRecalculate(name);
 
             foreach (String current in cellsToChange)
             {
-                cells[current].recalculate(cells);
+                cells[current].recalculate(name, lookup);
             }
 
             //return a set
@@ -332,6 +344,8 @@ namespace SS
         /// <returns> A set of cells to be recalculated</returns>
         protected override ISet<string> SetCellContents(string name, double number)
         {
+            //normalize and then validate
+            name = Normalize(name);
             NameValidator(name);
 
             //get rid of any dependees of the old cell
@@ -348,7 +362,7 @@ namespace SS
 
             foreach (String current in cellsToChange)
             {
-                cells[current].recalculate(cells);
+                cells[current].recalculate(name, lookup);
             }
 
             //return a set
@@ -389,13 +403,18 @@ namespace SS
         /// <returns>A set of cells that were recalculated</returns>
         public override ISet<string> SetContentsOfCell(string name, string content)
         {
+            //Checks if content is null
+            if (content == null)
+            {
+                throw new ArgumentNullException();
+            }
             //For they TryParse
             double doubleContent;
             //Checks the different cases
             //Starts with looking for the '=' then trys parsing, then it puts it into a string
-            if (content[0].Equals('='))
+            if (content.Length > 0 && content[0].Equals('='))
             {
-                return SetCellContents(name, new Formula(content.Substring(1)));
+                return SetCellContents(name, new Formula(content.Substring(1), Normalize, IsValid));
             } else if (Double.TryParse(content, out doubleContent))
             {
                 SetCellContents(name, doubleContent);
@@ -418,6 +437,8 @@ namespace SS
         /// <returns>a list of direct dependents of name</returns>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
+            //Normalize and validate
+            name = Normalize(name);
             // check if it is null for this one weird case for this one weird method.
             if (name == null)
             {
@@ -427,6 +448,7 @@ namespace SS
             }
             //chech if the name is valid
             NameValidator(name);
+
             // return dependents.
             return depGraph.GetDependents(name);
         }
@@ -439,6 +461,13 @@ namespace SS
         /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string or white space</returns>
         private void NameValidator(string name)
         {
+            //First we check the condition the general conditions for variables
+
+            // check for a null name
+            if (name == null)
+            {
+                throw new InvalidNameException();
+            }
             // Simplifies what needs to be checked.
             String s = name.ToUpper();
             char[] variable = s.ToCharArray();
@@ -488,10 +517,19 @@ namespace SS
 
             //Now that we know it fits the general format of a variable we can now check 
             //to make sure it passes the variable validator
-            if (IsValid(name))
+            if (!IsValid(name))
             {
                 throw new InvalidNameException();
             }
+        }
+
+        internal double lookup(String name)
+        {
+            if (cells.ContainsKey(name) && cells[name].getValue() is double)
+            {
+                return (double) cells[name].getValue();
+            }
+            throw new FormulaFormatException("A variable that is being referenced does not contain a valid entry.  i.e. a number");
         }
     }
 
@@ -591,14 +629,20 @@ namespace SS
             }
         }
 
-        internal void recalculate(Dictionary<String, Cell> cells)
+        internal void recalculate(String name, Func<String,double> lookup)
         {
-            //Only need to recalculate if it is a Formula object
+            //Only need to Evaluate if it is a formula
             if (Type == 3)
             {
                 //If the delegate throws an exception due to the casting as a double it should
                 // be caught in the evaluate function and turn it into an FormulaError.
-                Value = FormContent.Evaluate(s=>(Double)cells[s].getValue());
+                Value = FormContent.Evaluate(lookup);
+            } else if (Type == 1)
+            {
+                Value = StringContent;
+            } else if (Type == 2)
+            {
+                Value = DoubleContent;
             }
         }
 
