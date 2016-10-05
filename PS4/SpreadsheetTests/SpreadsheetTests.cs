@@ -318,11 +318,9 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_NotARealChange()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
             s.SetContentsOfCell("A1", "contents");
             Assert.IsTrue(s.Changed);
-
-            Assert.Fail();
         }
 
         /// <summary>
@@ -353,7 +351,7 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_NoChange3()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
 
             Assert.IsFalse(s.Changed);
         }
@@ -397,7 +395,7 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_RemoveCell()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
             s.SetContentsOfCell("A1", "");
             Assert.IsFalse(s.Changed);
         }

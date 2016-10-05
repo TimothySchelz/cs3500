@@ -59,9 +59,63 @@ namespace SS
         /// <param name="isValid">A Variable validator</param>
         /// <param name="normalize">The normalizer for variables</param>
         /// <param name="version">The version of spreadsheet to be used</param>
-        public Spreadsheet(string filename, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
+        public Spreadsheet(string filename, Func<string, bool> isValid, Func<string, string> normalize, string version) : this(isValid, normalize, version)
         {
-            throw new NotImplementedException();
+            //Chech versions
+            if (GetSavedVersion(filename) != Version)
+            {
+                throw new SpreadsheetReadWriteException("The version of the file and this spreadsheet do not match");
+            }
+
+            //All the work.  Make sure to catch any exception
+            try
+            {
+                // create the reader from the file and make sure it is disposed of
+                using (XmlReader reader = XmlReader.Create(filename))
+                {
+                    String cellName = "";
+                    String Content = "";
+                    //cycle through the file
+                    while (reader.Read())
+                    {
+                        //Check what we have
+                        if (reader.IsStartElement())
+                        {
+                            switch (reader.Name)
+                            {
+                                case "spreadsheet":
+                                    //The start of the spreadsheet
+                                    break;
+                                case "cell": 
+                                    //Start of a cell.  We don't do anything here
+                                    break;
+                                case "name": 
+                                    //Go to the content of the name
+                                    reader.Read();
+                                    //Store the name
+                                    cellName = reader.Value.Trim();
+                                    break;
+
+                                case "contents":
+                                    //Go to the content of the content
+                                    reader.Read();
+                                    //Store the content
+                                    Content = reader.Value.Trim();
+                                    //create the cell
+                                    SetContentsOfCell(cellName, Content);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //Catches whatever happened in the file and then throws a new exception with the same error
+                throw new SpreadsheetReadWriteException(e.Message);
+            }
+
+            Changed = false;
         }
 
         /// <summary>
