@@ -313,6 +313,19 @@ namespace SpreadsheetTests
          * Changed Property
          */
         /// <summary>
+        /// Not actuall changing a cell
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_NotARealChange()
+        {
+            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => t[0] == 'A', t => t, "1.0");
+            s.SetContentsOfCell("A1", "contents");
+            Assert.IsTrue(s.Changed);
+
+            Assert.Fail();
+        }
+
+        /// <summary>
         /// Makes sure that the changed is already set to false with a blank SS
         /// </summary>
         [TestMethod]
