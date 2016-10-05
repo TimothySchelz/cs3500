@@ -52,6 +52,13 @@ namespace SS
             depGraph = new DependencyGraph();
         }
 
+        /// <summary>
+        /// 4 argument constructor.
+        /// </summary>
+        /// <param name="filename">A saved Spreadsheet to load in</param>
+        /// <param name="isValid">A Variable validator</param>
+        /// <param name="normalize">The normalizer for variables</param>
+        /// <param name="version">The version of spreadsheet to be used</param>
         public Spreadsheet(string filename, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             throw new NotImplementedException();
