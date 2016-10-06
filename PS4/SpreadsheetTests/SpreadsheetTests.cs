@@ -155,6 +155,17 @@ namespace SpreadsheetTests
          * 4 arg Constructor
          */
         /// <summary>
+        /// Checks to make sure an exception is thrown the versions don't match. ... Did I already test this?
+        /// 
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_VersionMismatch()
+        {
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_CircularDependency.xml", t => t[0] == 'A', t => t, "Something Completely Different");
+        }
+
+        /// <summary>
         /// Checks to make sure an exception is thrown when a circular dependency exists in the 
         /// file.
         /// </summary>
@@ -171,7 +182,7 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
-        public void Public_4argCon_()
+        public void Public_4argCon_SpreadSheetTypo()
         {
             Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_SpreadSheetTypo.xml", t => t[0] == 'A', t => t, "1");
         }
@@ -237,6 +248,16 @@ namespace SpreadsheetTests
         public void Public_4argCon_InvalidName()
         {
             Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_InvalidName.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when a cell has an invalid fomrula
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_InvalidFormula()
+        {
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_InvalidFormula.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -658,6 +679,19 @@ namespace SpreadsheetTests
         /*
          * Changed Property
          */
+
+        /// <summary>
+        /// Changed == false after saving
+        /// </summary>
+        [TestMethod]
+        public void Public_ChangedProperty_AfterSaving()
+        {
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_Empty.xml", t => true, t => t, "version information goes here");
+            s.SetContentsOfCell("A1", "contents");
+            s.Save(@"../../TestFiles/Test_ChangedProperty.xml");
+            Assert.IsFalse(s.Changed);
+        }
+
         /// <summary>
         /// Not actuall changing a cell
         /// </summary>

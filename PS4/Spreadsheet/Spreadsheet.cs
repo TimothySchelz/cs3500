@@ -283,6 +283,9 @@ namespace SS
             {
                 throw new SpreadsheetReadWriteException(e.Message);
             }
+
+            //Reset The Changed property
+            Changed = false;
         }
 
         /// <summary>
