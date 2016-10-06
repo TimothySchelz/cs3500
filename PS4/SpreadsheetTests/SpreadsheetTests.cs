@@ -139,6 +139,7 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("A1", "content");
             s.SetContentsOfCell("B2", "Some more content");
         }
+
         /// <summary>
         /// Checks to make sure the version is set correctly
         /// </summary>
@@ -153,6 +154,91 @@ namespace SpreadsheetTests
         /*
          * 4 arg Constructor
          */
+        /// <summary>
+        /// Checks to make sure an exception is thrown when a circular dependency exists in the 
+        /// file.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_CircularDependency()
+        {
+            Spreadsheet s = new Spreadsheet("Test_CircularDependency.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when when there is a typo in the starting 
+        /// spreadsheet element
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_()
+        {
+            Spreadsheet s = new Spreadsheet("Test_SpreadSheetTypo.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when the file has a typo in the starting cell
+        /// element
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_CellTypo()
+        {
+            Spreadsheet s = new Spreadsheet("Test_CellTypo.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when there is a typo in the starting name 
+        /// element
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_NameTypo()
+        {
+            Spreadsheet s = new Spreadsheet("Test_NameTypo.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when a there is no version attribute
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_NoVersion()
+        {
+            Spreadsheet s = new Spreadsheet("Test_NoVersion.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when there is a typo in the version attribute
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_VersionTypo()
+        {
+            Spreadsheet s = new Spreadsheet("Test_VersionTypo.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when there is a typo in the starting content 
+        /// element
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_ContentTypo()
+        {
+            Spreadsheet s = new Spreadsheet("Test_ContentTypo.xml", t => t[0] == 'A', t => t, "1");
+        }
+
+        /// <summary>
+        /// Checks to make sure an exception is thrown when a cell has an invalid name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_InvalidName()
+        {
+            Spreadsheet s = new Spreadsheet("Test_InvalidName.xml", t => t[0] == 'A', t => t, "1");
+        }
+
 
         /*
          * GetSavedVersion Tests
