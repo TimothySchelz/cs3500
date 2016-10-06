@@ -104,6 +104,9 @@ namespace SS
                                     //create the cell
                                     SetContentsOfCell(cellName, Content);
                                     break;
+                                default:
+                                    // makes sure to throw an exception if we find any incorrect opening tags
+                                    throw new SpreadsheetReadWriteException("There were unexpected starting elements in the file.");
                             }
                         }
                     }

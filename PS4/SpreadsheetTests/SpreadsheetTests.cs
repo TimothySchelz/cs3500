@@ -178,6 +178,24 @@ namespace SpreadsheetTests
         /*
          * Save Tests
          */
+        [TestMethod]
+        public void Public_Save_Simple()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "Content");
+            s.Save("Test_Save_Simple.xml");
+
+            Spreadsheet t = new Spreadsheet("Test_Save_Simple.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+        }
 
         /*
          * GetCellValue Tests
