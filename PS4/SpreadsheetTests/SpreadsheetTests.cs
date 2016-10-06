@@ -504,6 +504,28 @@ namespace SpreadsheetTests
         /*
          * GetCellValue Tests
          */
+
+        /// <summary>
+        /// Makes sure that the normalizer and validator are working correctly in tandem
+        /// </summary>
+        [TestMethod]
+        public void Public_GetCellValue_NormalizerValidatorCheck1()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t.ToUpper(), "1.0");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+        }
+
+        /// <summary>
+        /// Makes sure that it passes through the general restrictions before normalization
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetCellValue_NormalizerValidatorCheck2()
+        {
+            Spreadsheet s = new Spreadsheet(t => true, t => t+"1", "1.0");
+            s.SetContentsOfCell("a", "Magnus Rolls a 20!");
+        }
+
         /// <summary>
         /// Checks that it throws an InvalidNameException when the name is null
         /// </summary>
@@ -799,6 +821,29 @@ namespace SpreadsheetTests
          */
 
         /// <summary>
+        /// Makes sure that the normalizer and validator are working correctly in tandem
+        /// </summary>
+        [TestMethod]
+        public void Public_GetContentsOfCell_NormalizerValidatorCheck1()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t.ToUpper(), "1.0");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            Assert.AreEqual("Magnus Rolls a 20!", s.GetCellContents("a1"));
+        }
+
+        /// <summary>
+        /// Makes sure that it passes through the general restrictions before normalization
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetContentsOfCell_NormalizerValidatorCheck2()
+        {
+            Spreadsheet s = new Spreadsheet(t => true, t => t + "1", "1.0");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            s.GetCellContents("a");
+        }
+
+        /// <summary>
         /// Tests a standard case where the cell has a string in it
         /// </summary>
         [TestMethod]
@@ -909,9 +954,33 @@ namespace SpreadsheetTests
         /*
          * SetContentsOfCell to double Tests
          */
-         /// <summary>
-         /// Makes sure the strings with just a double end up as doubles
-         /// </summary>
+
+        /// <summary>
+        /// Makes sure that the normalizer and validator are working correctly in tandem
+        /// </summary>
+        [TestMethod]
+        public void Public_GetContentsOfCell_NormalizerValidatorCheck1()
+        {
+            Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t.ToUpper(), "1.0");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            Assert.AreEqual("Magnus Rolls a 20!", s.GetCellContents("a1"));
+        }
+
+        /// <summary>
+        /// Makes sure that it passes through the general restrictions before normalization
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Public_GetContentsOfCell_NormalizerValidatorCheck2()
+        {
+            Spreadsheet s = new Spreadsheet(t => true, t => t + "1", "1.0");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            s.GetCellContents("a");
+        }
+
+        /// <summary>
+        /// Makes sure the strings with just a double end up as doubles
+        /// </summary>
         [TestMethod]
         public void Public_SetContentsOfCell_CreateDouble()
         {

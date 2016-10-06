@@ -594,8 +594,8 @@ namespace SS
             }
 
             //Now that we know it fits the general format of a variable we can now check 
-            //to make sure it passes the variable validator
-            if (!IsValid(name))
+            //to make sure The normalized version passes the variable validator
+            if (!IsValid(Normalize(name)))
             {
                 throw new InvalidNameException();
             }
