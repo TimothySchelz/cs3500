@@ -178,17 +178,121 @@ namespace SpreadsheetTests
         /*
          * Save Tests
          */
+         /// <summary>
+         /// This test makes sure that the spreadsheet can properly save a String cell
+         /// </summary>
         [TestMethod]
-        public void Public_Save_Simple()
+        public void Public_Save_StringCell()
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "Content");
-            s.Save("Test_Save_Simple.xml");
+            s.Save("Test_Save_StringCell.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_Simple.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet("Test_Save_StringCell.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual("Content", t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a Double cell
+        /// </summary>
+        [TestMethod]
+        public void Public_Save_DoubleCell()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "4.2");
+            s.Save("Test_Save_DoubleCell.xml");
+
+            Spreadsheet t = new Spreadsheet("Test_Save_DoubleCell.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual(4.2, t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a Formula cell
+        /// </summary>
+        [TestMethod]
+        public void Public_Save_FormulaCell()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "=4.2");
+            s.Save("Test_Save_FormulaCell.xml");
+
+            Spreadsheet t = new Spreadsheet("Test_Save_FormulaCell.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual(new Formula("4.2"), t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save multiple cells
+        /// </summary>
+        [TestMethod]
+        public void Public_Save_MultipleCells()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "Merle casts Zone of Truth!");
+            s.SetContentsOfCell("B2", "Merle cast Zone of Truth again!");
+            s.SetContentsOfCell("C3", "5.8");
+            s.SetContentsOfCell("D4", "4.2");
+            s.SetContentsOfCell("E5", "=4.2+6.7-3"); // value == 7.9
+            s.SetContentsOfCell("F6", "=D4 + C3"); // value == 10
+            s.Save("Test_Save_MultipleCells.xml");
+
+            Spreadsheet t = new Spreadsheet("Test_Save_MultipleCells.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save multiple dependencies and wont poop the bed
+        /// </summary>
+        [TestMethod]
+        public void Public_Save_MultipleDependencies()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "3.8");
+            s.SetContentsOfCell("B2", "=A1*2");
+            s.SetContentsOfCell("C3", "=A1*A1");
+            s.SetContentsOfCell("D4", "=B2+C3");
+            s.SetContentsOfCell("E5", "=D4/1"); 
+            s.SetContentsOfCell("F6", "=E5+C3"); 
+            s.Save("Test_Save_MultipleDependencies.xml");
+
+            Spreadsheet t = new Spreadsheet("Test_Save_MultipleDependencies.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
 
             foreach (String name in actual)
             {

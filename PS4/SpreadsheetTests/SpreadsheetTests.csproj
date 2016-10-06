@@ -66,7 +66,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="XMLFile1.xml" />
+    <Content Include="Test_Save_DoubleCell.xml" />
+    <Content Include="Test_Save_FormulaCell.xml" />
+    <Content Include="Test_Save_MultipleCells.xml" />
+    <Content Include="Test_Save_MultipleDependencies.xml" />
+    <Content Include="Test_Save_Simple.xml" />
+    <Content Include="Test_Save_StringCell.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
