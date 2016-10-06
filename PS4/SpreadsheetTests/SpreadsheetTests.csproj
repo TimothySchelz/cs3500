@@ -66,12 +66,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Test_Save_DoubleCell.xml" />
-    <Content Include="Test_Save_FormulaCell.xml" />
-    <Content Include="Test_Save_MultipleCells.xml" />
-    <Content Include="Test_Save_MultipleDependencies.xml" />
-    <Content Include="Test_Save_Simple.xml" />
-    <Content Include="Test_Save_StringCell.xml" />
+    <Content Include="TestFiles\Test_CellTypo.xml" />
+    <Content Include="TestFiles\Test_CircularDependency.xml" />
+    <Content Include="TestFiles\Test_ContentTypo.xml" />
+    <Content Include="TestFiles\Test_InvalidNames.xml" />
+    <Content Include="TestFiles\Test_NameTypo.xml" />
+    <Content Include="TestFiles\Test_Save_DoubleCell.xml" />
+    <Content Include="TestFiles\Test_Save_FormulaCell.xml" />
+    <Content Include="TestFiles\Test_Save_MultipleCells.xml" />
+    <Content Include="TestFiles\Test_Save_MultipleDependencies.xml" />
+    <Content Include="TestFiles\Test_Save_StringCell.xml" />
+    <Content Include="TestFiles\Test_SpreadSheetTypo.xml" />
+    <Content Include="TestFiles\Test_VersionDNE.xml" />
+    <Content Include="TestFiles\Test_VersionTypo.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

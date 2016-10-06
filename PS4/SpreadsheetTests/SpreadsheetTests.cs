@@ -162,7 +162,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_CircularDependency()
         {
-            Spreadsheet s = new Spreadsheet("Test_CircularDependency.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_CircularDependency.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_()
         {
-            Spreadsheet s = new Spreadsheet("Test_SpreadSheetTypo.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_SpreadSheetTypo.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_CellTypo()
         {
-            Spreadsheet s = new Spreadsheet("Test_CellTypo.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_CellTypo.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_NameTypo()
         {
-            Spreadsheet s = new Spreadsheet("Test_NameTypo.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_NameTypo.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_NoVersion()
         {
-            Spreadsheet s = new Spreadsheet("Test_NoVersion.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_NoVersion.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_VersionTypo()
         {
-            Spreadsheet s = new Spreadsheet("Test_VersionTypo.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_VersionTypo.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_ContentTypo()
         {
-            Spreadsheet s = new Spreadsheet("Test_ContentTypo.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_ContentTypo.xml", t => t[0] == 'A', t => t, "1");
         }
 
         /// <summary>
@@ -236,9 +236,111 @@ namespace SpreadsheetTests
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
         public void Public_4argCon_InvalidName()
         {
-            Spreadsheet s = new Spreadsheet("Test_InvalidName.xml", t => t[0] == 'A', t => t, "1");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_InvalidName.xml", t => t[0] == 'A', t => t, "1");
         }
 
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a String cell
+        /// </summary>
+        [TestMethod]
+        public void Public_4argCon_StringCell()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_StringCell.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual("Content", t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a Double cell
+        /// </summary>
+        [TestMethod]
+        public void Public_4argCon_DoubleCell()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_DoubleCell.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual(4.2, t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a Formula cell
+        /// </summary>
+        [TestMethod]
+        public void Public_4argCon_FormulaCell()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_FormulaCell.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+            Assert.AreEqual(new Formula("4.2"), t.GetCellContents("A1"));
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save multiple cells
+        /// </summary>
+        [TestMethod]
+        public void Public_4argCon_MultipleCells()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_MultipleCells.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save multiple dependencies and wont poop the bed
+        /// </summary>
+        [TestMethod]
+        public void Public_4argCon_MultipleDependencies()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_MultipleDependencies.xml", u => true, u => u, "default");
+
+            IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
+            List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
+
+            foreach (String name in actual)
+            {
+                Assert.IsTrue(expected.Remove(name));
+            }
+            Assert.IsTrue(expected.Count == 0);
+        }
+
+        /// <summary>
+        /// Makes sure it throws when the file doesn't exist
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Public_4argCon_FileDNE()
+        {
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/ThisFileDoesn'tExist.xml", u => true, u => u, "default");
+        }
 
         /*
          * GetSavedVersion Tests
@@ -247,7 +349,7 @@ namespace SpreadsheetTests
         public void Public_GetSavedVersion_CheckBasicFile()
         {
             Spreadsheet s = new Spreadsheet();
-            Assert.AreEqual("version information goes here", s.GetSavedVersion("CheckGetVersion.xml"));
+            Assert.AreEqual("version information goes here", s.GetSavedVersion(@"../../TestFiles/Test_Empty.xml"));
         }
 
         /// <summary>
@@ -264,17 +366,29 @@ namespace SpreadsheetTests
         /*
          * Save Tests
          */
-         /// <summary>
-         /// This test makes sure that the spreadsheet can properly save a String cell
-         /// </summary>
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a String cell
+        /// </summary>
+        [TestMethod]
+        public void Public_Save_BrokenFileName()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "Content");
+            s.Save(@"../../TestFiles//\/\/\/\/.xml");
+        }
+
+        /// <summary>
+        /// This test makes sure that the spreadsheet can properly save a String cell
+        /// </summary>
         [TestMethod]
         public void Public_Save_StringCell()
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "Content");
-            s.Save("Test_Save_StringCell.xml");
+            s.Save(@"../../TestFiles/Test_Save_StringCell.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_StringCell.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_StringCell.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1" };
@@ -295,9 +409,9 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "4.2");
-            s.Save("Test_Save_DoubleCell.xml");
+            s.Save(@"../../TestFiles/Test_Save_DoubleCell.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_DoubleCell.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_DoubleCell.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1" };
@@ -318,9 +432,9 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "=4.2");
-            s.Save("Test_Save_FormulaCell.xml");
+            s.Save(@"../../TestFiles/Test_Save_FormulaCell.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_FormulaCell.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_FormulaCell.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1" };
@@ -346,9 +460,9 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("D4", "4.2");
             s.SetContentsOfCell("E5", "=4.2+6.7-3"); // value == 7.9
             s.SetContentsOfCell("F6", "=D4 + C3"); // value == 10
-            s.Save("Test_Save_MultipleCells.xml");
+            s.Save(@"../../TestFiles/Test_Save_MultipleCells.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_MultipleCells.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_MultipleCells.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
@@ -373,9 +487,9 @@ namespace SpreadsheetTests
             s.SetContentsOfCell("D4", "=B2+C3");
             s.SetContentsOfCell("E5", "=D4/1"); 
             s.SetContentsOfCell("F6", "=E5+C3"); 
-            s.Save("Test_Save_MultipleDependencies.xml");
+            s.Save(@"../../TestFiles/Test_Save_MultipleDependencies.xml");
 
-            Spreadsheet t = new Spreadsheet("Test_Save_MultipleDependencies.xml", u => true, u => u, "default");
+            Spreadsheet t = new Spreadsheet(@"../../TestFiles/Test_Save_MultipleDependencies.xml", u => true, u => u, "default");
 
             IEnumerable<String> actual = t.GetNamesOfAllNonemptyCells();
             List<String> expected = new List<string> { "A1", "B2", "C3", "D4", "E5", "F6" };
@@ -526,7 +640,7 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_NotARealChange()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_Empty.xml", t => true, t => t, "version information goes here");
             s.SetContentsOfCell("A1", "contents");
             Assert.IsTrue(s.Changed);
         }
@@ -559,7 +673,7 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_NoChange3()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_Empty.xml", t => true, t => t, "version information goes here");
 
             Assert.IsFalse(s.Changed);
         }
@@ -603,7 +717,7 @@ namespace SpreadsheetTests
         [TestMethod]
         public void Public_ChangedProperty_RemoveCell()
         {
-            Spreadsheet s = new Spreadsheet("CheckGetVersion.xml", t => true, t => t, "version information goes here");
+            Spreadsheet s = new Spreadsheet(@"../../TestFiles/Test_Empty.xml", t => true, t => t, "version information goes here");
             s.SetContentsOfCell("A1", "");
             Assert.IsFalse(s.Changed);
         }
@@ -1427,6 +1541,20 @@ namespace SpreadsheetTests
             {
                 Assert.IsTrue(expected.Contains(name));
             }
+        }
+
+        /*
+         * Various other tests
+         */
+        /// <summary>
+        /// Makes that the dependencies are replaced when we write over C3
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Private_NameValidator_WeirdCharacters()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("AB$D1234", "3");
         }
 
         /// <summary>
