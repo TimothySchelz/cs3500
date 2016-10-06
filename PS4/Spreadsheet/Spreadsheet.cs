@@ -53,7 +53,8 @@ namespace SS
         }
 
         /// <summary>
-        /// 4 argument constructor.
+        /// 4 argument constructor.  Throws a SpreadsheetReadWriteException if there is any 
+        /// problem opening or reading from the file.
         /// </summary>
         /// <param name="filename">A saved Spreadsheet to load in</param>
         /// <param name="isValid">A Variable validator</param>
@@ -118,6 +119,8 @@ namespace SS
                 throw new SpreadsheetReadWriteException(e.Message);
             }
 
+
+            // Make sure Changed is set to false since the spreadsheet hasn't changed yet
             Changed = false;
         }
 
@@ -206,7 +209,7 @@ namespace SS
         /// should throw a SpreadsheetReadWriteException with an explanatory message.
         /// </summary>
         /// <param name="filename">the filelocation of the spreadsheet</param>
-        /// <returns>The version</returns>
+        /// <returns>The version of the saved file</returns>
         public override string GetSavedVersion(string filename)
         {
             //The version that wil be returned
@@ -243,6 +246,13 @@ namespace SS
             return fileVersion;
         }
 
+        /// <summary>
+        /// Writes the contents of this spreadsheet to the named file using an XML format.
+        /// 
+        /// If there are any problems opening, writing, or closing the file, the method should throw a
+        /// SpreadsheetReadWriteException with an explanatory message.
+        /// </summary>
+        /// <param name="filename">The name of the file being saved to</param>
         public override void Save(string filename)
         {
             //Try so that we can catch and throw the proper exception
@@ -492,13 +502,16 @@ namespace SS
             //Starts with looking for the '=' then trys parsing, then it puts it into a string
             if (content.Length > 0 && content[0].Equals('='))
             {
+                //set the contents to a formula
                 return SetCellContents(name, new Formula(content.Substring(1), Normalize, IsValid));
             } else if (Double.TryParse(content, out doubleContent))
             {
+                //set the contents to a double
                 SetCellContents(name, doubleContent);
                 return SetCellContents(name, doubleContent);
             } else
             {
+                //set the contents to a string
                 return SetCellContents(name, content);
             }
         }
@@ -533,7 +546,6 @@ namespace SS
 
         /// <summary>
         /// Just checks if the string is of the format of a variable.  If it is the wrong format it will throw an InvalidNameException.
-        /// This also checks a 
         /// </summary>
         /// <param name="s">The string to be checked</param>
         /// <returns>returns true if it is a valid variable.  Returns false if it is an empty string or white space</returns>
@@ -601,6 +613,12 @@ namespace SS
             }
         }
 
+        /// <summary>
+        /// A method to be used as the lookup delegate for Formula's Evaluate method.  It will throw
+        /// some exceptions but they Evaluate method should catch and deal with them.
+        /// </summary>
+        /// <param name="name">The name of the variable being looked up</param>
+        /// <returns>the douvle in the variable.  It might not actually be a double.</returns>
         internal double lookup(String name)
         {
             if (cells.ContainsKey(name) && cells[name].getValue() is double)
@@ -613,7 +631,7 @@ namespace SS
 
     /// <summary>
     /// A class to act as one cell in a spreadsheet.  It can hold either a String, a double or a Formula.
-    /// Each cell is Sort of Immutable.  The contents of a cell never change but the value will.
+    /// Each cell is sort of immutable.  The contents of a cell never change but the value will.
     /// </summary>
     internal class Cell
     {
@@ -677,7 +695,7 @@ namespace SS
         }
 
         /// <summary>
-        /// Returns the value of the contents of the string.  It can return a string douvle or FormulError.
+        /// Returns the value of the contents of the cell.  It can return a string double or FormulError.
         /// </summary>
         /// <returns>The value of the cell. Either a string, double or FormulaError</returns>
         internal object getValue()
