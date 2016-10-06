@@ -142,8 +142,8 @@ namespace SS
         public override object GetCellContents(string name)
         {
             //Normalize and validate
-            name = Normalize(name);
             NameValidator(name);
+            name = Normalize(name);
 
             //Checks if the name has been used and has a cell in it
             if (cells.ContainsKey(name))
@@ -169,8 +169,8 @@ namespace SS
         public override object GetCellValue(string name)
         {
             //Normalize and validate
-            name = Normalize(name);
             NameValidator(name);
+            name = Normalize(name);
 
             //Check if it is a cell
             if (cells.ContainsKey(name))
@@ -287,8 +287,8 @@ namespace SS
         protected override ISet<string> SetCellContents(string name, Formula formula)
         {
             //Normalize and validate
-            name = Normalize(name);
             NameValidator(name);
+            name = Normalize(name);
 
             //Check if formula is null
             if (formula == null)
@@ -369,8 +369,8 @@ namespace SS
         protected override ISet<string> SetCellContents(string name, string text)
         {
             //Normalize and validate
-            name = Normalize(name);
             NameValidator(name);
+            name = Normalize(name);
 
             //Check if text is null
             if (text == null)
@@ -420,8 +420,8 @@ namespace SS
         protected override ISet<string> SetCellContents(string name, double number)
         {
             //normalize and then validate
-            name = Normalize(name);
             NameValidator(name);
+            name = Normalize(name);
 
             //get rid of any dependees of the old cell
             depGraph.ReplaceDependees(name, new List<String>());
@@ -516,7 +516,6 @@ namespace SS
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
             //Normalize and validate
-            name = Normalize(name);
             // check if it is null for this one weird case for this one weird method.
             if (name == null)
             {
@@ -526,6 +525,7 @@ namespace SS
             }
             //chech if the name is valid
             NameValidator(name);
+            name = Normalize(name);
 
             // return dependents.
             return depGraph.GetDependents(name);

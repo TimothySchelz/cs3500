@@ -513,6 +513,7 @@ namespace SpreadsheetTests
         {
             Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t.ToUpper(), "1.0");
             s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            Assert.AreEqual("Magnus Rolls a 20!", s.GetCellValue("a1"));
         }
 
         /// <summary>
@@ -523,7 +524,8 @@ namespace SpreadsheetTests
         public void Public_GetCellValue_NormalizerValidatorCheck2()
         {
             Spreadsheet s = new Spreadsheet(t => true, t => t+"1", "1.0");
-            s.SetContentsOfCell("a", "Magnus Rolls a 20!");
+            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
+            s.GetCellValue("a");
         }
 
         /// <summary>
@@ -959,11 +961,10 @@ namespace SpreadsheetTests
         /// Makes sure that the normalizer and validator are working correctly in tandem
         /// </summary>
         [TestMethod]
-        public void Public_GetContentsOfCell_NormalizerValidatorCheck1()
+        public void Public_SetContentsOfCell_NormalizerValidatorCheck1()
         {
             Spreadsheet s = new Spreadsheet(t => t[0] == 'A', t => t.ToUpper(), "1.0");
             s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
-            Assert.AreEqual("Magnus Rolls a 20!", s.GetCellContents("a1"));
         }
 
         /// <summary>
@@ -971,11 +972,10 @@ namespace SpreadsheetTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Public_GetContentsOfCell_NormalizerValidatorCheck2()
+        public void Public_SetContentsOfCell_NormalizerValidatorCheck2()
         {
             Spreadsheet s = new Spreadsheet(t => true, t => t + "1", "1.0");
-            s.SetContentsOfCell("a1", "Magnus Rolls a 20!");
-            s.GetCellContents("a");
+            s.SetContentsOfCell("a", "Magnus Rolls a 20!");
         }
 
         /// <summary>
