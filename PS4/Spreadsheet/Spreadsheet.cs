@@ -8,7 +8,7 @@
 //           Added a new method Save.
 //           Added a new method GetSavedVersion.
 //           Added a new class SpreadsheetReadWriteException.
-//           Added IsValid, Normalize, and Version properties
+//           Added IsValid, Normalize, and Version properties 
 //           Added a constructor for AbstractSpreadsheet
 
 using System;
