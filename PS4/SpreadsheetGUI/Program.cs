@@ -46,7 +46,7 @@ namespace SpreadsheetGUI
                 // One more form is running
                 formCount++;
 
-                // When this form closes, we want to find out
+                // When this form closes, we want to find out 
                 form.FormClosed += (o, e) => { if (--formCount <= 0) ExitThread(); };
 
                 // Run the form
