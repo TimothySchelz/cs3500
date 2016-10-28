@@ -29,7 +29,7 @@ namespace SpreadsheetGUI
 
         private void makeNewForm(object sender, EventArgs e)
         {
-            //DemoApplicationContext.getAppContext().RunForm(new Form1());
+            DemoApplicationContext.getAppContext().RunForm(new Form1());
         }
 
         private void closeForm(object sender, EventArgs e)
