@@ -36,8 +36,9 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.Address = new System.Windows.Forms.Label();
+            this.ContentsBox = new System.Windows.Forms.TextBox();
+            this.SelectionLabel = new System.Windows.Forms.Label();
+            this.ValueLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.spreadsheetPanel1.Location = new System.Drawing.Point(0, 59);
             this.spreadsheetPanel1.Name = "spreadsheetPanel1";
-            this.spreadsheetPanel1.Size = new System.Drawing.Size(634, 418);
+            this.spreadsheetPanel1.Size = new System.Drawing.Size(678, 418);
             this.spreadsheetPanel1.TabIndex = 0;
             this.spreadsheetPanel1.Load += new System.EventHandler(this.spreadsheetPanel1_Load);
             // 
@@ -60,7 +61,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(634, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(678, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -80,6 +81,7 @@
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.makeNewForm);
             // 
             // saveToolStripMenuItem
             // 
@@ -98,6 +100,7 @@
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeForm);
             // 
             // helpToolStripMenuItem
             // 
@@ -105,31 +108,41 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // textBox1
+            // ContentsBox
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.ContentsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(82, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(552, 26);
-            this.textBox1.TabIndex = 2;
+            this.ContentsBox.Location = new System.Drawing.Point(245, 31);
+            this.ContentsBox.Name = "ContentsBox";
+            this.ContentsBox.Size = new System.Drawing.Size(433, 26);
+            this.ContentsBox.TabIndex = 2;
             // 
-            // Address
+            // SelectionLabel
             // 
-            this.Address.AutoSize = true;
-            this.Address.Location = new System.Drawing.Point(12, 34);
-            this.Address.Name = "Address";
-            this.Address.Size = new System.Drawing.Size(53, 20);
-            this.Address.TabIndex = 3;
-            this.Address.Text = "label1";
+            this.SelectionLabel.AutoSize = true;
+            this.SelectionLabel.Location = new System.Drawing.Point(12, 34);
+            this.SelectionLabel.Name = "SelectionLabel";
+            this.SelectionLabel.Size = new System.Drawing.Size(53, 20);
+            this.SelectionLabel.TabIndex = 3;
+            this.SelectionLabel.Text = "label1";
+            // 
+            // ValueLabel
+            // 
+            this.ValueLabel.AutoSize = true;
+            this.ValueLabel.Location = new System.Drawing.Point(71, 34);
+            this.ValueLabel.Name = "ValueLabel";
+            this.ValueLabel.Size = new System.Drawing.Size(53, 20);
+            this.ValueLabel.TabIndex = 4;
+            this.ValueLabel.Text = "label1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 477);
-            this.Controls.Add(this.Address);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(678, 477);
+            this.Controls.Add(this.ValueLabel);
+            this.Controls.Add(this.SelectionLabel);
+            this.Controls.Add(this.ContentsBox);
             this.Controls.Add(this.spreadsheetPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -152,8 +165,9 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label Address;
+        private System.Windows.Forms.TextBox ContentsBox;
+        private System.Windows.Forms.Label SelectionLabel;
+        private System.Windows.Forms.Label ValueLabel;
     }
 }
 
