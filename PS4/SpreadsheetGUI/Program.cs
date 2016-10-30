@@ -8,53 +8,7 @@ namespace SpreadsheetGUI
 {
     static class Program
     {
-        /// <summary>
-        /// Keeps track of how many top-level forms are running
-        /// </summary>
-        class DemoApplicationContext : ApplicationContext
-        {
-            // Number of open forms
-            private int formCount = 0;
-
-            // Singleton ApplicationContext
-            private static DemoApplicationContext appContext;
-
-            /// <summary>
-            /// Private constructor for singleton pattern
-            /// </summary>
-            private DemoApplicationContext()
-            {
-            }
-
-            /// <summary>
-            /// Returns the one DemoApplicationContext.
-            /// </summary>
-            public static DemoApplicationContext getAppContext()
-            {
-                if (appContext == null)
-                {
-                    appContext = new DemoApplicationContext();
-                }
-                return appContext;
-            }
-
-            /// <summary>
-            /// Runs the form
-            /// </summary>
-            public void RunForm(Form form)
-            {
-                // One more form is running
-                formCount++;
-
-                // When this form closes, we want to find out 
-                form.FormClosed += (o, e) => { if (--formCount <= 0) ExitThread(); };
-
-                // Run the form
-                form.Show();
-            }
-
-        }
-
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -69,4 +23,51 @@ namespace SpreadsheetGUI
             Application.Run(appContext);
         }
     }
-}
+
+    /// <summary>
+    /// Keeps track of how many top-level forms are running
+    /// </summary>
+    class DemoApplicationContext : ApplicationContext
+    {
+        // Number of open forms
+        private int formCount = 0;
+
+        // Singleton ApplicationContext
+        private static DemoApplicationContext appContext;
+
+        /// <summary>
+        /// Private constructor for singleton pattern
+        /// </summary>
+        private DemoApplicationContext()
+        {
+        }
+
+        /// <summary>
+        /// Returns the one DemoApplicationContext.
+        /// </summary>
+        public static DemoApplicationContext getAppContext()
+        {
+            if (appContext == null)
+            {
+                appContext = new DemoApplicationContext();
+            }
+            return appContext;
+        }
+
+        /// <summary>
+        /// Runs the form
+        /// </summary>
+        public void RunForm(Form form)
+        {
+            // One more form is running
+            formCount++;
+
+            // When this form closes, we want to find out 
+            form.FormClosed += (o, e) => { if (--formCount <= 0) ExitThread(); };
+
+            // Run the form
+            form.Show();
+        }
+    }
+
+    }

@@ -39,6 +39,7 @@
             this.ContentsBox = new System.Windows.Forms.TextBox();
             this.SelectionLabel = new System.Windows.Forms.Label();
             this.ValueLabel = new System.Windows.Forms.Label();
+            this.Enter = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,9 +48,9 @@
             this.spreadsheetPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.spreadsheetPanel1.Location = new System.Drawing.Point(0, 59);
+            this.spreadsheetPanel1.Location = new System.Drawing.Point(0, 72);
             this.spreadsheetPanel1.Name = "spreadsheetPanel1";
-            this.spreadsheetPanel1.Size = new System.Drawing.Size(678, 418);
+            this.spreadsheetPanel1.Size = new System.Drawing.Size(678, 409);
             this.spreadsheetPanel1.TabIndex = 0;
             this.spreadsheetPanel1.Load += new System.EventHandler(this.spreadsheetPanel1_Load);
             // 
@@ -79,26 +80,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.makeNewForm);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.save);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.LoadSpreadsheet);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeForm);
             // 
@@ -107,24 +110,24 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.AskForHelp);
             // 
             // ContentsBox
             // 
-            this.ContentsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.ContentsBox.Location = new System.Drawing.Point(245, 31);
             this.ContentsBox.Name = "ContentsBox";
-            this.ContentsBox.Size = new System.Drawing.Size(433, 26);
+            this.ContentsBox.Size = new System.Drawing.Size(351, 26);
             this.ContentsBox.TabIndex = 2;
+            this.ContentsBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
             // 
             // SelectionLabel
             // 
             this.SelectionLabel.AutoSize = true;
             this.SelectionLabel.Location = new System.Drawing.Point(12, 34);
             this.SelectionLabel.Name = "SelectionLabel";
-            this.SelectionLabel.Size = new System.Drawing.Size(53, 20);
+            this.SelectionLabel.Size = new System.Drawing.Size(29, 20);
             this.SelectionLabel.TabIndex = 3;
-            this.SelectionLabel.Text = "label1";
+            this.SelectionLabel.Text = "A1";
             // 
             // ValueLabel
             // 
@@ -135,11 +138,22 @@
             this.ValueLabel.TabIndex = 4;
             this.ValueLabel.Text = "label1";
             // 
+            // Enter
+            // 
+            this.Enter.Location = new System.Drawing.Point(602, 31);
+            this.Enter.Name = "Enter";
+            this.Enter.Size = new System.Drawing.Size(75, 35);
+            this.Enter.TabIndex = 5;
+            this.Enter.Text = "Update";
+            this.Enter.UseVisualStyleBackColor = true;
+            this.Enter.Click += new System.EventHandler(this.updateCells);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(678, 477);
+            this.Controls.Add(this.Enter);
             this.Controls.Add(this.ValueLabel);
             this.Controls.Add(this.SelectionLabel);
             this.Controls.Add(this.ContentsBox);
@@ -168,6 +182,7 @@
         private System.Windows.Forms.TextBox ContentsBox;
         private System.Windows.Forms.Label SelectionLabel;
         private System.Windows.Forms.Label ValueLabel;
+        private System.Windows.Forms.Button Enter;
     }
 }
 
