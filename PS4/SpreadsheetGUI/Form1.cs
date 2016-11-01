@@ -190,6 +190,12 @@ namespace SpreadsheetGUI
             {
                 changedCells = guts.SetContentsOfCell(name, contents);
             }
+            catch(CircularException error)
+            {
+                MessageBox.Show("The entered formula creates a circular dependency.  Make sure your formula"+
+                    " does not depend on the cell it is in.");
+                return;
+            }
             catch(FormulaFormatException error)
             {
                 MessageBox.Show(error.Message);
@@ -212,14 +218,8 @@ namespace SpreadsheetGUI
 
                 //Updates value label
                 ValueLabel.Text = "" + value;
-                int row, col;
 
-                //Update's the display of all cells in the spreadsheet panel.
-                foreach (string cell in changedCells)
-                {
-                    nameToCoordinate(cell, out row, out col);
-                    spreadsheetPanel1.SetValue(col, row, "" + guts.GetCellValue(cell));
-                }
+                updateSpreadsheetCells(changedCells);
             }
 
         }

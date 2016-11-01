@@ -314,17 +314,17 @@ namespace SS
             if (cells.ContainsKey(name))
             {
                 old = cells[name].getContents();
+
+                //remove old thing from the hashmap
+                cells.Remove(name);
+
+                //get rid of any dependees of the old cell and replace them with the new ones
+                depGraph.ReplaceDependees(name, formula.GetVariables());
             }
             else
             {
                 old = "";
             }
-
-            //remove old thing from the hashmap
-            cells.Remove(name);
-
-            //get rid of any dependees of the old cell and replace them with the new ones
-            depGraph.ReplaceDependees(name, formula.GetVariables());
 
             //create a new cell and add it to cells
             cells.Add(name, new Cell(name, formula));
