@@ -296,13 +296,13 @@ namespace GUITests
         /// <summary>
         /// Launch '%USERPROFILE%\Source\Repos\CS3500Assignments\PS4\SpreadsheetGUI\bin\Debug\SpreadsheetGUI.exe'
         /// </summary>
-        public string ExePath = "C:\\Users\\TimothySchelz\\Source\\Repos\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debu" +
+        public string ExePath = @"..\\..\\..\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debu" +
             "g\\SpreadsheetGUI.exe";
         
         /// <summary>
         /// Launch '%USERPROFILE%\Source\Repos\CS3500Assignments\PS4\SpreadsheetGUI\bin\Debug\SpreadsheetGUI.exe'
         /// </summary>
-        public string AlternateExePath = "%USERPROFILE%\\Source\\Repos\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
+        public string AlternateExePath = @"..\\..\\..\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
             "heetGUI.exe";
         #endregion
     }
