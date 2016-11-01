@@ -99,6 +99,61 @@ namespace GUITests
             Assert.AreEqual(this.CheckFocusA1ExpectedValues.UIA1TextDisplayText, uIA1Text.DisplayText, "The focused cell is incorrect");
         }
         
+        /// <summary>
+        /// Checks to make sure that the contentBox has Hello in it
+        /// </summary>
+        public void CheckContentBox()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+            Assert.AreEqual(this.CheckContentBoxExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "This should be Hello");
+        }
+        
+        /// <summary>
+        /// Overwrites A1 with "Goodby"
+        /// </summary>
+        public void OverwriteA1()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuBar uIMenuStrip1MenuBar = this.UINewSpreadsheetsprdWindow.UIMenuStrip1Window.UIMenuStrip1MenuBar;
+            WinText uIGoodbyeText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIGoodbyeText;
+            #endregion
+
+            // Move 'ContentsBox' text box to 'menuStrip1' menu bar
+            uIMenuStrip1MenuBar.EnsureClickable(new Point(114, 22));
+            Mouse.StartDragging(uIContentsBoxEdit, new Point(12, 0));
+            Mouse.StopDragging(uIMenuStrip1MenuBar, new Point(114, 22));
+
+            // Click 'menuStrip1' menu bar
+            Mouse.Click(uIMenuStrip1MenuBar, new Point(92, 23));
+
+            // Type 'Goodbye' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.OverwriteA1Params.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.OverwriteA1Params.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'Goodbye' label
+            Mouse.Click(uIGoodbyeText, new Point(20, 9));
+        }
+        
+        /// <summary>
+        /// makes sure Hello was overwritten with Goodbye in A1
+        /// </summary>
+        public void CheckOverwirteWorked()
+        {
+            #region Variable Declarations
+            WinText uIGoodbyeText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIGoodbyeText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Goodbye' label equals 'Goodbye'
+            Assert.AreEqual(this.CheckOverwirteWorkedExpectedValues.UIGoodbyeTextDisplayText, uIGoodbyeText.DisplayText, "It should now be Goodbye");
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -148,6 +203,42 @@ namespace GUITests
             }
         }
         
+        public virtual CheckContentBoxExpectedValues CheckContentBoxExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckContentBoxExpectedValues == null))
+                {
+                    this.mCheckContentBoxExpectedValues = new CheckContentBoxExpectedValues();
+                }
+                return this.mCheckContentBoxExpectedValues;
+            }
+        }
+        
+        public virtual OverwriteA1Params OverwriteA1Params
+        {
+            get
+            {
+                if ((this.mOverwriteA1Params == null))
+                {
+                    this.mOverwriteA1Params = new OverwriteA1Params();
+                }
+                return this.mOverwriteA1Params;
+            }
+        }
+        
+        public virtual CheckOverwirteWorkedExpectedValues CheckOverwirteWorkedExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckOverwirteWorkedExpectedValues == null))
+                {
+                    this.mCheckOverwirteWorkedExpectedValues = new CheckOverwirteWorkedExpectedValues();
+                }
+                return this.mCheckOverwirteWorkedExpectedValues;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -181,6 +272,12 @@ namespace GUITests
         private UpdateCheckedByValueLabelExpectedValues mUpdateCheckedByValueLabelExpectedValues;
         
         private CheckFocusA1ExpectedValues mCheckFocusA1ExpectedValues;
+        
+        private CheckContentBoxExpectedValues mCheckContentBoxExpectedValues;
+        
+        private OverwriteA1Params mOverwriteA1Params;
+        
+        private CheckOverwirteWorkedExpectedValues mCheckOverwirteWorkedExpectedValues;
         
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
@@ -252,6 +349,56 @@ namespace GUITests
         /// Verify that the 'DisplayText' property of 'A1' label equals 'A1'
         /// </summary>
         public string UIA1TextDisplayText = "A1";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckContentBox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckContentBoxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'OverwriteA1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OverwriteA1Params
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Goodbye' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Goodbye";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckOverwirteWorked'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckOverwirteWorkedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Goodbye' label equals 'Goodbye'
+        /// </summary>
+        public string UIGoodbyeTextDisplayText = "Goodbye";
         #endregion
     }
     
@@ -328,6 +475,18 @@ namespace GUITests
                 return this.mUIA1Window;
             }
         }
+        
+        public UIMenuStrip1Window UIMenuStrip1Window
+        {
+            get
+            {
+                if ((this.mUIMenuStrip1Window == null))
+                {
+                    this.mUIMenuStrip1Window = new UIMenuStrip1Window(this);
+                }
+                return this.mUIMenuStrip1Window;
+            }
+        }
         #endregion
         
         #region Fields
@@ -340,6 +499,8 @@ namespace GUITests
         private UINewSpreadsheetsprdTitleBar mUINewSpreadsheetsprdTitleBar;
         
         private UIA1Window mUIA1Window;
+        
+        private UIMenuStrip1Window mUIMenuStrip1Window;
         #endregion
     }
     
@@ -443,10 +604,28 @@ namespace GUITests
                 return this.mUIHelloText;
             }
         }
+        
+        public WinText UIGoodbyeText
+        {
+            get
+            {
+                if ((this.mUIGoodbyeText == null))
+                {
+                    this.mUIGoodbyeText = new WinText(this);
+                    #region Search Criteria
+                    this.mUIGoodbyeText.SearchProperties[WinText.PropertyNames.Name] = "Goodbye";
+                    this.mUIGoodbyeText.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIGoodbyeText;
+            }
+        }
         #endregion
         
         #region Fields
         private WinText mUIHelloText;
+        
+        private WinText mUIGoodbyeText;
         #endregion
     }
     
@@ -518,6 +697,42 @@ namespace GUITests
         
         #region Fields
         private WinText mUIA1Text;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIMenuStrip1Window : WinWindow
+    {
+        
+        public UIMenuStrip1Window(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "menuStrip1";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinMenuBar UIMenuStrip1MenuBar
+        {
+            get
+            {
+                if ((this.mUIMenuStrip1MenuBar == null))
+                {
+                    this.mUIMenuStrip1MenuBar = new WinMenuBar(this);
+                    #region Search Criteria
+                    this.mUIMenuStrip1MenuBar.SearchProperties[WinMenu.PropertyNames.Name] = "menuStrip1";
+                    this.mUIMenuStrip1MenuBar.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIMenuStrip1MenuBar;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinMenuBar mUIMenuStrip1MenuBar;
         #endregion
     }
     

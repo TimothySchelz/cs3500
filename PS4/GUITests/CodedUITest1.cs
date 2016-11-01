@@ -23,7 +23,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void EnterContentsCheckValueLabel()
+        public void UpdateContentsCheckValueLabel()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
@@ -32,11 +32,30 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void EnterContentsCheckNameLabel()
+        public void UpdateContentsCheckNameLabel()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
             this.UIMap.CheckFocusA1();
+            this.UIMap.Xout(); 
+        }
+
+        [TestMethod]
+        public void UpdateContentsCheckContentsBox()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.EnterContents();
+            this.UIMap.CheckContentBox();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void UpdateOverwriteContents()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.EnterContents();
+            this.UIMap.OverwriteA1();
+            this.UIMap.CheckOverwirteWorked();
             this.UIMap.Xout();
         }
 
