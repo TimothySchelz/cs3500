@@ -12,14 +12,25 @@ using System.Windows.Forms;
 
 namespace SpreadsheetGUI
 {
-
+    /// <summary>
+    /// A windowed GUI for a single26x99 spreadsheet.
+    /// </summary>
     public partial class Form1 : Form
     {
         
+        //Back end utility for handling cell values
         private Spreadsheet guts;
+
+        //Restrictions on the backend cells (names only range from A1 - Z99)
         private Func<string, bool> validator;
+
+        //Name of current spreadsheet
         private string filename;
 
+        /// <summary>
+        /// Creates a new windowed spreadsheet with all cells empty and "NewSpreadsheet.sprd"
+        /// as the file name.
+        /// </summary>
         public Form1()
         {
             validator = delegate (string s)
@@ -44,12 +55,17 @@ namespace SpreadsheetGUI
 
             InitializeComponent();
 
+            //Initializes selection and filename
             panelSetUp("NewSpreadsheet.sprd");
 
             //Set the minimum size of the window.
             this.MinimumSize = new Size(200, 200);
         }
 
+        /// <summary>
+        /// Initializes selection information and filename for a spreadsheet.
+        /// </summary>
+        /// <param name="filename"></param>
         private void panelSetUp(String filename)
         {
             spreadsheetPanel1.SelectionChanged += displaySelection;
@@ -65,50 +81,22 @@ namespace SpreadsheetGUI
 
         }
 
+        /// <summary>
+        /// Runs a new windowed spreadsheet in the current program context.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void makeNewForm(object sender, EventArgs e)
         {
             DemoApplicationContext.getAppContext().RunForm(new Form1());
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            closeForm(this , e);
-        }
 
-        private void closeForm(object sender, EventArgs e)
-        {
-            if (guts.Changed)
-            {
-                string messageBoxText = "Do you want to save changes?";
-                string caption = "There are unsaved changes.";
-                MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
-                MessageBoxIcon icon = MessageBoxIcon.Warning;
-
-                DialogResult result = MessageBox.Show(messageBoxText, caption, buttons, icon);
-
-                switch (result)
-                {
-                    case DialogResult.Yes:
-                        save(sender, e);
-                        Close();
-                        break;
-
-                    case DialogResult.No:
-                        break;
-
-                    case DialogResult.Cancel:
-                        if(e is FormClosingEventArgs)
-                        {
-                            FormClosingEventArgs closingEvent = (FormClosingEventArgs)e;
-                            closingEvent.Cancel = true;
-                        }
-                        break;
-                }
-            }
-
-        }
-
+        /// <summary>
+        /// Updates the display for cell value, contents, and address. Also redirects GUI focus to
+        /// the contents box for quickly updating many cells.
+        /// </summary>
+        /// <param name="ss"></param>
         private void displaySelection(SpreadsheetPanel ss)
         {
 
@@ -120,12 +108,13 @@ namespace SpreadsheetGUI
 
             string colName = valueToName(col+1);
 
+            //Updates address label and value label.
             SelectionLabel.Text = colName + (row+1);
             ValueLabel.Text = value;
 
             ContentsBox.Focus();
 
-            
+            //Updates contents box
             string name = valueToName(col+1) + (row+1);
             contents = ContentsToString(guts.GetCellContents(name));
             ContentsBox.Text = contents;
@@ -149,6 +138,12 @@ namespace SpreadsheetGUI
             }
         }
 
+
+        /// <summary>
+        /// Transforms the unicode value of a column index to its corrisponding alphabetical letter.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
         private string valueToName(int col)
         {
             double colVal = col;
@@ -159,6 +154,13 @@ namespace SpreadsheetGUI
             return "" + (char)(colVal);
         }
 
+        /// <summary>
+        /// Transforms a cell name to coodrinates for the spreadsheet panel. The indicies "row" and "col" are
+        /// updated as out variables.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
         private void nameToCoordinate(string name, out int row, out int col)
         {
 
@@ -168,13 +170,21 @@ namespace SpreadsheetGUI
             row--;
         }
 
+        /// <summary>
+        /// Updates a cell's contents and the contents of all dependent cells
+        /// after the user changes the value in the contents box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateCells(object sender, EventArgs e)
         {
             string contents = ContentsBox.Text;
             string name = SelectionLabel.Text;
 
+            //Store original contents in case an error is made.
             string originalContents = ContentsToString(guts.GetCellContents(name));
 
+            //Sets the new contents of all affected cells.
             ISet<string> changedCells = new HashSet<string>();
             try
             {
@@ -186,8 +196,11 @@ namespace SpreadsheetGUI
                 return;
             }
 
+            //Attempts to evaluate inital updated cell
             object value = guts.GetCellValue(name);
 
+            //If a formula error occurs in evalutation, the error discription is displayed.
+            //Otherwise, updates the value labels in the spreadsheet.
             if (value is FormulaError)
             {
                 guts.SetContentsOfCell(name, originalContents);
@@ -197,9 +210,11 @@ namespace SpreadsheetGUI
             }
             else {
 
+                //Updates value label
                 ValueLabel.Text = "" + value;
                 int row, col;
 
+                //Update's the display of all cells in the spreadsheet panel.
                 foreach (string cell in changedCells)
                 {
                     nameToCoordinate(cell, out row, out col);
@@ -224,10 +239,13 @@ namespace SpreadsheetGUI
             }
         }
 
+        /// <summary>
+        /// Listens for a key to be pressed and controls the spreadsheet accordingly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void keyPressed(object sender, KeyPressEventArgs e)
         {
-           
-
             switch (e.KeyChar)
             {
 
@@ -238,17 +256,24 @@ namespace SpreadsheetGUI
                 
 
             }
-
         }
 
+        /// <summary>
+        /// Saves the current state of the spreadsheet.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void save(object sender, EventArgs e)
         {
+            //Prompts the user to save
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = "Sreadsheet Files|*.sprd|All Files|*.*";
             saveDialog.Title = "Save";
             saveDialog.FileName = filename;
             saveDialog.ShowDialog();
 
+            //If the User names the file an empty string, reports an error.
+            //Otherwise, saves the spreadsheet with entered name.
             if(saveDialog.FileName != "")
             {
                 guts.Save(saveDialog.FileName);
@@ -262,35 +287,50 @@ namespace SpreadsheetGUI
 
         }
 
+        /// <summary>
+        /// Runs an file open dialog for the user, allowing them to browse and open
+        /// any .sprd file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadSpreadsheet(object sender, EventArgs e)
         {
+            //Opens dialog for the user
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Sreadsheet Files|*.sprd|All Files|*.*";
             openDialog.Title = "Open a Spreadsheet";
             String file;
 
+            //Executes if the user has made a selection.
             if(openDialog.ShowDialog() == DialogResult.OK)
             {
                 file = openDialog.FileName;
 
                 Spreadsheet intermediateGuts;
+
                 try
                 {
+                    //Attempts to construct a new internal spreadsheet representation
                     intermediateGuts = new Spreadsheet(file, validator, s => s.ToUpper(), "ps6");
                 } catch (SpreadsheetReadWriteException error)
                 {
+                    //If file loading is not sucessful, displays a message and exits dialog.
                     MessageBox.Show(error.Message);
                     return;
                 }
 
+                //Gets all cells in the old spreadsheet that were not empty
+                //They must be updated in the display.
                 HashSet<String> cellsToUpdate = new HashSet<string>();
                 foreach(String cell in guts.GetNamesOfAllNonemptyCells())
                 {
                     cellsToUpdate.Add(cell);
                 }
 
+                //Our current internal representation is updated.
                 guts = intermediateGuts;
 
+                //Gets all cells in the new spreadsheet that are not empty.
                 foreach (String cell in guts.GetNamesOfAllNonemptyCells())
                 {
                     cellsToUpdate.Add(cell);
@@ -299,14 +339,63 @@ namespace SpreadsheetGUI
                 this.filename = file;
                 this.Text = filename;
 
+                //Updates all changed cells in the display.
                 updateSpreadsheetCells(cellsToUpdate);
             }
             
         }
 
+        /// <summary>
+        /// Breif instruction is provided to the user if they select "Help".
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AskForHelp(object sender, EventArgs e)
         {
             MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the cell.");
+        }
+
+        /// <summary>
+        /// Handler for when the user tries to close the form.  Checks to see if they want to save any unsaved changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tryToClose(object sender, FormClosingEventArgs e)
+        {
+
+            if (guts.Changed)
+            {
+                //Creates the warning, prompts user to save
+                string messageBoxTxt = "Do you want to save changes?";
+                string caption = "There are unsaved changes.";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
+                MessageBoxIcon icon = MessageBoxIcon.Warning;
+
+                DialogResult result = MessageBox.Show(messageBoxTxt, caption, buttons, icon);
+
+                switch (result)
+                {
+
+                    //Closes after saving
+                    case DialogResult.Yes:
+                        save(sender, e);
+                        break;
+
+                    //Closes without saving
+                    case DialogResult.No:
+                        break;
+
+                    //Does not close
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }
+        }
+
+        private void closeFromMenu(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
