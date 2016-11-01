@@ -1,4 +1,8 @@
-﻿namespace SpreadsheetGUI
+﻿/*
+ * Authored by Gray Marchese, u, and Timothy Schelz, u0851027 
+ * November, 2016 
+ */
+namespace SpreadsheetGUI
 {
     partial class Form1
     {
