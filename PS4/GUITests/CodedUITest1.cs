@@ -23,9 +23,21 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void CodedUITestMethod1()
+        public void EnterContentsCheckValueLabel()
         {
-            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.EnterContents();
+            this.UIMap.UpdateCheckedByValueLabel();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void EnterContentsCheckNameLabel()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.EnterContents();
+            this.UIMap.CheckFocusA1();
+            this.UIMap.Xout();
         }
 
         #region Additional test attributes
@@ -64,5 +76,20 @@ namespace GUITests
             }
         }
         private TestContext testContextInstance;
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if ((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

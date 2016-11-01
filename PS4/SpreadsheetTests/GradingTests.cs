@@ -10,6 +10,7 @@ using System.Xml;
 namespace SpreadsheetTester
 {
 
+#if false
     /// <summary>
     ///This is a test class for SpreadsheetTest and is intended
     ///to contain all SpreadsheetTest Unit Tests
@@ -37,7 +38,7 @@ namespace SpreadsheetTester
             }
         }
 
-        #region Additional test attributes
+#region Additional test attributes
         // 
         //You can use the following additional attributes as you write your tests:
         //
@@ -65,7 +66,7 @@ namespace SpreadsheetTester
         //{
         //}
         //
-        #endregion
+#endregion
 
         // Verifies cells and their values, which must alternate.
         public void VV(AbstractSpreadsheet sheet, params object[] constraints)
@@ -735,4 +736,5 @@ namespace SpreadsheetTester
         }
 
     }
+#endif
 }
