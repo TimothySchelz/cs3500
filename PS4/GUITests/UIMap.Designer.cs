@@ -154,6 +154,286 @@ namespace GUITests
             Assert.AreEqual(this.CheckOverwirteWorkedExpectedValues.UIGoodbyeTextDisplayText, uIGoodbyeText.DisplayText, "It should now be Goodbye");
         }
         
+        /// <summary>
+        /// Opens a second spreadsheet off of an empty spreadsheet.
+        /// </summary>
+        public void OpenSecondSpreadsheet()
+        {
+            #region Variable Declarations
+            WinMenuItem uINewMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UINewMenuItem;
+            #endregion
+
+            // Click 'File' -> 'New' menu item
+            Mouse.Click(uINewMenuItem, new Point(29, 12));
+        }
+        
+        /// <summary>
+        /// checks that the contents box on the second spreadsheet is empty
+        /// </summary>
+        public void CheckEmptyContentsOnSecondSpreadsheet()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow1.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals ''
+            Assert.AreEqual(this.CheckEmptyContentsOnSecondSpreadsheetExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "the contents box should be empty");
+        }
+        
+        /// <summary>
+        /// Closes 2 empty spreadsheets
+        /// </summary>
+        public void Close2EmptySpreadsheets()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(21, 11));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(30, 11));
+        }
+        
+        /// <summary>
+        /// Puts a value into the first spreadsheet and then uses new to open another spreadsheet.
+        /// </summary>
+        public void InputInSS1AndOpenSS2()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uIUpdateButton = this.UINewSpreadsheetsprdWindow.UIUpdateWindow1.UIUpdateButton;
+            WinMenuItem uINewMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UINewMenuItem;
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow1.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.InputInSS1AndOpenSS2Params.UIContentsBoxEditText;
+
+            // Click 'ContentsBox' text box
+            Mouse.Click(uIContentsBoxEdit, new Point(115, 9));
+
+            // Click 'Update' button
+            Mouse.Click(uIUpdateButton, new Point(36, 9));
+
+            // Click 'File' -> 'New' menu item
+            Mouse.Click(uINewMenuItem, new Point(32, 2));
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(76, 40));
+        }
+        
+        /// <summary>
+        /// Checks to make sure the new spreadsheet doesn't have an entry in A1 and the old SS has "Hello" there.
+        /// </summary>
+        public void CheckContentsOfOldAndNewSS()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow1.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinEdit uIContentsBoxEdit1 = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals ''
+            Assert.AreEqual(this.CheckContentsOfOldAndNewSSExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "There should be nothing in the new Spreadsheet");
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+            Assert.AreEqual(this.CheckContentsOfOldAndNewSSExpectedValues.UIContentsBoxEditText1, uIContentsBoxEdit1.Text, "Old Spreadhseet should still have hello in the contents");
+        }
+        
+        /// <summary>
+        /// closes the spreadsheets
+        /// </summary>
+        public void CloseSpreadsheets()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow1.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uICloseButton1 = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(20, 11));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton1, new Point(30, 16));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(37, 15));
+        }
+        
+        /// <summary>
+        /// Opens a second spreadsheet and then enters Hello into A1 in SS2 and Goodbye into B1 in SS1.
+        /// </summary>
+        public void OpenSecondSSAndEnterValues()
+        {
+            #region Variable Declarations
+            WinMenuItem uINewMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UINewMenuItem;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow1.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uIUpdateButton = this.UINewSpreadsheetsprdWindow1.UIUpdateWindow.UIUpdateButton;
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit1 = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uIUpdateButton1 = this.UINewSpreadsheetsprdWindow.UIUpdateWindow1.UIUpdateButton;
+            #endregion
+
+            // Click 'File' -> 'New' menu item
+            Mouse.Click(uINewMenuItem, new Point(66, 11));
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.OpenSecondSSAndEnterValuesParams.UIContentsBoxEditText;
+
+            // Click 'Update' button
+            Mouse.Click(uIUpdateButton, new Point(41, 7));
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(134, 35));
+
+            // Type 'Goodbye' in 'ContentsBox' text box
+            uIContentsBoxEdit1.Text = this.OpenSecondSSAndEnterValuesParams.UIContentsBoxEditText1;
+
+            // Click 'Update' button
+            Mouse.Click(uIUpdateButton1, new Point(9, 8));
+        }
+        
+        /// <summary>
+        /// Makes sure that the entries in one spreadsheet are not copied over to another spreadsheet.  i.e. they are seperate spreadsheets.
+        /// </summary>
+        public void CheckSS1B2AndSS2A1()
+        {
+            #region Variable Declarations
+            WinText uIB1Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UIB1Text;
+            WinText uIGoodbyeText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIGoodbyeText;
+            WinText uIA1Text = this.UINewSpreadsheetsprdWindow1.UIA1Window.UIA1Text;
+            WinText uIHelloText = this.UINewSpreadsheetsprdWindow1.UIHelloWindow.UIHelloText;
+            #endregion
+
+            // Verify that the 'Name' property of 'B1' label equals 'B1'
+            Assert.AreEqual(this.CheckSS1B2AndSS2A1ExpectedValues.UIB1TextName, uIB1Text.Name, "Makes sure we are looking at cell B1 in SS1");
+
+            // Verify that the 'DisplayText' property of 'Goodbye' label equals 'Goodbye'
+            Assert.AreEqual(this.CheckSS1B2AndSS2A1ExpectedValues.UIGoodbyeTextDisplayText, uIGoodbyeText.DisplayText, "Makes sure the value is Goodbye in B1 in SS1");
+
+            // Verify that the 'DisplayText' property of 'A1' label equals 'A1'
+            Assert.AreEqual(this.CheckSS1B2AndSS2A1ExpectedValues.UIA1TextDisplayText, uIA1Text.DisplayText, "Makes sure we are looking at A1 in SS2");
+
+            // Verify that the 'DisplayText' property of 'Hello' label equals 'Hello'
+            Assert.AreEqual(this.CheckSS1B2AndSS2A1ExpectedValues.UIHelloTextDisplayText, uIHelloText.DisplayText, "Makes sure the value of A1 is correct in SS2");
+        }
+        
+        /// <summary>
+        /// Closes both windows
+        /// </summary>
+        public void Closing()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            WinButton uICloseButton1 = this.UINewSpreadsheetsprdWindow1.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(27, 22));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(47, 20));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton1, new Point(38, 6));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(5, 18));
+        }
+        
+        /// <summary>
+        /// Opens a new window and then closes the original window.
+        /// </summary>
+        public void OpenNewCloseOriginal()
+        {
+            #region Variable Declarations
+            WinMenuItem uINewMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UINewMenuItem;
+            WinTitleBar uINewSpreadsheetsprdTitleBar = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'File' -> 'New' menu item
+            Mouse.Click(uINewMenuItem, new Point(37, 6));
+
+            // Click 'NewSpreadsheet.sprd' title bar
+            Mouse.Click(uINewSpreadsheetsprdTitleBar, new Point(91, 4));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(13, 15));
+        }
+        
+        /// <summary>
+        /// Makes sure the second window is still open.
+        /// </summary>
+        public void SecondWindowExists()
+        {
+            #region Variable Declarations
+            WinWindow uINewSpreadsheetsprdWindow = this.UINewSpreadsheetsprdWindow;
+            #endregion
+
+            // Verify that the 'Name' property of 'NewSpreadsheet.sprd' window equals 'NewSpreadsheet.sprd'
+            Assert.AreEqual(this.SecondWindowExistsExpectedValues.UINewSpreadsheetsprdWindowName, uINewSpreadsheetsprdWindow.Name, "This window Doesn\'t Exist!  You have a problem.");
+        }
+        
+        /// <summary>
+        /// closes the second window
+        /// </summary>
+        public void CloseSecond()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(35, 10));
+        }
+        
+        /// <summary>
+        /// Opens the help Pop up
+        /// </summary>
+        public void OpenHelp()
+        {
+            #region Variable Declarations
+            WinMenuItem uIHelpMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIHelpMenuItem;
+            #endregion
+
+            // Click 'Help' menu item
+            Mouse.Click(uIHelpMenuItem, new Point(35, 11));
+        }
+        
+        /// <summary>
+        /// checks the text of the help popup.  This text may change later and this test will need to be fixed.
+        /// </summary>
+        public void CheckHelpText()
+        {
+            #region Variable Declarations
+            WinText uIClickonanycellwithyoText = this.UIClickonanycellwithyoWindow.UIClickonanycellwithyoText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Click on any cell with your mouse to select it. At...' label equals 'Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit "Update" or type ENTER to update the contents of the cell.'
+            Assert.AreEqual(this.CheckHelpTextExpectedValues.UIClickonanycellwithyoTextDisplayText, uIClickonanycellwithyoText.DisplayText, "This should display the correct information.");
+        }
+        
+        /// <summary>
+        /// Closes the help popup and the SS.
+        /// </summary>
+        public void CloseHelpandWindow()
+        {
+            #region Variable Declarations
+            WinButton uIOKButton = this.UIOKWindow.UIOKButton;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(uIOKButton, new Point(45, 0));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(30, 18));
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -239,6 +519,90 @@ namespace GUITests
             }
         }
         
+        public virtual CheckEmptyContentsOnSecondSpreadsheetExpectedValues CheckEmptyContentsOnSecondSpreadsheetExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckEmptyContentsOnSecondSpreadsheetExpectedValues == null))
+                {
+                    this.mCheckEmptyContentsOnSecondSpreadsheetExpectedValues = new CheckEmptyContentsOnSecondSpreadsheetExpectedValues();
+                }
+                return this.mCheckEmptyContentsOnSecondSpreadsheetExpectedValues;
+            }
+        }
+        
+        public virtual InputInSS1AndOpenSS2Params InputInSS1AndOpenSS2Params
+        {
+            get
+            {
+                if ((this.mInputInSS1AndOpenSS2Params == null))
+                {
+                    this.mInputInSS1AndOpenSS2Params = new InputInSS1AndOpenSS2Params();
+                }
+                return this.mInputInSS1AndOpenSS2Params;
+            }
+        }
+        
+        public virtual CheckContentsOfOldAndNewSSExpectedValues CheckContentsOfOldAndNewSSExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckContentsOfOldAndNewSSExpectedValues == null))
+                {
+                    this.mCheckContentsOfOldAndNewSSExpectedValues = new CheckContentsOfOldAndNewSSExpectedValues();
+                }
+                return this.mCheckContentsOfOldAndNewSSExpectedValues;
+            }
+        }
+        
+        public virtual OpenSecondSSAndEnterValuesParams OpenSecondSSAndEnterValuesParams
+        {
+            get
+            {
+                if ((this.mOpenSecondSSAndEnterValuesParams == null))
+                {
+                    this.mOpenSecondSSAndEnterValuesParams = new OpenSecondSSAndEnterValuesParams();
+                }
+                return this.mOpenSecondSSAndEnterValuesParams;
+            }
+        }
+        
+        public virtual CheckSS1B2AndSS2A1ExpectedValues CheckSS1B2AndSS2A1ExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckSS1B2AndSS2A1ExpectedValues == null))
+                {
+                    this.mCheckSS1B2AndSS2A1ExpectedValues = new CheckSS1B2AndSS2A1ExpectedValues();
+                }
+                return this.mCheckSS1B2AndSS2A1ExpectedValues;
+            }
+        }
+        
+        public virtual SecondWindowExistsExpectedValues SecondWindowExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mSecondWindowExistsExpectedValues == null))
+                {
+                    this.mSecondWindowExistsExpectedValues = new SecondWindowExistsExpectedValues();
+                }
+                return this.mSecondWindowExistsExpectedValues;
+            }
+        }
+        
+        public virtual CheckHelpTextExpectedValues CheckHelpTextExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckHelpTextExpectedValues == null))
+                {
+                    this.mCheckHelpTextExpectedValues = new CheckHelpTextExpectedValues();
+                }
+                return this.mCheckHelpTextExpectedValues;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -262,6 +626,42 @@ namespace GUITests
                 return this.mUIThereareunsavedchangWindow;
             }
         }
+        
+        public UINewSpreadsheetsprdWindow1 UINewSpreadsheetsprdWindow1
+        {
+            get
+            {
+                if ((this.mUINewSpreadsheetsprdWindow1 == null))
+                {
+                    this.mUINewSpreadsheetsprdWindow1 = new UINewSpreadsheetsprdWindow1();
+                }
+                return this.mUINewSpreadsheetsprdWindow1;
+            }
+        }
+        
+        public UIClickonanycellwithyoWindow UIClickonanycellwithyoWindow
+        {
+            get
+            {
+                if ((this.mUIClickonanycellwithyoWindow == null))
+                {
+                    this.mUIClickonanycellwithyoWindow = new UIClickonanycellwithyoWindow();
+                }
+                return this.mUIClickonanycellwithyoWindow;
+            }
+        }
+        
+        public UIOKWindow UIOKWindow
+        {
+            get
+            {
+                if ((this.mUIOKWindow == null))
+                {
+                    this.mUIOKWindow = new UIOKWindow();
+                }
+                return this.mUIOKWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -279,9 +679,29 @@ namespace GUITests
         
         private CheckOverwirteWorkedExpectedValues mCheckOverwirteWorkedExpectedValues;
         
+        private CheckEmptyContentsOnSecondSpreadsheetExpectedValues mCheckEmptyContentsOnSecondSpreadsheetExpectedValues;
+        
+        private InputInSS1AndOpenSS2Params mInputInSS1AndOpenSS2Params;
+        
+        private CheckContentsOfOldAndNewSSExpectedValues mCheckContentsOfOldAndNewSSExpectedValues;
+        
+        private OpenSecondSSAndEnterValuesParams mOpenSecondSSAndEnterValuesParams;
+        
+        private CheckSS1B2AndSS2A1ExpectedValues mCheckSS1B2AndSS2A1ExpectedValues;
+        
+        private SecondWindowExistsExpectedValues mSecondWindowExistsExpectedValues;
+        
+        private CheckHelpTextExpectedValues mCheckHelpTextExpectedValues;
+        
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
         private UIThereareunsavedchangWindow mUIThereareunsavedchangWindow;
+        
+        private UINewSpreadsheetsprdWindow1 mUINewSpreadsheetsprdWindow1;
+        
+        private UIClickonanycellwithyoWindow mUIClickonanycellwithyoWindow;
+        
+        private UIOKWindow mUIOKWindow;
         #endregion
     }
     
@@ -296,13 +716,13 @@ namespace GUITests
         /// <summary>
         /// Launch '%USERPROFILE%\Source\Repos\CS3500Assignments\PS4\SpreadsheetGUI\bin\Debug\SpreadsheetGUI.exe'
         /// </summary>
-        public string ExePath = @"..\\..\\..\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debu" +
+        public string ExePath = "C:\\Users\\TimothySchelz\\Source\\Repos\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debu" +
             "g\\SpreadsheetGUI.exe";
         
         /// <summary>
         /// Launch '%USERPROFILE%\Source\Repos\CS3500Assignments\PS4\SpreadsheetGUI\bin\Debug\SpreadsheetGUI.exe'
         /// </summary>
-        public string AlternateExePath = @"..\\..\\..\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
+        public string AlternateExePath = "%USERPROFILE%\\Source\\Repos\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
             "heetGUI.exe";
         #endregion
     }
@@ -402,6 +822,136 @@ namespace GUITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'CheckEmptyContentsOnSecondSpreadsheet'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckEmptyContentsOnSecondSpreadsheetExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals ''
+        /// </summary>
+        public string UIContentsBoxEditText = "";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'InputInSS1AndOpenSS2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputInSS1AndOpenSS2Params
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckContentsOfOldAndNewSS'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckContentsOfOldAndNewSSExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals ''
+        /// </summary>
+        public string UIContentsBoxEditText = "";
+        
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+        /// </summary>
+        public string UIContentsBoxEditText1 = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'OpenSecondSSAndEnterValues'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OpenSecondSSAndEnterValuesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        
+        /// <summary>
+        /// Type 'Goodbye' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText1 = "Goodbye";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckSS1B2AndSS2A1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckSS1B2AndSS2A1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'B1' label equals 'B1'
+        /// </summary>
+        public string UIB1TextName = "B1";
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Goodbye' label equals 'Goodbye'
+        /// </summary>
+        public string UIGoodbyeTextDisplayText = "Goodbye";
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'A1' label equals 'A1'
+        /// </summary>
+        public string UIA1TextDisplayText = "A1";
+        
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Hello' label equals 'Hello'
+        /// </summary>
+        public string UIHelloTextDisplayText = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SecondWindowExists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SecondWindowExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'NewSpreadsheet.sprd' window equals 'NewSpreadsheet.sprd'
+        /// </summary>
+        public string UINewSpreadsheetsprdWindowName = "NewSpreadsheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckHelpText'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckHelpTextExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Click on any cell with your mouse to select it. At...' label equals 'Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit "Update" or type ENTER to update the contents of the cell.'
+        /// </summary>
+        public string UIClickonanycellwithyoTextDisplayText = @"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.";
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UINewSpreadsheetsprdWindow : WinWindow
     {
@@ -487,6 +1037,42 @@ namespace GUITests
                 return this.mUIMenuStrip1Window;
             }
         }
+        
+        public UIMenuStrip1MenuBar UIMenuStrip1MenuBar
+        {
+            get
+            {
+                if ((this.mUIMenuStrip1MenuBar == null))
+                {
+                    this.mUIMenuStrip1MenuBar = new UIMenuStrip1MenuBar(this);
+                }
+                return this.mUIMenuStrip1MenuBar;
+            }
+        }
+        
+        public UIUpdateWindow1 UIUpdateWindow1
+        {
+            get
+            {
+                if ((this.mUIUpdateWindow1 == null))
+                {
+                    this.mUIUpdateWindow1 = new UIUpdateWindow1(this);
+                }
+                return this.mUIUpdateWindow1;
+            }
+        }
+        
+        public UIItemWindow UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -501,6 +1087,12 @@ namespace GUITests
         private UIA1Window mUIA1Window;
         
         private UIMenuStrip1Window mUIMenuStrip1Window;
+        
+        private UIMenuStrip1MenuBar mUIMenuStrip1MenuBar;
+        
+        private UIUpdateWindow1 mUIUpdateWindow1;
+        
+        private UIItemWindow mUIItemWindow;
         #endregion
     }
     
@@ -693,10 +1285,28 @@ namespace GUITests
                 return this.mUIA1Text;
             }
         }
+        
+        public WinText UIB1Text
+        {
+            get
+            {
+                if ((this.mUIB1Text == null))
+                {
+                    this.mUIB1Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIB1Text.SearchProperties[WinText.PropertyNames.Name] = "B1";
+                    this.mUIB1Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIB1Text;
+            }
+        }
         #endregion
         
         #region Fields
         private WinText mUIA1Text;
+        
+        private WinText mUIB1Text;
         #endregion
     }
     
@@ -733,6 +1343,165 @@ namespace GUITests
         
         #region Fields
         private WinMenuBar mUIMenuStrip1MenuBar;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIMenuStrip1MenuBar : WinMenuBar
+    {
+        
+        public UIMenuStrip1MenuBar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinMenu.PropertyNames.Name] = "menuStrip1";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public UIFileMenuItem UIFileMenuItem
+        {
+            get
+            {
+                if ((this.mUIFileMenuItem == null))
+                {
+                    this.mUIFileMenuItem = new UIFileMenuItem(this);
+                }
+                return this.mUIFileMenuItem;
+            }
+        }
+        
+        public WinMenuItem UIHelpMenuItem
+        {
+            get
+            {
+                if ((this.mUIHelpMenuItem == null))
+                {
+                    this.mUIHelpMenuItem = new WinMenuItem(this);
+                    #region Search Criteria
+                    this.mUIHelpMenuItem.SearchProperties[WinMenuItem.PropertyNames.Name] = "Help";
+                    this.mUIHelpMenuItem.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIHelpMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIFileMenuItem mUIFileMenuItem;
+        
+        private WinMenuItem mUIHelpMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFileMenuItem : WinMenuItem
+    {
+        
+        public UIFileMenuItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinMenuItem.PropertyNames.Name] = "File";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinMenuItem UINewMenuItem
+        {
+            get
+            {
+                if ((this.mUINewMenuItem == null))
+                {
+                    this.mUINewMenuItem = new WinMenuItem(this);
+                    #region Search Criteria
+                    this.mUINewMenuItem.SearchProperties[WinMenuItem.PropertyNames.Name] = "New";
+                    this.mUINewMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUINewMenuItem.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUINewMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinMenuItem mUINewMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUpdateWindow1 : WinWindow
+    {
+        
+        public UIUpdateWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "EnterButton";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIUpdateButton
+        {
+            get
+            {
+                if ((this.mUIUpdateButton == null))
+                {
+                    this.mUIUpdateButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIUpdateButton.SearchProperties[WinButton.PropertyNames.Name] = "Update";
+                    this.mUIUpdateButton.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIUpdateButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIUpdateButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow : WinWindow
+    {
+        
+        public UIItemWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WinWindow.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinClient UISpreadsheetPanel1Client
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Client == null))
+                {
+                    this.mUISpreadsheetPanel1Client = new WinClient(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetPanel1Client.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUISpreadsheetPanel1Client;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinClient mUISpreadsheetPanel1Client;
         #endregion
     }
     
@@ -801,6 +1570,395 @@ namespace GUITests
         
         #region Fields
         private WinButton mUINOButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UINewSpreadsheetsprdWindow1 : WinWindow
+    {
+        
+        public UINewSpreadsheetsprdWindow1()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "NewSpreadsheet.sprd";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.FilterProperties[WinWindow.PropertyNames.OrderOfInvocation] = "2";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentsBoxWindow1 UIContentsBoxWindow
+        {
+            get
+            {
+                if ((this.mUIContentsBoxWindow == null))
+                {
+                    this.mUIContentsBoxWindow = new UIContentsBoxWindow1(this);
+                }
+                return this.mUIContentsBoxWindow;
+            }
+        }
+        
+        public UIItemWindow1 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow1(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
+        
+        public UINewSpreadsheetsprdTitleBar1 UINewSpreadsheetsprdTitleBar
+        {
+            get
+            {
+                if ((this.mUINewSpreadsheetsprdTitleBar == null))
+                {
+                    this.mUINewSpreadsheetsprdTitleBar = new UINewSpreadsheetsprdTitleBar1(this);
+                }
+                return this.mUINewSpreadsheetsprdTitleBar;
+            }
+        }
+        
+        public UIUpdateWindow2 UIUpdateWindow
+        {
+            get
+            {
+                if ((this.mUIUpdateWindow == null))
+                {
+                    this.mUIUpdateWindow = new UIUpdateWindow2(this);
+                }
+                return this.mUIUpdateWindow;
+            }
+        }
+        
+        public UIA1Window1 UIA1Window
+        {
+            get
+            {
+                if ((this.mUIA1Window == null))
+                {
+                    this.mUIA1Window = new UIA1Window1(this);
+                }
+                return this.mUIA1Window;
+            }
+        }
+        
+        public UIHelloWindow1 UIHelloWindow
+        {
+            get
+            {
+                if ((this.mUIHelloWindow == null))
+                {
+                    this.mUIHelloWindow = new UIHelloWindow1(this);
+                }
+                return this.mUIHelloWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentsBoxWindow1 mUIContentsBoxWindow;
+        
+        private UIItemWindow1 mUIItemWindow;
+        
+        private UINewSpreadsheetsprdTitleBar1 mUINewSpreadsheetsprdTitleBar;
+        
+        private UIUpdateWindow2 mUIUpdateWindow;
+        
+        private UIA1Window1 mUIA1Window;
+        
+        private UIHelloWindow1 mUIHelloWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIContentsBoxWindow1 : WinWindow
+    {
+        
+        public UIContentsBoxWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "ContentsBox";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinEdit UIContentsBoxEdit
+        {
+            get
+            {
+                if ((this.mUIContentsBoxEdit == null))
+                {
+                    this.mUIContentsBoxEdit = new WinEdit(this);
+                    #region Search Criteria
+                    this.mUIContentsBoxEdit.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIContentsBoxEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinEdit mUIContentsBoxEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow1 : WinWindow
+    {
+        
+        public UIItemWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WinWindow.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinClient UISpreadsheetPanel1Client
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Client == null))
+                {
+                    this.mUISpreadsheetPanel1Client = new WinClient(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetPanel1Client.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUISpreadsheetPanel1Client;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinClient mUISpreadsheetPanel1Client;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UINewSpreadsheetsprdTitleBar1 : WinTitleBar
+    {
+        
+        public UINewSpreadsheetsprdTitleBar1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICloseButton
+        {
+            get
+            {
+                if ((this.mUICloseButton == null))
+                {
+                    this.mUICloseButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICloseButton.SearchProperties[WinButton.PropertyNames.Name] = "Close";
+                    this.mUICloseButton.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUICloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUpdateWindow2 : WinWindow
+    {
+        
+        public UIUpdateWindow2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "EnterButton";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIUpdateButton
+        {
+            get
+            {
+                if ((this.mUIUpdateButton == null))
+                {
+                    this.mUIUpdateButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIUpdateButton.SearchProperties[WinButton.PropertyNames.Name] = "Update";
+                    this.mUIUpdateButton.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIUpdateButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIUpdateButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIA1Window1 : WinWindow
+    {
+        
+        public UIA1Window1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "SelectionLabel";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UIA1Text
+        {
+            get
+            {
+                if ((this.mUIA1Text == null))
+                {
+                    this.mUIA1Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIA1Text.SearchProperties[WinText.PropertyNames.Name] = "A1";
+                    this.mUIA1Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIA1Text;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUIA1Text;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIHelloWindow1 : WinWindow
+    {
+        
+        public UIHelloWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "ValueLabel";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UIHelloText
+        {
+            get
+            {
+                if ((this.mUIHelloText == null))
+                {
+                    this.mUIHelloText = new WinText(this);
+                    #region Search Criteria
+                    this.mUIHelloText.SearchProperties[WinText.PropertyNames.Name] = "Hello";
+                    this.mUIHelloText.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIHelloText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUIHelloText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIClickonanycellwithyoWindow : WinWindow
+    {
+        
+        public UIClickonanycellwithyoWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = @"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "Static";
+            this.WindowTitles.Add(@"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UIClickonanycellwithyoText
+        {
+            get
+            {
+                if ((this.mUIClickonanycellwithyoText == null))
+                {
+                    this.mUIClickonanycellwithyoText = new WinText(this);
+                    #region Search Criteria
+                    this.mUIClickonanycellwithyoText.SearchProperties[WinText.PropertyNames.Name] = @"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.";
+                    this.mUIClickonanycellwithyoText.WindowTitles.Add(@"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.");
+                    #endregion
+                }
+                return this.mUIClickonanycellwithyoText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUIClickonanycellwithyoText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOKWindow : WinWindow
+    {
+        
+        public UIOKWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "OK";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "Button";
+            this.WindowTitles.Add("OK");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIOKButton
+        {
+            get
+            {
+                if ((this.mUIOKButton == null))
+                {
+                    this.mUIOKButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIOKButton.SearchProperties[WinButton.PropertyNames.Name] = "OK";
+                    this.mUIOKButton.WindowTitles.Add("OK");
+                    #endregion
+                }
+                return this.mUIOKButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIOKButton;
         #endregion
     }
 }

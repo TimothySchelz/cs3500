@@ -59,6 +59,56 @@ namespace GUITests
             this.UIMap.Xout();
         }
 
+        [TestMethod]
+        public void NewCheckExistanceofSecondWindow()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.OpenSecondSpreadsheet();
+            this.UIMap.CheckEmptyContentsOnSecondSpreadsheet();
+            this.UIMap.Close2EmptySpreadsheets();
+        }
+
+        [TestMethod]
+        public void NewCheckNewWindowIsEmpty()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.InputInSS1AndOpenSS2();
+            this.UIMap.CheckContentsOfOldAndNewSS();
+            this.UIMap.CloseSpreadsheets();
+        }
+
+        [TestMethod]
+        public void NewCheckWindowsAreNotLinked()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.OpenSecondSSAndEnterValues();
+            this.UIMap.CheckSS1B2AndSS2A1();
+            this.UIMap.Closing();
+
+        }
+
+        [TestMethod]
+        public void CloseCloseOriginalWindow()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.OpenNewCloseOriginal();
+            this.UIMap.SecondWindowExists();
+            this.UIMap.CloseSecond();
+
+        }
+
+        [TestMethod]
+        public void HelpCheckHelpPopUp()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.OpenHelp();
+            this.UIMap.CheckHelpText();
+            this.UIMap.CloseHelpandWindow();
+
+        }
+
+
+
         #region Additional test attributes
 
         // You can use the following additional attributes as you write your tests:
