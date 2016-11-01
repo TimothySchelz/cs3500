@@ -7,3 +7,6 @@ C:\Users\Schelz\Source\Repos\cs3500\TestSolution\TestProject\obj\Debug\TestProje
 C:\Users\TimothySchelz\Source\Repos\00851027\TestSolution\TestProject\bin\Debug\TestProject.exe.config
 C:\Users\TimothySchelz\Source\Repos\00851027\TestSolution\TestProject\obj\Debug\TestProject.exe
 C:\Users\TimothySchelz\Source\Repos\00851027\TestSolution\TestProject\obj\Debug\TestProject.pdb
+C:\Users\TimothySchelz\Source\Repos\CS3500Assignments\TestSolution\TestProject\bin\Debug\TestProject.exe.config
+C:\Users\TimothySchelz\Source\Repos\CS3500Assignments\TestSolution\TestProject\obj\Debug\TestProject.exe
+C:\Users\TimothySchelz\Source\Repos\CS3500Assignments\TestSolution\TestProject\obj\Debug\TestProject.pdb

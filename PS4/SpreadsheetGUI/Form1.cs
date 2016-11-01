@@ -1,4 +1,8 @@
-﻿using SpreadsheetUtilities;
+﻿/*
+ * Authored by Gray Marchese, u, and Timothy Schelz, u0851027 
+ * November, 2016 
+ */
+using SpreadsheetUtilities;
 using SS;
 using System;
 using System.Collections.Generic;
@@ -33,26 +37,38 @@ namespace SpreadsheetGUI
         /// </summary>
         public Form1()
         {
+            // The validator for the guts of the spreadsheet.  It makes sure that any 
+            // name is of the form C35 where the letters go from A to Z and the numbrs go 
+            // from 1 to 99.
             validator = delegate (string s)
             {
+                // Checks the leading letter
                 if ( !Char.IsLetter(s[0]))
                 {
                     return false;
                 }
 
-                int row;
+                // Gets the number out of the string.  If it fails row stays as 0
+                int row = 0;
                 Int32.TryParse(s.Substring(1), out row);
 
+                // Checks to make sure the number is in the correct range.  If it 
+                // failed to parse row will not be in the range
                 if(row < 1 || row > 99)
                 {
                     return false;
                 }
 
+                //If it does not fail then it passes
                 return true;
             };
 
+            // Creates the back end of the spreadsheet and passes the validator.  The 
+            // normalizer just makes sure that it capitalizes the names.  This makes it 
+            // case insensitive.
             guts = new Spreadsheet(validator, s => s.ToUpper(), "ps6");
 
+            // Some necessary component junk
             InitializeComponent();
 
             //Initializes selection and filename
@@ -76,6 +92,11 @@ namespace SpreadsheetGUI
             spreadsheetPanel1.SetSelection(0, 0);
         }
 
+        /// <summary>
+        /// The handler for when the panel is first loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void spreadsheetPanel1_Load(object sender, EventArgs e)
         {
 
@@ -88,6 +109,8 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void makeNewForm(object sender, EventArgs e)
         {
+            // Just creates a new spreadsheet.  The DemoApplicationContext takes care
+            // of making it seperate from the previous window.
             DemoApplicationContext.getAppContext().RunForm(new Form1());
         }
 
@@ -99,30 +122,38 @@ namespace SpreadsheetGUI
         /// <param name="ss"></param>
         private void displaySelection(SpreadsheetPanel ss)
         {
-
             int row, col;
             string value, contents;
 
+            // Gets the selection
             ss.GetSelection(out col, out row);
+            // Gets the value in the cell
             ss.GetValue(col, row, out value);
 
+            // Changes the number associated with the col to a letter
             string colName = valueToName(col+1);
 
             //Updates address label and value label.
             SelectionLabel.Text = colName + (row+1);
+            // Sets the value of the value label to the value in the cell
             ValueLabel.Text = value;
 
+            // Puts the focus on the Contents box so that they can immediately start 
+            // typing
             ContentsBox.Focus();
 
             //Updates contents box
             string name = valueToName(col+1) + (row+1);
+            // Takes the content of the cell and converts it to a string
             contents = ContentsToString(guts.GetCellContents(name));
+            // Puts the contents in the contentsBox
             ContentsBox.Text = contents;
             
         }
 
         /// <summary>
-        /// Takes the contents of a cell and turns it into a string to be displayed
+        /// Takes the contents of a cell and turns it into a string to be displayed... Basically 
+        /// just appends a "=" to the beginning of fomrula or just does toString
         /// </summary>
         /// <param name="contents">The contents of a string from the guts of the Spreadsheet</param>
         /// <returns>the contents in string from</returns>
@@ -163,7 +194,6 @@ namespace SpreadsheetGUI
         /// <param name="col"></param>
         private void nameToCoordinate(string name, out int row, out int col)
         {
-
             col = name[0]-65;  
             Int32.TryParse(name.Substring(1), out row);
 
@@ -178,6 +208,7 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void updateCells(object sender, EventArgs e)
         {
+            // Gets the entered contents and the name of the cell
             string contents = ContentsBox.Text;
             string name = SelectionLabel.Text;
 
@@ -186,6 +217,8 @@ namespace SpreadsheetGUI
 
             //Sets the new contents of all affected cells.
             ISet<string> changedCells = new HashSet<string>();
+
+            // Tries to set the contents of a cell.
             try
             {
                 changedCells = guts.SetContentsOfCell(name, contents);
@@ -199,6 +232,9 @@ namespace SpreadsheetGUI
             catch(FormulaFormatException error)
             {
                 MessageBox.Show(error.Message);
+                // If there is a problem we don't want to do anything else.  This 
+                // way anything after this will only execute if the info is set without 
+                // a hitch.
                 return;
             }
 
@@ -214,14 +250,15 @@ namespace SpreadsheetGUI
                 FormulaError error = (FormulaError)value;
                 MessageBox.Show(error.Reason);
             }
+            // Otherwise we go through and change everythign that needs to be changed
             else {
 
                 //Updates value label
                 ValueLabel.Text = "" + value;
 
+                // For every cell that could have been changed we set the value to the correct value
                 updateSpreadsheetCells(changedCells);
             }
-
         }
 
 
@@ -246,15 +283,13 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void keyPressed(object sender, KeyPressEventArgs e)
         {
+            // Chacks if the pressed button was the ENTER key
             switch (e.KeyChar)
             {
-
+                //If it was entered we update all cells as if the Update button was clicked
                 case (char)Keys.Enter:
                     updateCells(sender, e);
                     break;
-
-                
-
             }
         }
 
@@ -276,12 +311,15 @@ namespace SpreadsheetGUI
             //Otherwise, saves the spreadsheet with entered name.
             if(saveDialog.FileName != "")
             {
+                // Saves the spreadsheet and sets the name of this spreadsheet to the
+                // name of the spreadsheet
                 guts.Save(saveDialog.FileName);
                 filename = saveDialog.FileName;
                 Text = filename;
             }
             else
             {
+                // warn the user not to enter an empty filename
                 MessageBox.Show("Use non-empty file name.");
             }
 
@@ -304,8 +342,10 @@ namespace SpreadsheetGUI
             //Executes if the user has made a selection.
             if(openDialog.ShowDialog() == DialogResult.OK)
             {
+                // Gets the filename
                 file = openDialog.FileName;
 
+                // Creates some intermediate guts to load in before discarding the old guts
                 Spreadsheet intermediateGuts;
 
                 try
@@ -322,6 +362,9 @@ namespace SpreadsheetGUI
                 //Gets all cells in the old spreadsheet that were not empty
                 //They must be updated in the display.
                 HashSet<String> cellsToUpdate = new HashSet<string>();
+
+                // Loads all the cells that currently have entries into the list of cells to be 
+                // updated.  They may need to be replaced or erased for the new spreadsheeet.
                 foreach(String cell in guts.GetNamesOfAllNonemptyCells())
                 {
                     cellsToUpdate.Add(cell);
@@ -336,6 +379,8 @@ namespace SpreadsheetGUI
                     cellsToUpdate.Add(cell);
                 }
 
+                // Sets the name of this spreadsheet to the name of the loaded file and displays 
+                // it at the top of the window.
                 this.filename = file;
                 this.Text = filename;
 
@@ -352,7 +397,10 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void AskForHelp(object sender, EventArgs e)
         {
-            MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the cell.");
+            MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value " + 
+                "are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can " + 
+                "change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the" + 
+                " cell.");
         }
 
         /// <summary>
