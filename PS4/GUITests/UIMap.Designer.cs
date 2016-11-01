@@ -434,6 +434,226 @@ namespace GUITests
             Mouse.Click(uICloseButton, new Point(30, 18));
         }
         
+        /// <summary>
+        /// ChangeToB2
+        /// </summary>
+        public void ChangeToB2()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(142, 61));
+        }
+        
+        /// <summary>
+        /// SelectionB2
+        /// </summary>
+        public void SelectionB2()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(144, 67));
+        }
+        
+        /// <summary>
+        /// Makes sure the name label is the current selection.
+        /// </summary>
+        public void NameLabelB2()
+        {
+            #region Variable Declarations
+            WinText uIB2Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UIB2Text;
+            #endregion
+
+            // Verify that the 'Name' property of 'B2' label equals 'B2'
+            Assert.AreEqual(this.NameLabelB2ExpectedValues.UIB2TextName, uIB2Text.Name);
+        }
+        
+        /// <summary>
+        /// SelectB7
+        /// </summary>
+        public void SelectB7()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(136, 162));
+        }
+        
+        /// <summary>
+        /// Makes suyre the name label is correct
+        /// </summary>
+        public void NameLabelB7()
+        {
+            #region Variable Declarations
+            WinText uIB7Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UIB7Text;
+            #endregion
+
+            // Verify that the 'Name' property of 'B7' label equals 'B7'
+            Assert.AreEqual(this.NameLabelB7ExpectedValues.UIB7TextName, uIB7Text.Name);
+        }
+        
+        /// <summary>
+        /// CloseIt
+        /// </summary>
+        public void CloseIt()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(25, 5));
+        }
+        
+        /// <summary>
+        /// Plugs in a bunch of contents in C3, B4, C5.
+        /// </summary>
+        public void PlugInContents()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(203, 121));
+
+            // Type '1' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.PlugInContentsParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.PlugInContentsParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(161, 99));
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.PlugInContentsParams.UIContentsBoxEditText1;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.PlugInContentsParams.UIContentsBoxEditSendKeys1, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(217, 76));
+
+            // Type '=C5+1' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.PlugInContentsParams.UIContentsBoxEditText2;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.PlugInContentsParams.UIContentsBoxEditSendKeys2, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// CheckC3Value2 - Use 'CheckC3Value2ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void CheckC3Value2()
+        {
+            #region Variable Declarations
+            WinText uIItem2Text = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIItem2Text;
+            #endregion
+
+            // Verify that the 'Name' property of '2' label equals '2'
+            Assert.AreEqual(this.CheckC3Value2ExpectedValues.UIItem2TextName, uIItem2Text.Name);
+        }
+        
+        /// <summary>
+        /// SelectB4
+        /// </summary>
+        public void SelectB4()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(145, 101));
+        }
+        
+        /// <summary>
+        /// CheckB4ValueHello - Use 'CheckB4ValueHelloExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void CheckB4ValueHello()
+        {
+            #region Variable Declarations
+            WinText uIHelloText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIHelloText;
+            #endregion
+
+            // Verify that the 'Name' property of 'Hello' label equals 'Hello'
+            Assert.AreEqual(this.CheckB4ValueHelloExpectedValues.UIHelloTextName, uIHelloText.Name);
+        }
+        
+        /// <summary>
+        /// SelectC5
+        /// </summary>
+        public void SelectC5()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(240, 125));
+        }
+        
+        /// <summary>
+        /// CheckC5Value1 - Use 'CheckC5Value1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void CheckC5Value1()
+        {
+            #region Variable Declarations
+            WinText uIItem1Text = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIItem1Text;
+            #endregion
+
+            // Verify that the 'Name' property of '1' label equals '1'
+            Assert.AreEqual(this.CheckC5Value1ExpectedValues.UIItem1TextName, uIItem1Text.Name);
+        }
+        
+        /// <summary>
+        /// SelectE11
+        /// </summary>
+        public void SelectE11()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(361, 237));
+        }
+        
+        /// <summary>
+        /// Makes sure the namelabel changes
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WinText uIE11Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UIE11Text;
+            #endregion
+
+            // Verify that the 'Name' property of 'E11' label equals 'E11'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIE11TextName, uIE11Text.Name, "E11 not selected");
+        }
+        
+        /// <summary>
+        /// CloseWindow
+        /// </summary>
+        public void CloseWindow()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(13, 7));
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -603,6 +823,90 @@ namespace GUITests
             }
         }
         
+        public virtual NameLabelB2ExpectedValues NameLabelB2ExpectedValues
+        {
+            get
+            {
+                if ((this.mNameLabelB2ExpectedValues == null))
+                {
+                    this.mNameLabelB2ExpectedValues = new NameLabelB2ExpectedValues();
+                }
+                return this.mNameLabelB2ExpectedValues;
+            }
+        }
+        
+        public virtual NameLabelB7ExpectedValues NameLabelB7ExpectedValues
+        {
+            get
+            {
+                if ((this.mNameLabelB7ExpectedValues == null))
+                {
+                    this.mNameLabelB7ExpectedValues = new NameLabelB7ExpectedValues();
+                }
+                return this.mNameLabelB7ExpectedValues;
+            }
+        }
+        
+        public virtual PlugInContentsParams PlugInContentsParams
+        {
+            get
+            {
+                if ((this.mPlugInContentsParams == null))
+                {
+                    this.mPlugInContentsParams = new PlugInContentsParams();
+                }
+                return this.mPlugInContentsParams;
+            }
+        }
+        
+        public virtual CheckC3Value2ExpectedValues CheckC3Value2ExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckC3Value2ExpectedValues == null))
+                {
+                    this.mCheckC3Value2ExpectedValues = new CheckC3Value2ExpectedValues();
+                }
+                return this.mCheckC3Value2ExpectedValues;
+            }
+        }
+        
+        public virtual CheckB4ValueHelloExpectedValues CheckB4ValueHelloExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckB4ValueHelloExpectedValues == null))
+                {
+                    this.mCheckB4ValueHelloExpectedValues = new CheckB4ValueHelloExpectedValues();
+                }
+                return this.mCheckB4ValueHelloExpectedValues;
+            }
+        }
+        
+        public virtual CheckC5Value1ExpectedValues CheckC5Value1ExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckC5Value1ExpectedValues == null))
+                {
+                    this.mCheckC5Value1ExpectedValues = new CheckC5Value1ExpectedValues();
+                }
+                return this.mCheckC5Value1ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -692,6 +996,20 @@ namespace GUITests
         private SecondWindowExistsExpectedValues mSecondWindowExistsExpectedValues;
         
         private CheckHelpTextExpectedValues mCheckHelpTextExpectedValues;
+        
+        private NameLabelB2ExpectedValues mNameLabelB2ExpectedValues;
+        
+        private NameLabelB7ExpectedValues mNameLabelB7ExpectedValues;
+        
+        private PlugInContentsParams mPlugInContentsParams;
+        
+        private CheckC3Value2ExpectedValues mCheckC3Value2ExpectedValues;
+        
+        private CheckB4ValueHelloExpectedValues mCheckB4ValueHelloExpectedValues;
+        
+        private CheckC5Value1ExpectedValues mCheckC5Value1ExpectedValues;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
@@ -949,6 +1267,136 @@ namespace GUITests
         /// Verify that the 'DisplayText' property of 'Click on any cell with your mouse to select it. At...' label equals 'Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit "Update" or type ENTER to update the contents of the cell.'
         /// </summary>
         public string UIClickonanycellwithyoTextDisplayText = @"Click on any cell with your mouse to select it.  At the top the cell name and the value are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can change the contents in this textbox and then hit ""Update"" or type ENTER to update the contents of the cell.";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'NameLabelB2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameLabelB2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'B2' label equals 'B2'
+        /// </summary>
+        public string UIB2TextName = "B2";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'NameLabelB7'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NameLabelB7ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'B7' label equals 'B7'
+        /// </summary>
+        public string UIB7TextName = "B7";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'PlugInContents'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PlugInContentsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '1' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "1";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText1 = "Hello";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys1 = "{Enter}";
+        
+        /// <summary>
+        /// Type '=C5+1' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText2 = "=C5+1";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys2 = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckC3Value2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckC3Value2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of '2' label equals '2'
+        /// </summary>
+        public string UIItem2TextName = "2";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckB4ValueHello'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckB4ValueHelloExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'Hello' label equals 'Hello'
+        /// </summary>
+        public string UIHelloTextName = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckC5Value1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckC5Value1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of '1' label equals '1'
+        /// </summary>
+        public string UIItem1TextName = "1";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'E11' label equals 'E11'
+        /// </summary>
+        public string UIE11TextName = "E11";
         #endregion
     }
     
@@ -1212,12 +1660,48 @@ namespace GUITests
                 return this.mUIGoodbyeText;
             }
         }
+        
+        public WinText UIItem2Text
+        {
+            get
+            {
+                if ((this.mUIItem2Text == null))
+                {
+                    this.mUIItem2Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIItem2Text.SearchProperties[WinText.PropertyNames.Name] = "2";
+                    this.mUIItem2Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIItem2Text;
+            }
+        }
+        
+        public WinText UIItem1Text
+        {
+            get
+            {
+                if ((this.mUIItem1Text == null))
+                {
+                    this.mUIItem1Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIItem1Text.SearchProperties[WinText.PropertyNames.Name] = "1";
+                    this.mUIItem1Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIItem1Text;
+            }
+        }
         #endregion
         
         #region Fields
         private WinText mUIHelloText;
         
         private WinText mUIGoodbyeText;
+        
+        private WinText mUIItem2Text;
+        
+        private WinText mUIItem1Text;
         #endregion
     }
     
@@ -1301,12 +1785,66 @@ namespace GUITests
                 return this.mUIB1Text;
             }
         }
+        
+        public WinText UIB2Text
+        {
+            get
+            {
+                if ((this.mUIB2Text == null))
+                {
+                    this.mUIB2Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIB2Text.SearchProperties[WinText.PropertyNames.Name] = "B2";
+                    this.mUIB2Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIB2Text;
+            }
+        }
+        
+        public WinText UIB7Text
+        {
+            get
+            {
+                if ((this.mUIB7Text == null))
+                {
+                    this.mUIB7Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIB7Text.SearchProperties[WinText.PropertyNames.Name] = "B7";
+                    this.mUIB7Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIB7Text;
+            }
+        }
+        
+        public WinText UIE11Text
+        {
+            get
+            {
+                if ((this.mUIE11Text == null))
+                {
+                    this.mUIE11Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIE11Text.SearchProperties[WinText.PropertyNames.Name] = "E11";
+                    this.mUIE11Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIE11Text;
+            }
+        }
         #endregion
         
         #region Fields
         private WinText mUIA1Text;
         
         private WinText mUIB1Text;
+        
+        private WinText mUIB2Text;
+        
+        private WinText mUIB7Text;
+        
+        private WinText mUIE11Text;
         #endregion
     }
     

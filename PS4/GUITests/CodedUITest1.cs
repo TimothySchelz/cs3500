@@ -23,7 +23,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void UpdateContentsCheckValueLabel()
+        public void Update_ContentsCheckValueLabel()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
@@ -32,7 +32,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void UpdateContentsCheckNameLabel()
+        public void Update_ContentsCheckNameLabel()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
@@ -41,7 +41,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void UpdateContentsCheckContentsBox()
+        public void Update_ContentsCheckContentsBox()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
@@ -50,7 +50,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void UpdateOverwriteContents()
+        public void Update_OverwriteContents()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.EnterContents();
@@ -60,7 +60,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void NewCheckExistanceofSecondWindow()
+        public void New_CheckExistanceofSecondWindow()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.OpenSecondSpreadsheet();
@@ -69,7 +69,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void NewCheckNewWindowIsEmpty()
+        public void New_CheckNewWindowIsEmpty()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.InputInSS1AndOpenSS2();
@@ -78,7 +78,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void NewCheckWindowsAreNotLinked()
+        public void New_CheckWindowsAreNotLinked()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.OpenSecondSSAndEnterValues();
@@ -88,7 +88,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void CloseCloseOriginalWindow()
+        public void Close_CloseOriginalWindow()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.OpenNewCloseOriginal();
@@ -98,7 +98,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void HelpCheckHelpPopUp()
+        public void Help_CheckHelpPopUp()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.OpenHelp();
@@ -107,6 +107,28 @@ namespace GUITests
 
         }
 
+        [TestMethod]
+        public void ChangeSelection_MakeSureNameLabelChanges()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.SelectE11();
+            this.UIMap.AssertMethod1();
+            this.UIMap.CloseWindow();
+
+        }
+
+        [TestMethod]
+        public void ChangeSelection_CheckValueLabelChanges()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.PlugInContents();
+            this.UIMap.CheckC3Value2();
+            this.UIMap.SelectB4();
+            this.UIMap.CheckB4ValueHello();
+            this.UIMap.SelectC5();
+            this.UIMap.CheckC5Value1();
+
+        }
 
 
         #region Additional test attributes
