@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet", "Spreadsheet\Spreadsheet.csproj", "{E13A4354-9E94-4E18-A27B-9B40AF10F7ED}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetTests", "SpreadsheetTests\SpreadsheetTests.csproj", "{2558AA3B-EBA8-4E94-9F6A-B4972F0E74CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetGUI", "SpreadsheetGUI\SpreadsheetGUI.csproj", "{2C13535F-DDB4-42DB-9CE3-9AD39B4597E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUITests", "GUITests\GUITests.csproj", "{74AA549D-1E33-4130-BD0B-826496EA8FBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{2C13535F-DDB4-42DB-9CE3-9AD39B4597E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C13535F-DDB4-42DB-9CE3-9AD39B4597E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C13535F-DDB4-42DB-9CE3-9AD39B4597E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74AA549D-1E33-4130-BD0B-826496EA8FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74AA549D-1E33-4130-BD0B-826496EA8FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74AA549D-1E33-4130-BD0B-826496EA8FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74AA549D-1E33-4130-BD0B-826496EA8FBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
