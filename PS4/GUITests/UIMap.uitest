@@ -982,6 +982,552 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="43" Y="66" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">Hello</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="222" Y="64" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">5</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="129" Y="97" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">=C2+2</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="78" Y="58" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="entered contents into a few cells" MarkerInformation="EnterSomeContents">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>Hello</ExpectedValue>
+      <MessageOnValidationFailure>Should say "Hello"</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Makes sure Contents of A2 is Hello" MarkerInformation="A2IsHello">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="244" Y="57" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="SelectC2">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="244" Y="57" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="221" Y="59" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="Selects Cell C2" MarkerInformation="SelectCellC2">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>5</ExpectedValue>
+      <MessageOnValidationFailure>should be 5</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="contnets box should have 5" MarkerInformation="CheckContentsOfC2">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="120" Y="101" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="Selects B4" MarkerInformation="SelectCellB4">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>=C2+2</ExpectedValue>
+      <MessageOnValidationFailure>This should be a formula</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Makjes sure the contents of B4 is =C2+2" MarkerInformation="CheckContentsOfB4">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="13" Y="10" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UIThereareunsavedchangWindow.UINOWindow.UINOButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="13" Y="12" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="closes out th eprogram" MarkerInformation="Closeout">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="72" Y="43" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">1</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="73" Y="65" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">=A1</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="75" Y="75" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">=A2</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="75" Y="45" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">=A3</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="Creates a circular dependecy" MarkerInformation="CreateCircularDependency">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UITheenteredformulacreWindow.UITheenteredformulacreText">
+      <ParameterName />
+      <PropertyName>Name</PropertyName>
+      <ExpectedValue>The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.</ExpectedValue>
+      <MessageOnValidationFailure>Error message is not correct</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Checks to make sure the circular dependency error message is displayed" MarkerInformation="CheckSCircDepErrorMessage">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UIOKWindow.UIOKButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="56" Y="1" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="25" Y="7" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UIThereareunsavedchangWindow.UINOWindow.UINOButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="64" Y="14" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="closes the application" MarkerInformation="Close">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="127" Y="65" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SetValueAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <Value Encoded="false">=A1A1A1</Value>
+      <Type>String</Type>
+    </SetValueAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Enter}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="Creates a formula that doesn't make sense." MarkerInformation="CreateFormulaProblems">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UICodeMeterCCWindow.UIItemWindow.UIItemDialog">
+      <ParameterName />
+      <PropertyName>ControlType</PropertyName>
+      <ExpectedValue>Dialog</ExpectedValue>
+      <MessageOnValidationFailure>It opens an error message</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Checks to make sure an error is displayed when a faulty formula is inputted." MarkerInformation="CheckErrorMessageForFormulaProblems">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UIOKWindow.UIOKButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="7" Y="16" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="20" Y="12" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="CloseItAgain">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="81" Y="45" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Tab}{Tab}{Tab}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="Tabbed over a few times." MarkerInformation="TabbedSome">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIA1Window.UID1Text">
+      <ParameterName />
+      <PropertyName>Name</PropertyName>
+      <ExpectedValue>D1</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Makes sure the selection is on D1.  this means that tab has moved over the selection." MarkerInformation="CheckSelection">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="27" Y="10" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="closes the application" MarkerInformation="CloseItout">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="341" Y="133" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>Shift</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Tab}</Text>
+    </SendKeysAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>Shift</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Tab}</Text>
+    </SendKeysAction>
+    <SendKeysAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit">
+      <ParameterName />
+      <ModifierKeys>Shift</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{Tab}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="Makes a selection and uses shift tab to go back" MarkerInformation="MakeSelectionAndShiftTabBack">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.UINewSpreadsheetsprdWindow.UIA1Window.UIA6Text">
+      <ParameterName />
+      <PropertyName>Name</PropertyName>
+      <ExpectedValue>A6</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="Makes sure the shift tab sends the selection back to A6." MarkerInformation="ShiftTabCheck">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -1254,6 +1800,36 @@
                   </SearchConfigurations>
                   <AndCondition Id="SearchCondition">
                     <PropertyCondition Name="Name">E11</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>100</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Text" Id="UID1Text" FriendlyName="D1" SpecialControlType="None">
+                  <TechnologyName>MSAA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>NewSpreadsheet.sprd</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>VisibleOnly</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition Id="SearchCondition">
+                    <PropertyCondition Name="Name">D1</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>100</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Text" Id="UIA6Text" FriendlyName="A6" SpecialControlType="None">
+                  <TechnologyName>MSAA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>NewSpreadsheet.sprd</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>VisibleOnly</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition Id="SearchCondition">
+                    <PropertyCondition Name="Name">A6</PropertyCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>100</SupportLevel>
@@ -1733,6 +2309,85 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UITheenteredformulacreWindow" FriendlyName="The entered formula creates a circular dependency...." SpecialControlType="None" SessionId="28444104">
+          <TechnologyName>MSAA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.</WindowTitle>
+          </WindowTitles>
+          <SearchConfigurations>
+            <SearchConfiguration>VisibleOnly</SearchConfiguration>
+          </SearchConfigurations>
+          <AndCondition Id="SearchCondition">
+            <PropertyCondition Name="Name">The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.</PropertyCondition>
+            <PropertyCondition Name="ClassName">Static</PropertyCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>1</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Text" Id="UITheenteredformulacreText" FriendlyName="The entered formula creates a circular dependency...." SpecialControlType="None">
+              <TechnologyName>MSAA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.</WindowTitle>
+              </WindowTitles>
+              <SearchConfigurations>
+                <SearchConfiguration>VisibleOnly</SearchConfiguration>
+              </SearchConfigurations>
+              <AndCondition Id="SearchCondition">
+                <PropertyCondition Name="Name">The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.</PropertyCondition>
+                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>1</SupportLevel>
+              <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UICodeMeterCCWindow" FriendlyName="CodeMeterCC" SpecialControlType="None" SessionId="65552">
+          <TechnologyName>MSAA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>CodeMeterCC</WindowTitle>
+          </WindowTitles>
+          <SearchConfigurations>
+            <SearchConfiguration>VisibleOnly</SearchConfiguration>
+          </SearchConfigurations>
+          <AndCondition Id="SearchCondition">
+            <PropertyCondition Name="Name">CodeMeterCC</PropertyCondition>
+            <PropertyCondition Name="ClassName">#32769</PropertyCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>1</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Window" Id="UIItemWindow" FriendlyName="" SpecialControlType="None">
+              <TechnologyName>MSAA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>CodeMeterCC</WindowTitle>
+              </WindowTitles>
+              <SearchConfigurations>
+                <SearchConfiguration>VisibleOnly</SearchConfiguration>
+              </SearchConfigurations>
+              <AndCondition Id="SearchCondition">
+                <PropertyCondition Name="ClassName">#32770</PropertyCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>1</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Dialog" Id="UIItemDialog" FriendlyName="" SpecialControlType="None">
+                  <TechnologyName>MSAA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>CodeMeterCC</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>VisibleOnly</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition Id="SearchCondition">
+                    <PropertyCondition Name="ControlType">Dialog</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>1</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
             </UIObject>
           </Descendants>
         </TopLevelWindow>

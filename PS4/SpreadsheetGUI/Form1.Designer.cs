@@ -53,7 +53,7 @@ namespace SpreadsheetGUI
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.spreadsheetPanel1.Location = new System.Drawing.Point(0, 47);
-            this.spreadsheetPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.spreadsheetPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.spreadsheetPanel1.Name = "spreadsheetPanel1";
             this.spreadsheetPanel1.Size = new System.Drawing.Size(452, 266);
             this.spreadsheetPanel1.TabIndex = 0;
@@ -86,28 +86,28 @@ namespace SpreadsheetGUI
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.makeNewForm);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.save);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.LoadSpreadsheet);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeFromMenu);
             // 
@@ -121,7 +121,7 @@ namespace SpreadsheetGUI
             // ContentsBox
             // 
             this.ContentsBox.Location = new System.Drawing.Point(163, 20);
-            this.ContentsBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ContentsBox.Margin = new System.Windows.Forms.Padding(2);
             this.ContentsBox.Name = "ContentsBox";
             this.ContentsBox.Size = new System.Drawing.Size(235, 20);
             this.ContentsBox.TabIndex = 2;
@@ -130,7 +130,7 @@ namespace SpreadsheetGUI
             // SelectionLabel
             // 
             this.SelectionLabel.AutoSize = true;
-            this.SelectionLabel.Location = new System.Drawing.Point(8, 22);
+            this.SelectionLabel.Location = new System.Drawing.Point(11, 25);
             this.SelectionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SelectionLabel.Name = "SelectionLabel";
             this.SelectionLabel.Size = new System.Drawing.Size(20, 13);
@@ -140,7 +140,7 @@ namespace SpreadsheetGUI
             // ValueLabel
             // 
             this.ValueLabel.AutoSize = true;
-            this.ValueLabel.Location = new System.Drawing.Point(47, 22);
+            this.ValueLabel.Location = new System.Drawing.Point(47, 25);
             this.ValueLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ValueLabel.Name = "ValueLabel";
             this.ValueLabel.Size = new System.Drawing.Size(35, 13);
@@ -150,7 +150,7 @@ namespace SpreadsheetGUI
             // EnterButton
             // 
             this.EnterButton.Location = new System.Drawing.Point(401, 20);
-            this.EnterButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EnterButton.Margin = new System.Windows.Forms.Padding(2);
             this.EnterButton.Name = "EnterButton";
             this.EnterButton.Size = new System.Drawing.Size(50, 23);
             this.EnterButton.TabIndex = 5;
@@ -170,7 +170,7 @@ namespace SpreadsheetGUI
             this.Controls.Add(this.spreadsheetPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.tryToClose);

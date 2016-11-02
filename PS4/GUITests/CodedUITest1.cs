@@ -130,6 +130,58 @@ namespace GUITests
 
         }
 
+        [TestMethod]
+        public void ChangeSelection_CheckContentsBox()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.EnterSomeContents();
+            this.UIMap.A2IsHello();
+            this.UIMap.SelectCellC2();
+            this.UIMap.CheckContentsOfC2();
+            this.UIMap.SelectCellB4();
+            this.UIMap.CheckContentsOfB4();
+            this.UIMap.Closeout();
+        }
+
+        [TestMethod]
+        public void Problems_CircularDependency()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.CreateCircularDependency();
+            this.UIMap.CheckSCircDepErrorMessage();
+            this.UIMap.Close();
+        }
+
+        [TestMethod]
+        public void Problems_FormulaFormatProblems()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.CreateFormulaProblems();
+            this.UIMap.CheckErrorMessageForFormulaProblems();
+            this.UIMap.CloseItAgain();
+
+        }
+
+        [TestMethod]
+        public void Tab_ChecksTabMovesSelection()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.TabbedSome();
+            this.UIMap.CheckSelection();
+            this.UIMap.CloseItout();
+        }
+
+        [TestMethod]
+        public void ShiftTab_ChecksShiftTabMovesSelection()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.MakeSelectionAndShiftTabBack();
+            this.UIMap.ShiftTabCheck();
+            this.UIMap.CloseItout();
+        }
+
+
+
 
         #region Additional test attributes
 

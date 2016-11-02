@@ -654,6 +654,355 @@ namespace GUITests
             Mouse.Click(uICloseButton, new Point(13, 7));
         }
         
+        /// <summary>
+        /// entered contents into a few cells
+        /// </summary>
+        public void EnterSomeContents()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(43, 66));
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.EnterSomeContentsParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.EnterSomeContentsParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(222, 64));
+
+            // Type '5' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.EnterSomeContentsParams.UIContentsBoxEditText1;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.EnterSomeContentsParams.UIContentsBoxEditSendKeys1, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(129, 97));
+
+            // Type '=C2+2' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.EnterSomeContentsParams.UIContentsBoxEditText2;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.EnterSomeContentsParams.UIContentsBoxEditSendKeys2, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(78, 58));
+        }
+        
+        /// <summary>
+        /// Makes sure Contents of A2 is Hello
+        /// </summary>
+        public void A2IsHello()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+            Assert.AreEqual(this.A2IsHelloExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "Should say \"Hello\"");
+        }
+        
+        /// <summary>
+        /// SelectC2
+        /// </summary>
+        public void SelectC2()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(244, 57));
+        }
+        
+        /// <summary>
+        /// Selects Cell C2
+        /// </summary>
+        public void SelectCellC2()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(244, 57));
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(221, 59));
+        }
+        
+        /// <summary>
+        /// contnets box should have 5
+        /// </summary>
+        public void CheckContentsOfC2()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals '5'
+            Assert.AreEqual(this.CheckContentsOfC2ExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "should be 5");
+        }
+        
+        /// <summary>
+        /// Selects B4
+        /// </summary>
+        public void SelectCellB4()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(120, 101));
+        }
+        
+        /// <summary>
+        /// Makjes sure the contents of B4 is =C2+2
+        /// </summary>
+        public void CheckContentsOfB4()
+        {
+            #region Variable Declarations
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Verify that the 'Text' property of 'ContentsBox' text box equals '=C2+2'
+            Assert.AreEqual(this.CheckContentsOfB4ExpectedValues.UIContentsBoxEditText, uIContentsBoxEdit.Text, "This should be a formula");
+        }
+        
+        /// <summary>
+        /// closes out th eprogram
+        /// </summary>
+        public void Closeout()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(13, 10));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(13, 12));
+        }
+        
+        /// <summary>
+        /// Creates a circular dependecy
+        /// </summary>
+        public void CreateCircularDependency()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(72, 43));
+
+            // Type '1' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CreateCircularDependencyParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CreateCircularDependencyParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(73, 65));
+
+            // Type '=A1' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CreateCircularDependencyParams.UIContentsBoxEditText1;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CreateCircularDependencyParams.UIContentsBoxEditSendKeys1, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(75, 75));
+
+            // Type '=A2' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CreateCircularDependencyParams.UIContentsBoxEditText2;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CreateCircularDependencyParams.UIContentsBoxEditSendKeys2, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(75, 45));
+
+            // Type '=A3' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CreateCircularDependencyParams.UIContentsBoxEditText3;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CreateCircularDependencyParams.UIContentsBoxEditSendKeys3, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Checks to make sure the circular dependency error message is displayed
+        /// </summary>
+        public void CheckSCircDepErrorMessage()
+        {
+            #region Variable Declarations
+            WinText uITheenteredformulacreText = this.UITheenteredformulacreWindow.UITheenteredformulacreText;
+            #endregion
+
+            // Verify that the 'Name' property of 'The entered formula creates a circular dependency....' label equals 'The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.'
+            Assert.AreEqual(this.CheckSCircDepErrorMessageExpectedValues.UITheenteredformulacreTextName, uITheenteredformulacreText.Name, "Error message is not correct");
+        }
+        
+        /// <summary>
+        /// closes the application
+        /// </summary>
+        public void Close()
+        {
+            #region Variable Declarations
+            WinButton uIOKButton = this.UIOKWindow.UIOKButton;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(uIOKButton, new Point(56, 1));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(25, 7));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(64, 14));
+        }
+        
+        /// <summary>
+        /// Creates a formula that doesn't make sense.
+        /// </summary>
+        public void CreateFormulaProblems()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(127, 65));
+
+            // Type '=A1A1A1' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CreateFormulaProblemsParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CreateFormulaProblemsParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Checks to make sure an error is displayed when a faulty formula is inputted.
+        /// </summary>
+        public void CheckErrorMessageForFormulaProblems()
+        {
+            #region Variable Declarations
+            WinControl uIItemDialog = this.UICodeMeterCCWindow.UIItemWindow.UIItemDialog;
+            #endregion
+
+            // Verify that the 'ControlType' property of Dialog equals 'Dialog'
+            Assert.AreEqual(this.CheckErrorMessageForFormulaProblemsExpectedValues.UIItemDialogControlType, uIItemDialog.ControlType.ToString(), "It opens an error message");
+        }
+        
+        /// <summary>
+        /// CloseItAgain
+        /// </summary>
+        public void CloseItAgain()
+        {
+            #region Variable Declarations
+            WinButton uIOKButton = this.UIOKWindow.UIOKButton;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(uIOKButton, new Point(7, 16));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(20, 12));
+        }
+        
+        /// <summary>
+        /// Tabbed over a few times.
+        /// </summary>
+        public void TabbedSome()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(81, 45));
+
+            // Type '{Tab}{Tab}{Tab}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.TabbedSomeParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// Makes sure the selection is on D1.  this means that tab has moved over the selection.
+        /// </summary>
+        public void CheckSelection()
+        {
+            #region Variable Declarations
+            WinText uID1Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UID1Text;
+            #endregion
+
+            // Verify that the 'Name' property of 'D1' label equals 'D1'
+            Assert.AreEqual(this.CheckSelectionExpectedValues.UID1TextName, uID1Text.Name);
+        }
+        
+        /// <summary>
+        /// closes the application
+        /// </summary>
+        public void CloseItout()
+        {
+            #region Variable Declarations
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(27, 10));
+        }
+        
+        /// <summary>
+        /// Makes a selection and uses shift tab to go back
+        /// </summary>
+        public void MakeSelectionAndShiftTabBack()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(341, 133));
+
+            // Type 'Shift + {Tab}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.MakeSelectionAndShiftTabBackParams.UIContentsBoxEditSendKeys, ModifierKeys.Shift);
+
+            // Type 'Shift + {Tab}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.MakeSelectionAndShiftTabBackParams.UIContentsBoxEditSendKeys1, ModifierKeys.Shift);
+
+            // Type 'Shift + {Tab}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.MakeSelectionAndShiftTabBackParams.UIContentsBoxEditSendKeys2, ModifierKeys.Shift);
+        }
+        
+        /// <summary>
+        /// Makes sure the shift tab sends the selection back to A6.
+        /// </summary>
+        public void ShiftTabCheck()
+        {
+            #region Variable Declarations
+            WinText uIA6Text = this.UINewSpreadsheetsprdWindow.UIA1Window.UIA6Text;
+            #endregion
+
+            // Verify that the 'Name' property of 'A6' label equals 'A6'
+            Assert.AreEqual(this.ShiftTabCheckExpectedValues.UIA6TextName, uIA6Text.Name);
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -907,6 +1256,150 @@ namespace GUITests
             }
         }
         
+        public virtual EnterSomeContentsParams EnterSomeContentsParams
+        {
+            get
+            {
+                if ((this.mEnterSomeContentsParams == null))
+                {
+                    this.mEnterSomeContentsParams = new EnterSomeContentsParams();
+                }
+                return this.mEnterSomeContentsParams;
+            }
+        }
+        
+        public virtual A2IsHelloExpectedValues A2IsHelloExpectedValues
+        {
+            get
+            {
+                if ((this.mA2IsHelloExpectedValues == null))
+                {
+                    this.mA2IsHelloExpectedValues = new A2IsHelloExpectedValues();
+                }
+                return this.mA2IsHelloExpectedValues;
+            }
+        }
+        
+        public virtual CheckContentsOfC2ExpectedValues CheckContentsOfC2ExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckContentsOfC2ExpectedValues == null))
+                {
+                    this.mCheckContentsOfC2ExpectedValues = new CheckContentsOfC2ExpectedValues();
+                }
+                return this.mCheckContentsOfC2ExpectedValues;
+            }
+        }
+        
+        public virtual CheckContentsOfB4ExpectedValues CheckContentsOfB4ExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckContentsOfB4ExpectedValues == null))
+                {
+                    this.mCheckContentsOfB4ExpectedValues = new CheckContentsOfB4ExpectedValues();
+                }
+                return this.mCheckContentsOfB4ExpectedValues;
+            }
+        }
+        
+        public virtual CreateCircularDependencyParams CreateCircularDependencyParams
+        {
+            get
+            {
+                if ((this.mCreateCircularDependencyParams == null))
+                {
+                    this.mCreateCircularDependencyParams = new CreateCircularDependencyParams();
+                }
+                return this.mCreateCircularDependencyParams;
+            }
+        }
+        
+        public virtual CheckSCircDepErrorMessageExpectedValues CheckSCircDepErrorMessageExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckSCircDepErrorMessageExpectedValues == null))
+                {
+                    this.mCheckSCircDepErrorMessageExpectedValues = new CheckSCircDepErrorMessageExpectedValues();
+                }
+                return this.mCheckSCircDepErrorMessageExpectedValues;
+            }
+        }
+        
+        public virtual CreateFormulaProblemsParams CreateFormulaProblemsParams
+        {
+            get
+            {
+                if ((this.mCreateFormulaProblemsParams == null))
+                {
+                    this.mCreateFormulaProblemsParams = new CreateFormulaProblemsParams();
+                }
+                return this.mCreateFormulaProblemsParams;
+            }
+        }
+        
+        public virtual CheckErrorMessageForFormulaProblemsExpectedValues CheckErrorMessageForFormulaProblemsExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckErrorMessageForFormulaProblemsExpectedValues == null))
+                {
+                    this.mCheckErrorMessageForFormulaProblemsExpectedValues = new CheckErrorMessageForFormulaProblemsExpectedValues();
+                }
+                return this.mCheckErrorMessageForFormulaProblemsExpectedValues;
+            }
+        }
+        
+        public virtual TabbedSomeParams TabbedSomeParams
+        {
+            get
+            {
+                if ((this.mTabbedSomeParams == null))
+                {
+                    this.mTabbedSomeParams = new TabbedSomeParams();
+                }
+                return this.mTabbedSomeParams;
+            }
+        }
+        
+        public virtual CheckSelectionExpectedValues CheckSelectionExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckSelectionExpectedValues == null))
+                {
+                    this.mCheckSelectionExpectedValues = new CheckSelectionExpectedValues();
+                }
+                return this.mCheckSelectionExpectedValues;
+            }
+        }
+        
+        public virtual MakeSelectionAndShiftTabBackParams MakeSelectionAndShiftTabBackParams
+        {
+            get
+            {
+                if ((this.mMakeSelectionAndShiftTabBackParams == null))
+                {
+                    this.mMakeSelectionAndShiftTabBackParams = new MakeSelectionAndShiftTabBackParams();
+                }
+                return this.mMakeSelectionAndShiftTabBackParams;
+            }
+        }
+        
+        public virtual ShiftTabCheckExpectedValues ShiftTabCheckExpectedValues
+        {
+            get
+            {
+                if ((this.mShiftTabCheckExpectedValues == null))
+                {
+                    this.mShiftTabCheckExpectedValues = new ShiftTabCheckExpectedValues();
+                }
+                return this.mShiftTabCheckExpectedValues;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -966,6 +1459,30 @@ namespace GUITests
                 return this.mUIOKWindow;
             }
         }
+        
+        public UITheenteredformulacreWindow UITheenteredformulacreWindow
+        {
+            get
+            {
+                if ((this.mUITheenteredformulacreWindow == null))
+                {
+                    this.mUITheenteredformulacreWindow = new UITheenteredformulacreWindow();
+                }
+                return this.mUITheenteredformulacreWindow;
+            }
+        }
+        
+        public UICodeMeterCCWindow UICodeMeterCCWindow
+        {
+            get
+            {
+                if ((this.mUICodeMeterCCWindow == null))
+                {
+                    this.mUICodeMeterCCWindow = new UICodeMeterCCWindow();
+                }
+                return this.mUICodeMeterCCWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1011,6 +1528,30 @@ namespace GUITests
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
+        private EnterSomeContentsParams mEnterSomeContentsParams;
+        
+        private A2IsHelloExpectedValues mA2IsHelloExpectedValues;
+        
+        private CheckContentsOfC2ExpectedValues mCheckContentsOfC2ExpectedValues;
+        
+        private CheckContentsOfB4ExpectedValues mCheckContentsOfB4ExpectedValues;
+        
+        private CreateCircularDependencyParams mCreateCircularDependencyParams;
+        
+        private CheckSCircDepErrorMessageExpectedValues mCheckSCircDepErrorMessageExpectedValues;
+        
+        private CreateFormulaProblemsParams mCreateFormulaProblemsParams;
+        
+        private CheckErrorMessageForFormulaProblemsExpectedValues mCheckErrorMessageForFormulaProblemsExpectedValues;
+        
+        private TabbedSomeParams mTabbedSomeParams;
+        
+        private CheckSelectionExpectedValues mCheckSelectionExpectedValues;
+        
+        private MakeSelectionAndShiftTabBackParams mMakeSelectionAndShiftTabBackParams;
+        
+        private ShiftTabCheckExpectedValues mShiftTabCheckExpectedValues;
+        
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
         private UIThereareunsavedchangWindow mUIThereareunsavedchangWindow;
@@ -1020,6 +1561,10 @@ namespace GUITests
         private UIClickonanycellwithyoWindow mUIClickonanycellwithyoWindow;
         
         private UIOKWindow mUIOKWindow;
+        
+        private UITheenteredformulacreWindow mUITheenteredformulacreWindow;
+        
+        private UICodeMeterCCWindow mUICodeMeterCCWindow;
         #endregion
     }
     
@@ -1397,6 +1942,262 @@ namespace GUITests
         /// Verify that the 'Name' property of 'E11' label equals 'E11'
         /// </summary>
         public string UIE11TextName = "E11";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'EnterSomeContents'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class EnterSomeContentsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Type '5' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText1 = "5";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys1 = "{Enter}";
+        
+        /// <summary>
+        /// Type '=C2+2' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText2 = "=C2+2";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys2 = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'A2IsHello'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class A2IsHelloExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals 'Hello'
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckContentsOfC2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckContentsOfC2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals '5'
+        /// </summary>
+        public string UIContentsBoxEditText = "5";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckContentsOfB4'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckContentsOfB4ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'ContentsBox' text box equals '=C2+2'
+        /// </summary>
+        public string UIContentsBoxEditText = "=C2+2";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CreateCircularDependency'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CreateCircularDependencyParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '1' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "1";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Type '=A1' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText1 = "=A1";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys1 = "{Enter}";
+        
+        /// <summary>
+        /// Type '=A2' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText2 = "=A2";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys2 = "{Enter}";
+        
+        /// <summary>
+        /// Type '=A3' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText3 = "=A3";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys3 = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckSCircDepErrorMessage'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckSCircDepErrorMessageExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'The entered formula creates a circular dependency....' label equals 'The entered formula creates a circular dependency.  Make sure your formula does not depend on the cell it is in.'
+        /// </summary>
+        public string UITheenteredformulacreTextName = "The entered formula creates a circular dependency.  Make sure your formula does n" +
+            "ot depend on the cell it is in.";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CreateFormulaProblems'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CreateFormulaProblemsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '=A1A1A1' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "=A1A1A1";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckErrorMessageForFormulaProblems'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckErrorMessageForFormulaProblemsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of Dialog equals 'Dialog'
+        /// </summary>
+        public string UIItemDialogControlType = "Dialog";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'TabbedSome'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TabbedSomeParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{Tab}{Tab}{Tab}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Tab}{Tab}{Tab}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckSelection'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckSelectionExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'D1' label equals 'D1'
+        /// </summary>
+        public string UID1TextName = "D1";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'MakeSelectionAndShiftTabBack'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class MakeSelectionAndShiftTabBackParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Shift + {Tab}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Tab}";
+        
+        /// <summary>
+        /// Type 'Shift + {Tab}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys1 = "{Tab}";
+        
+        /// <summary>
+        /// Type 'Shift + {Tab}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys2 = "{Tab}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'ShiftTabCheck'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ShiftTabCheckExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'A6' label equals 'A6'
+        /// </summary>
+        public string UIA6TextName = "A6";
         #endregion
     }
     
@@ -1833,6 +2634,38 @@ namespace GUITests
                 return this.mUIE11Text;
             }
         }
+        
+        public WinText UID1Text
+        {
+            get
+            {
+                if ((this.mUID1Text == null))
+                {
+                    this.mUID1Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUID1Text.SearchProperties[WinText.PropertyNames.Name] = "D1";
+                    this.mUID1Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUID1Text;
+            }
+        }
+        
+        public WinText UIA6Text
+        {
+            get
+            {
+                if ((this.mUIA6Text == null))
+                {
+                    this.mUIA6Text = new WinText(this);
+                    #region Search Criteria
+                    this.mUIA6Text.SearchProperties[WinText.PropertyNames.Name] = "A6";
+                    this.mUIA6Text.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIA6Text;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1845,6 +2678,10 @@ namespace GUITests
         private WinText mUIB7Text;
         
         private WinText mUIE11Text;
+        
+        private WinText mUID1Text;
+        
+        private WinText mUIA6Text;
         #endregion
     }
     
@@ -2497,6 +3334,114 @@ namespace GUITests
         
         #region Fields
         private WinButton mUIOKButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITheenteredformulacreWindow : WinWindow
+    {
+        
+        public UITheenteredformulacreWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "The entered formula creates a circular dependency.  Make sure your formula does n" +
+                "ot depend on the cell it is in.";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "Static";
+            this.WindowTitles.Add("The entered formula creates a circular dependency.  Make sure your formula does n" +
+                    "ot depend on the cell it is in.");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UITheenteredformulacreText
+        {
+            get
+            {
+                if ((this.mUITheenteredformulacreText == null))
+                {
+                    this.mUITheenteredformulacreText = new WinText(this);
+                    #region Search Criteria
+                    this.mUITheenteredformulacreText.SearchProperties[WinText.PropertyNames.Name] = "The entered formula creates a circular dependency.  Make sure your formula does n" +
+                        "ot depend on the cell it is in.";
+                    this.mUITheenteredformulacreText.WindowTitles.Add("The entered formula creates a circular dependency.  Make sure your formula does n" +
+                            "ot depend on the cell it is in.");
+                    #endregion
+                }
+                return this.mUITheenteredformulacreText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUITheenteredformulacreText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICodeMeterCCWindow : WinWindow
+    {
+        
+        public UICodeMeterCCWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "CodeMeterCC";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32769";
+            this.WindowTitles.Add("CodeMeterCC");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemWindow2 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow2(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemWindow2 mUIItemWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow2 : WinWindow
+    {
+        
+        public UIItemWindow2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("CodeMeterCC");
+            #endregion
+        }
+        
+        #region Properties
+        public WinControl UIItemDialog
+        {
+            get
+            {
+                if ((this.mUIItemDialog == null))
+                {
+                    this.mUIItemDialog = new WinControl(this);
+                    #region Search Criteria
+                    this.mUIItemDialog.SearchProperties[UITestControl.PropertyNames.ControlType] = "Dialog";
+                    this.mUIItemDialog.WindowTitles.Add("CodeMeterCC");
+                    #endregion
+                }
+                return this.mUIItemDialog;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinControl mUIItemDialog;
         #endregion
     }
 }
