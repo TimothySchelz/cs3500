@@ -84,11 +84,17 @@ namespace SpreadsheetGUI
         /// <param name="filename"></param>
         private void panelSetUp(String filename)
         {
+            //Registers handler
             spreadsheetPanel1.SelectionChanged += displaySelection;
-            ContentsBox.Focus();
+            //Ensures that when the application starts the focus is on the contents box
+            this.ActiveControl = ContentsBox;
+            //Initializes the contents label with an empty string
             ValueLabel.Text = "";
+            //Sets the name of this file to whatever was passed in
             this.filename = filename;
+            //Sets the text label at the top of the window to the name of the file
             Text = filename;
+            //Sets the starting selection to be A1
             spreadsheetPanel1.SetSelection(0, 0);
         }
 
