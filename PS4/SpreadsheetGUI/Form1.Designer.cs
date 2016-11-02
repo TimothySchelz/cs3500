@@ -125,6 +125,7 @@ namespace SpreadsheetGUI
             this.ContentsBox.Name = "ContentsBox";
             this.ContentsBox.Size = new System.Drawing.Size(235, 20);
             this.ContentsBox.TabIndex = 2;
+            this.ContentsBox.TextChanged += new System.EventHandler(this.updateCells);
             this.ContentsBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
             // 
             // SelectionLabel
