@@ -123,18 +123,34 @@ namespace SpreadsheetGUI
         private void displaySelection(SpreadsheetPanel ss)
         {
             int row, col;
-            string value, contents;
+            
 
             // Gets the selection
             ss.GetSelection(out col, out row);
+            
+            //Changes the Name, Value labels and the contents box.
+            UpdateLabels(col, row);
+        }
+
+        /// <summary>
+        /// Updates all the labels and the text box at the top of the form.  Also sets the focus.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <param name="row"></param>
+        private void UpdateLabels(int col, int row)
+        {
+
+            String contents;
+            string value;
+
             // Gets the value in the cell
-            ss.GetValue(col, row, out value);
+            spreadsheetPanel1.GetValue(col, row, out value);
 
             // Changes the number associated with the col to a letter
-            string colName = valueToName(col+1);
+            string colName = valueToName(col + 1);
 
             //Updates address label and value label.
-            SelectionLabel.Text = colName + (row+1);
+            SelectionLabel.Text = colName + (row + 1);
             // Sets the value of the value label to the value in the cell
             ValueLabel.Text = value;
 
@@ -143,12 +159,11 @@ namespace SpreadsheetGUI
             ContentsBox.Focus();
 
             //Updates contents box
-            string name = valueToName(col+1) + (row+1);
+            string name = valueToName(col + 1) + (row + 1);
             // Takes the content of the cell and converts it to a string
             contents = ContentsToString(guts.GetCellContents(name));
             // Puts the contents in the contentsBox
             ContentsBox.Text = contents;
-            
         }
 
         /// <summary>
@@ -291,6 +306,33 @@ namespace SpreadsheetGUI
                     updateCells(sender, e);
                     break;
             }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+            {
+                TabSelection(1);
+                return true;
+            }
+            if (keyData == (Keys.Tab | Keys.Shift))
+            {
+                TabSelection(-1);
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void TabSelection(int shift)
+        {
+            int col, row;
+            spreadsheetPanel1.GetSelection(out col, out row);
+            
+            //Change the selection to the cell to the right of the current one.
+            spreadsheetPanel1.SetSelection(col + shift, row);
+            //Changes all the labels and junk to the new selection
+            UpdateLabels(col + shift, row);            
         }
 
         /// <summary>
