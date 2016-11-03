@@ -86,6 +86,7 @@ namespace SpreadsheetGUI
         {
             //Registers handler
             spreadsheetPanel1.SelectionChanged += displaySelection;
+
             //Ensures that when the application starts the focus is on the contents box
             this.ActiveControl = ContentsBox;
             //Initializes the contents label with an empty string
@@ -119,7 +120,6 @@ namespace SpreadsheetGUI
             // of making it seperate from the previous window.
             DemoApplicationContext.getAppContext().RunForm(new Form1());
         }
-
 
         /// <summary>
         /// Updates the display for cell value, contents, and address. Also redirects GUI focus to
@@ -270,11 +270,12 @@ namespace SpreadsheetGUI
             if (value is FormulaError)
             {
                 ValueLabel.Text = "I AM ERROR";
-            } else
+            }
+            else
             {
                 ValueLabel.Text = "" + value;
             }
-            
+
 
             // For every cell that could have been changed we set the value to the correct value
             updateSpreadsheetCells(changedCells);
@@ -296,11 +297,12 @@ namespace SpreadsheetGUI
                 if (guts.GetCellValue(cell) is FormulaError)
                 {
                     spreadsheetPanel1.SetValue(col, row, "I AM ERROR");
-                } else
+                }
+                else
                 {
                     spreadsheetPanel1.SetValue(col, row, "" + guts.GetCellValue(cell));
                 }
-                
+
             }
         }
 
@@ -337,8 +339,11 @@ namespace SpreadsheetGUI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        
+
         private void TabSelection(int shift)
         {
+            updateCells(this, new EventArgs());
             int col, row;
             spreadsheetPanel1.GetSelection(out col, out row);
 
