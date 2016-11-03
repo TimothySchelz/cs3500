@@ -23,6 +23,76 @@ namespace GUITests
         }
 
         [TestMethod]
+        public void SaveFeatureCancelFromXButton()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.CancelFromXButton();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void SaveFeatureCancelFromMenu()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.CancelFromMenu();
+            this.UIMap.SameSpreadsheetOpenMenu();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void SafetyFeatureNoFromXButton()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.DeclineSaveXButton();
+
+        }
+
+        [TestMethod]
+        public void SafetyFeatureNoFromMenu()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.DeclineSaveMenu();
+
+        }
+
+        [TestMethod]
+        public void SafetyFeatureYesFromXButton()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.ChooseToSaveFromXButton();
+            this.UIMap.AssertSavePromptedFromXButton();
+            this.UIMap.CancelSavePromptXButton();
+        }
+
+        [TestMethod]
+        public void SafetyFeatureYesFromMenu()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.ChooseToSaveFromMenu();
+            this.UIMap.AssertSavePromptedFromMenu();
+            this.UIMap.CancelSavePrompt();
+        }
+
+
+        [TestMethod]
+        public void SaveFeatureFromXButton()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.TriggerSafetyFromX();
+            this.UIMap.AssertSafetyFeatureTriggered();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void SaveFeatureFromMenu()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.TriggerSafetyFromMenu();
+            this.UIMap.AssertSafetyFeatureTriggered();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
         public void Update_ContentsCheckValueLabel()
         {
             this.UIMap.OpenSpreadsheet();

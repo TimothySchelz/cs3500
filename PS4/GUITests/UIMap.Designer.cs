@@ -1003,6 +1003,382 @@ namespace GUITests
             Assert.AreEqual(this.ShiftTabCheckExpectedValues.UIA6TextName, uIA6Text.Name);
         }
         
+        /// <summary>
+        /// Changes cell value in A1 and attempts to save, triggering the safety feature.
+        /// </summary>
+        public void CloseFromMenueWithChanges()
+        {
+            #region Variable Declarations
+            WinListItem uISpreadsheetGUIShortcListItem = this.UIProgramManagerWindow.UIDesktopList.UISpreadsheetGUIShortcListItem;
+            WinButton uIOpenButton = this.UIOpenFileSecurityWarnWindow.UIOpenWindow.UIOpenButton;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uICloseMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UICloseMenuItem;
+            #endregion
+
+            // Double-Click 'SpreadsheetGUI - Shortcut' list item
+            Mouse.DoubleClick(uISpreadsheetGUIShortcListItem, new Point(32, 32));
+
+            // Click '&Open' button
+            Mouse.Click(uIOpenButton, new Point(44, 13));
+
+            // Click '&Open' button
+            Mouse.Click(uIOpenButton, new Point(53, 16));
+
+            // Type 'hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CloseFromMenueWithChangesParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CloseFromMenueWithChangesParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(52, 13));
+        }
+        
+        /// <summary>
+        /// Changes spreadsheet and attempts to close from menu.
+        /// </summary>
+        public void TriggerSafetyFromMenu()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uICloseMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UICloseMenuItem;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(62, 40));
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.TriggerSafetyFromMenuParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.TriggerSafetyFromMenuParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(161, 58));
+
+            // Click 'File' -> 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(56, 6));
+        }
+        
+        /// <summary>
+        /// Makes sure the user is asked to save.
+        /// </summary>
+        public void AssertSafetyFeatureTriggered()
+        {
+            #region Variable Declarations
+            WinTitleBar uIThereareunsavedchangTitleBar = this.UIThereareunsavedchangWindow.UIThereareunsavedchangTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'There are unsaved changes.' title bar equals 'There are unsaved changes.'
+            Assert.AreEqual(this.AssertSafetyFeatureTriggeredExpectedValues.UIThereareunsavedchangTitleBarDisplayText, uIThereareunsavedchangTitleBar.DisplayText, "Safety Feature not triggered.");
+        }
+        
+        /// <summary>
+        /// Changes Spreadsheet and attempts to close from X button
+        /// </summary>
+        public void TriggerSafetyFromX()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(78, 43));
+
+            // Type 'Hello' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.TriggerSafetyFromXParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.TriggerSafetyFromXParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(26, 18));
+        }
+        
+        /// <summary>
+        /// Chooses to save from the safety feature.
+        /// </summary>
+        public void ChooseToSave()
+        {
+            #region Variable Declarations
+            WinButton uIYesButton = this.UIThereareunsavedchangWindow.UIYesWindow.UIYesButton;
+            #endregion
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(46, 15));
+        }
+        
+        /// <summary>
+        /// Makes sure the user is prompted to save when they choose to save.
+        /// </summary>
+        public void AssertSavePrompted()
+        {
+            #region Variable Declarations
+            WinTitleBar uISaveTitleBar = this.UISaveWindow.UISaveTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+            Assert.AreEqual(this.AssertSavePromptedExpectedValues.UISaveTitleBarDisplayText, uISaveTitleBar.DisplayText, "Safety feature not prompted.");
+        }
+        
+        /// <summary>
+        /// Chooses to save when asked by safety feature.
+        /// </summary>
+        public void ChooseToSaveFromMenu()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uICloseMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UICloseMenuItem;
+            WinButton uIYesButton = this.UIThereareunsavedchangWindow.UIYesWindow.UIYesButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(136, 60));
+
+            // Type 'Changed' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.ChooseToSaveFromMenuParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.ChooseToSaveFromMenuParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(208, 54));
+
+            // Click 'File' -> 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(58, 11));
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(47, 12));
+        }
+        
+        /// <summary>
+        /// Asserts that the user is prompted to save when they request.
+        /// </summary>
+        public void AssertSavePromptedFromMenu()
+        {
+            #region Variable Declarations
+            WinTitleBar uISaveTitleBar = this.UISaveWindow.UISaveTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+            Assert.AreEqual(this.AssertSavePromptedFromMenuExpectedValues.UISaveTitleBarDisplayText, uISaveTitleBar.DisplayText, "User was not prompted to save.");
+        }
+        
+        /// <summary>
+        /// Cancels the save prompt.
+        /// </summary>
+        public void CancelSavePrompt()
+        {
+            #region Variable Declarations
+            WinButton uICancelButton = this.UISaveWindow.UICancelWindow.UICancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(25, 12));
+        }
+        
+        /// <summary>
+        /// Chooses to save when prompeted after clicking X button.
+        /// </summary>
+        public void ChooseToSaveFromXButton()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uIYesButton = this.UIThereareunsavedchangWindow.UIYesWindow.UIYesButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(142, 53));
+
+            // Type 'changed' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.ChooseToSaveFromXButtonParams.UIContentsBoxEditText;
+
+            // Type '{Enter}{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.ChooseToSaveFromXButtonParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'ContentsBox' text box
+            Mouse.Click(uIContentsBoxEdit, new Point(93, 4));
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.ChooseToSaveFromXButtonParams.UIContentsBoxEditSendKeys1, ModifierKeys.None);
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(33, 15));
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(49, 11));
+        }
+        
+        /// <summary>
+        /// Asserts that the user was prompted to save from safety feature.
+        /// </summary>
+        public void AssertSavePromptedFromXButton()
+        {
+            #region Variable Declarations
+            WinTitleBar uISaveTitleBar = this.UISaveWindow.UISaveTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+            Assert.AreEqual(this.AssertSavePromptedFromXButtonExpectedValues.UISaveTitleBarDisplayText, uISaveTitleBar.DisplayText, "User was not prompted to save.");
+        }
+        
+        /// <summary>
+        /// Cancels the save prompt.
+        /// </summary>
+        public void CancelSavePromptXButton()
+        {
+            #region Variable Declarations
+            WinButton uICancelButton = this.UISaveWindow.UICancelWindow.UICancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(31, 12));
+        }
+        
+        /// <summary>
+        /// Cancels the closing event originating fromt the X button.
+        /// </summary>
+        public void CancelFromXButton()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uICancelButton = this.UIThereareunsavedchangWindow.UICancelWindow.UICancelButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(72, 44));
+
+            // Type 'change' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CancelFromXButtonParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CancelFromXButtonParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(22, 17));
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(33, 16));
+        }
+        
+        /// <summary>
+        /// Asserts that the same spreadsheet is still open.
+        /// </summary>
+        public void SameSpreadsheetOpenXButton()
+        {
+            #region Variable Declarations
+            WinText uIChangedText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UIChangedText;
+            #endregion
+
+            // Verify that the 'Name' property of 'Changed' label equals 'Changed'
+            Assert.AreEqual(this.SameSpreadsheetOpenXButtonExpectedValues.UIChangedTextName, uIChangedText.Name, "Spreadsheet not kept open after safety feature canceled.");
+        }
+        
+        /// <summary>
+        /// Triggers and cancels the safety feature from the menu option.
+        /// </summary>
+        public void CancelFromMenu()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uICloseMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UICloseMenuItem;
+            WinButton uICancelButton = this.UIThereareunsavedchangWindow.UICancelWindow.UICancelButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(143, 78));
+
+            // Type 'NewContent' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.CancelFromMenuParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.CancelFromMenuParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(58, 4));
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(60, 15));
+        }
+        
+        /// <summary>
+        /// Asserts that the same spreadsheet is open after canceling the closing event.
+        /// </summary>
+        public void SameSpreadsheetOpenMenu()
+        {
+            #region Variable Declarations
+            WinText uINewContentText = this.UINewSpreadsheetsprdWindow.UIHelloWindow.UINewContentText;
+            #endregion
+
+            // Verify that the 'Name' property of 'NewContent' label equals 'NewContent'
+            Assert.AreEqual(this.SameSpreadsheetOpenMenuExpectedValues.UINewContentTextName, uINewContentText.Name, "Spreadsheet not open after canceling safety feature.");
+        }
+        
+        /// <summary>
+        /// Declines option to save from safety feature.
+        /// </summary>
+        public void DeclineSaveXButton()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(175, 68));
+
+            // Type 'Prompt Save' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.DeclineSaveXButtonParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.DeclineSaveXButtonParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(22, 20));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(56, 10));
+        }
+        
+        /// <summary>
+        /// Declines the option to save  after triggering safety feature with menu button.
+        /// </summary>
+        public void DeclineSaveMenu()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uICloseMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UICloseMenuItem;
+            WinButton uINOButton = this.UIThereareunsavedchangWindow.UINOWindow.UINOButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(231, 122));
+
+            // Type 'prompt save' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.DeclineSaveMenuParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.DeclineSaveMenuParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(54, 12));
+
+            // Click '&No' button
+            Mouse.Click(uINOButton, new Point(48, 16));
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -1400,6 +1776,186 @@ namespace GUITests
             }
         }
         
+        public virtual CloseFromMenueWithChangesParams CloseFromMenueWithChangesParams
+        {
+            get
+            {
+                if ((this.mCloseFromMenueWithChangesParams == null))
+                {
+                    this.mCloseFromMenueWithChangesParams = new CloseFromMenueWithChangesParams();
+                }
+                return this.mCloseFromMenueWithChangesParams;
+            }
+        }
+        
+        public virtual TriggerSafetyFromMenuParams TriggerSafetyFromMenuParams
+        {
+            get
+            {
+                if ((this.mTriggerSafetyFromMenuParams == null))
+                {
+                    this.mTriggerSafetyFromMenuParams = new TriggerSafetyFromMenuParams();
+                }
+                return this.mTriggerSafetyFromMenuParams;
+            }
+        }
+        
+        public virtual AssertSafetyFeatureTriggeredExpectedValues AssertSafetyFeatureTriggeredExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSafetyFeatureTriggeredExpectedValues == null))
+                {
+                    this.mAssertSafetyFeatureTriggeredExpectedValues = new AssertSafetyFeatureTriggeredExpectedValues();
+                }
+                return this.mAssertSafetyFeatureTriggeredExpectedValues;
+            }
+        }
+        
+        public virtual TriggerSafetyFromXParams TriggerSafetyFromXParams
+        {
+            get
+            {
+                if ((this.mTriggerSafetyFromXParams == null))
+                {
+                    this.mTriggerSafetyFromXParams = new TriggerSafetyFromXParams();
+                }
+                return this.mTriggerSafetyFromXParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedExpectedValues AssertSavePromptedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedExpectedValues == null))
+                {
+                    this.mAssertSavePromptedExpectedValues = new AssertSavePromptedExpectedValues();
+                }
+                return this.mAssertSavePromptedExpectedValues;
+            }
+        }
+        
+        public virtual ChooseToSaveFromMenuParams ChooseToSaveFromMenuParams
+        {
+            get
+            {
+                if ((this.mChooseToSaveFromMenuParams == null))
+                {
+                    this.mChooseToSaveFromMenuParams = new ChooseToSaveFromMenuParams();
+                }
+                return this.mChooseToSaveFromMenuParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedFromMenuExpectedValues AssertSavePromptedFromMenuExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedFromMenuExpectedValues == null))
+                {
+                    this.mAssertSavePromptedFromMenuExpectedValues = new AssertSavePromptedFromMenuExpectedValues();
+                }
+                return this.mAssertSavePromptedFromMenuExpectedValues;
+            }
+        }
+        
+        public virtual ChooseToSaveFromXButtonParams ChooseToSaveFromXButtonParams
+        {
+            get
+            {
+                if ((this.mChooseToSaveFromXButtonParams == null))
+                {
+                    this.mChooseToSaveFromXButtonParams = new ChooseToSaveFromXButtonParams();
+                }
+                return this.mChooseToSaveFromXButtonParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedFromXButtonExpectedValues AssertSavePromptedFromXButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedFromXButtonExpectedValues == null))
+                {
+                    this.mAssertSavePromptedFromXButtonExpectedValues = new AssertSavePromptedFromXButtonExpectedValues();
+                }
+                return this.mAssertSavePromptedFromXButtonExpectedValues;
+            }
+        }
+        
+        public virtual CancelFromXButtonParams CancelFromXButtonParams
+        {
+            get
+            {
+                if ((this.mCancelFromXButtonParams == null))
+                {
+                    this.mCancelFromXButtonParams = new CancelFromXButtonParams();
+                }
+                return this.mCancelFromXButtonParams;
+            }
+        }
+        
+        public virtual SameSpreadsheetOpenXButtonExpectedValues SameSpreadsheetOpenXButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mSameSpreadsheetOpenXButtonExpectedValues == null))
+                {
+                    this.mSameSpreadsheetOpenXButtonExpectedValues = new SameSpreadsheetOpenXButtonExpectedValues();
+                }
+                return this.mSameSpreadsheetOpenXButtonExpectedValues;
+            }
+        }
+        
+        public virtual CancelFromMenuParams CancelFromMenuParams
+        {
+            get
+            {
+                if ((this.mCancelFromMenuParams == null))
+                {
+                    this.mCancelFromMenuParams = new CancelFromMenuParams();
+                }
+                return this.mCancelFromMenuParams;
+            }
+        }
+        
+        public virtual SameSpreadsheetOpenMenuExpectedValues SameSpreadsheetOpenMenuExpectedValues
+        {
+            get
+            {
+                if ((this.mSameSpreadsheetOpenMenuExpectedValues == null))
+                {
+                    this.mSameSpreadsheetOpenMenuExpectedValues = new SameSpreadsheetOpenMenuExpectedValues();
+                }
+                return this.mSameSpreadsheetOpenMenuExpectedValues;
+            }
+        }
+        
+        public virtual DeclineSaveXButtonParams DeclineSaveXButtonParams
+        {
+            get
+            {
+                if ((this.mDeclineSaveXButtonParams == null))
+                {
+                    this.mDeclineSaveXButtonParams = new DeclineSaveXButtonParams();
+                }
+                return this.mDeclineSaveXButtonParams;
+            }
+        }
+        
+        public virtual DeclineSaveMenuParams DeclineSaveMenuParams
+        {
+            get
+            {
+                if ((this.mDeclineSaveMenuParams == null))
+                {
+                    this.mDeclineSaveMenuParams = new DeclineSaveMenuParams();
+                }
+                return this.mDeclineSaveMenuParams;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -1483,6 +2039,42 @@ namespace GUITests
                 return this.mUICodeMeterCCWindow;
             }
         }
+        
+        public UIProgramManagerWindow UIProgramManagerWindow
+        {
+            get
+            {
+                if ((this.mUIProgramManagerWindow == null))
+                {
+                    this.mUIProgramManagerWindow = new UIProgramManagerWindow();
+                }
+                return this.mUIProgramManagerWindow;
+            }
+        }
+        
+        public UIOpenFileSecurityWarnWindow UIOpenFileSecurityWarnWindow
+        {
+            get
+            {
+                if ((this.mUIOpenFileSecurityWarnWindow == null))
+                {
+                    this.mUIOpenFileSecurityWarnWindow = new UIOpenFileSecurityWarnWindow();
+                }
+                return this.mUIOpenFileSecurityWarnWindow;
+            }
+        }
+        
+        public UISaveWindow UISaveWindow
+        {
+            get
+            {
+                if ((this.mUISaveWindow == null))
+                {
+                    this.mUISaveWindow = new UISaveWindow();
+                }
+                return this.mUISaveWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1552,6 +2144,36 @@ namespace GUITests
         
         private ShiftTabCheckExpectedValues mShiftTabCheckExpectedValues;
         
+        private CloseFromMenueWithChangesParams mCloseFromMenueWithChangesParams;
+        
+        private TriggerSafetyFromMenuParams mTriggerSafetyFromMenuParams;
+        
+        private AssertSafetyFeatureTriggeredExpectedValues mAssertSafetyFeatureTriggeredExpectedValues;
+        
+        private TriggerSafetyFromXParams mTriggerSafetyFromXParams;
+        
+        private AssertSavePromptedExpectedValues mAssertSavePromptedExpectedValues;
+        
+        private ChooseToSaveFromMenuParams mChooseToSaveFromMenuParams;
+        
+        private AssertSavePromptedFromMenuExpectedValues mAssertSavePromptedFromMenuExpectedValues;
+        
+        private ChooseToSaveFromXButtonParams mChooseToSaveFromXButtonParams;
+        
+        private AssertSavePromptedFromXButtonExpectedValues mAssertSavePromptedFromXButtonExpectedValues;
+        
+        private CancelFromXButtonParams mCancelFromXButtonParams;
+        
+        private SameSpreadsheetOpenXButtonExpectedValues mSameSpreadsheetOpenXButtonExpectedValues;
+        
+        private CancelFromMenuParams mCancelFromMenuParams;
+        
+        private SameSpreadsheetOpenMenuExpectedValues mSameSpreadsheetOpenMenuExpectedValues;
+        
+        private DeclineSaveXButtonParams mDeclineSaveXButtonParams;
+        
+        private DeclineSaveMenuParams mDeclineSaveMenuParams;
+        
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
         private UIThereareunsavedchangWindow mUIThereareunsavedchangWindow;
@@ -1565,6 +2187,12 @@ namespace GUITests
         private UITheenteredformulacreWindow mUITheenteredformulacreWindow;
         
         private UICodeMeterCCWindow mUICodeMeterCCWindow;
+        
+        private UIProgramManagerWindow mUIProgramManagerWindow;
+        
+        private UIOpenFileSecurityWarnWindow mUIOpenFileSecurityWarnWindow;
+        
+        private UISaveWindow mUISaveWindow;
         #endregion
     }
     
@@ -1585,7 +2213,7 @@ namespace GUITests
         /// <summary>
         /// Launch '%USERPROFILE%\Source\Repos\CS3500Assignments\PS4\SpreadsheetGUI\bin\Debug\SpreadsheetGUI.exe'
         /// </summary>
-        public string AlternateExePath = "%USERPROFILE%\\Source\\Repos\\CS3500Assignments\\PS4\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
+        public string AlternateExePath = "..\\..\\..\\SpreadsheetGUI\\bin\\Debug\\Spreads" +
             "heetGUI.exe";
         #endregion
     }
@@ -2201,6 +2829,281 @@ namespace GUITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'CloseFromMenueWithChanges'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CloseFromMenueWithChangesParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "hello";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'TriggerSafetyFromMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TriggerSafetyFromMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertSafetyFeatureTriggered'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSafetyFeatureTriggeredExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'There are unsaved changes.' title bar equals 'There are unsaved changes.'
+        /// </summary>
+        public string UIThereareunsavedchangTitleBarDisplayText = "There are unsaved changes.";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'TriggerSafetyFromX'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TriggerSafetyFromXParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Hello' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Hello";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertSavePrompted'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSavePromptedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+        /// </summary>
+        public string UISaveTitleBarDisplayText = "Save";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'ChooseToSaveFromMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ChooseToSaveFromMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Changed";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertSavePromptedFromMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSavePromptedFromMenuExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+        /// </summary>
+        public string UISaveTitleBarDisplayText = "Save";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'ChooseToSaveFromXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ChooseToSaveFromXButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "changed";
+        
+        /// <summary>
+        /// Type '{Enter}{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}{Enter}";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys1 = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertSavePromptedFromXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSavePromptedFromXButtonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+        /// </summary>
+        public string UISaveTitleBarDisplayText = "Save";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CancelFromXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CancelFromXButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'change' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "change";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SameSpreadsheetOpenXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SameSpreadsheetOpenXButtonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'Changed' label equals 'Changed'
+        /// </summary>
+        public string UIChangedTextName = "Changed";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CancelFromMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CancelFromMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'NewContent' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "NewContent";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SameSpreadsheetOpenMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SameSpreadsheetOpenMenuExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'NewContent' label equals 'NewContent'
+        /// </summary>
+        public string UINewContentTextName = "NewContent";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'DeclineSaveXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeclineSaveXButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Prompt Save' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Prompt Save";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'DeclineSaveMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeclineSaveMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'prompt save' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "prompt save";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UINewSpreadsheetsprdWindow : WinWindow
     {
@@ -2322,6 +3225,18 @@ namespace GUITests
                 return this.mUIItemWindow;
             }
         }
+        
+        public UISpreadsheetPanel1Window UISpreadsheetPanel1Window
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Window == null))
+                {
+                    this.mUISpreadsheetPanel1Window = new UISpreadsheetPanel1Window(this);
+                }
+                return this.mUISpreadsheetPanel1Window;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2342,6 +3257,8 @@ namespace GUITests
         private UIUpdateWindow1 mUIUpdateWindow1;
         
         private UIItemWindow mUIItemWindow;
+        
+        private UISpreadsheetPanel1Window mUISpreadsheetPanel1Window;
         #endregion
     }
     
@@ -2493,6 +3410,38 @@ namespace GUITests
                 return this.mUIItem1Text;
             }
         }
+        
+        public WinText UIChangedText
+        {
+            get
+            {
+                if ((this.mUIChangedText == null))
+                {
+                    this.mUIChangedText = new WinText(this);
+                    #region Search Criteria
+                    this.mUIChangedText.SearchProperties[WinText.PropertyNames.Name] = "Changed";
+                    this.mUIChangedText.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIChangedText;
+            }
+        }
+        
+        public WinText UINewContentText
+        {
+            get
+            {
+                if ((this.mUINewContentText == null))
+                {
+                    this.mUINewContentText = new WinText(this);
+                    #region Search Criteria
+                    this.mUINewContentText.SearchProperties[WinText.PropertyNames.Name] = "NewContent";
+                    this.mUINewContentText.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUINewContentText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2503,6 +3452,10 @@ namespace GUITests
         private WinText mUIItem2Text;
         
         private WinText mUIItem1Text;
+        
+        private WinText mUIChangedText;
+        
+        private WinText mUINewContentText;
         #endregion
     }
     
@@ -2801,10 +3754,29 @@ namespace GUITests
                 return this.mUINewMenuItem;
             }
         }
+        
+        public WinMenuItem UICloseMenuItem
+        {
+            get
+            {
+                if ((this.mUICloseMenuItem == null))
+                {
+                    this.mUICloseMenuItem = new WinMenuItem(this);
+                    #region Search Criteria
+                    this.mUICloseMenuItem.SearchProperties[WinMenuItem.PropertyNames.Name] = "Close";
+                    this.mUICloseMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUICloseMenuItem.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUICloseMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WinMenuItem mUINewMenuItem;
+        
+        private WinMenuItem mUICloseMenuItem;
         #endregion
     }
     
@@ -2881,6 +3853,41 @@ namespace GUITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISpreadsheetPanel1Window : WinWindow
+    {
+        
+        public UISpreadsheetPanel1Window(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "spreadsheetPanel1";
+            this.WindowTitles.Add("NewSpreadsheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinClient UISpreadsheetPanel1Client
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Client == null))
+                {
+                    this.mUISpreadsheetPanel1Client = new WinClient(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetPanel1Client.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUISpreadsheetPanel1Client;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinClient mUISpreadsheetPanel1Client;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIThereareunsavedchangWindow : WinWindow
     {
         
@@ -2905,10 +3912,55 @@ namespace GUITests
                 return this.mUINOWindow;
             }
         }
+        
+        public WinTitleBar UIThereareunsavedchangTitleBar
+        {
+            get
+            {
+                if ((this.mUIThereareunsavedchangTitleBar == null))
+                {
+                    this.mUIThereareunsavedchangTitleBar = new WinTitleBar(this);
+                    #region Search Criteria
+                    this.mUIThereareunsavedchangTitleBar.WindowTitles.Add("There are unsaved changes.");
+                    #endregion
+                }
+                return this.mUIThereareunsavedchangTitleBar;
+            }
+        }
+        
+        public UIYesWindow UIYesWindow
+        {
+            get
+            {
+                if ((this.mUIYesWindow == null))
+                {
+                    this.mUIYesWindow = new UIYesWindow(this);
+                }
+                return this.mUIYesWindow;
+            }
+        }
+        
+        public UICancelWindow UICancelWindow
+        {
+            get
+            {
+                if ((this.mUICancelWindow == null))
+                {
+                    this.mUICancelWindow = new UICancelWindow(this);
+                }
+                return this.mUICancelWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private UINOWindow mUINOWindow;
+        
+        private WinTitleBar mUIThereareunsavedchangTitleBar;
+        
+        private UIYesWindow mUIYesWindow;
+        
+        private UICancelWindow mUICancelWindow;
         #endregion
     }
     
@@ -2945,6 +3997,78 @@ namespace GUITests
         
         #region Fields
         private WinButton mUINOButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIYesWindow : WinWindow
+    {
+        
+        public UIYesWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "6";
+            this.WindowTitles.Add("There are unsaved changes.");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIYesButton
+        {
+            get
+            {
+                if ((this.mUIYesButton == null))
+                {
+                    this.mUIYesButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIYesButton.SearchProperties[WinButton.PropertyNames.Name] = "Yes";
+                    this.mUIYesButton.WindowTitles.Add("There are unsaved changes.");
+                    #endregion
+                }
+                return this.mUIYesButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIYesButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICancelWindow : WinWindow
+    {
+        
+        public UICancelWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "2";
+            this.WindowTitles.Add("There are unsaved changes.");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICancelButton
+        {
+            get
+            {
+                if ((this.mUICancelButton == null))
+                {
+                    this.mUICancelButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICancelButton.SearchProperties[WinButton.PropertyNames.Name] = "Cancel";
+                    this.mUICancelButton.WindowTitles.Add("There are unsaved changes.");
+                    #endregion
+                }
+                return this.mUICancelButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICancelButton;
         #endregion
     }
     
@@ -3442,6 +4566,227 @@ namespace GUITests
         
         #region Fields
         private WinControl mUIItemDialog;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIProgramManagerWindow : WinWindow
+    {
+        
+        public UIProgramManagerWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Program Manager";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "Progman";
+            this.WindowTitles.Add("Program Manager");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDesktopList UIDesktopList
+        {
+            get
+            {
+                if ((this.mUIDesktopList == null))
+                {
+                    this.mUIDesktopList = new UIDesktopList(this);
+                }
+                return this.mUIDesktopList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDesktopList mUIDesktopList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDesktopList : WinList
+    {
+        
+        public UIDesktopList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinList.PropertyNames.Name] = "Desktop";
+            this.WindowTitles.Add("Program Manager");
+            #endregion
+        }
+        
+        #region Properties
+        public WinListItem UISpreadsheetGUIShortcListItem
+        {
+            get
+            {
+                if ((this.mUISpreadsheetGUIShortcListItem == null))
+                {
+                    this.mUISpreadsheetGUIShortcListItem = new WinListItem(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetGUIShortcListItem.SearchProperties[WinListItem.PropertyNames.Name] = "SpreadsheetGUI - Shortcut";
+                    this.mUISpreadsheetGUIShortcListItem.WindowTitles.Add("Program Manager");
+                    #endregion
+                }
+                return this.mUISpreadsheetGUIShortcListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinListItem mUISpreadsheetGUIShortcListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOpenFileSecurityWarnWindow : WinWindow
+    {
+        
+        public UIOpenFileSecurityWarnWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Open File - Security Warning";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Open File - Security Warning");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOpenWindow UIOpenWindow
+        {
+            get
+            {
+                if ((this.mUIOpenWindow == null))
+                {
+                    this.mUIOpenWindow = new UIOpenWindow(this);
+                }
+                return this.mUIOpenWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOpenWindow mUIOpenWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOpenWindow : WinWindow
+    {
+        
+        public UIOpenWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "4426";
+            this.WindowTitles.Add("Open File - Security Warning");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIOpenButton
+        {
+            get
+            {
+                if ((this.mUIOpenButton == null))
+                {
+                    this.mUIOpenButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIOpenButton.SearchProperties[WinButton.PropertyNames.Name] = "Open";
+                    this.mUIOpenButton.WindowTitles.Add("Open File - Security Warning");
+                    #endregion
+                }
+                return this.mUIOpenButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIOpenButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISaveWindow : WinWindow
+    {
+        
+        public UISaveWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Save";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Save");
+            #endregion
+        }
+        
+        #region Properties
+        public WinTitleBar UISaveTitleBar
+        {
+            get
+            {
+                if ((this.mUISaveTitleBar == null))
+                {
+                    this.mUISaveTitleBar = new WinTitleBar(this);
+                    #region Search Criteria
+                    this.mUISaveTitleBar.WindowTitles.Add("Save");
+                    #endregion
+                }
+                return this.mUISaveTitleBar;
+            }
+        }
+        
+        public UICancelWindow1 UICancelWindow
+        {
+            get
+            {
+                if ((this.mUICancelWindow == null))
+                {
+                    this.mUICancelWindow = new UICancelWindow1(this);
+                }
+                return this.mUICancelWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinTitleBar mUISaveTitleBar;
+        
+        private UICancelWindow1 mUICancelWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICancelWindow1 : WinWindow
+    {
+        
+        public UICancelWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "2";
+            this.WindowTitles.Add("Save");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UICancelButton
+        {
+            get
+            {
+                if ((this.mUICancelButton == null))
+                {
+                    this.mUICancelButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUICancelButton.SearchProperties[WinButton.PropertyNames.Name] = "Cancel";
+                    this.mUICancelButton.WindowTitles.Add("Save");
+                    #endregion
+                }
+                return this.mUICancelButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUICancelButton;
         #endregion
     }
 }
