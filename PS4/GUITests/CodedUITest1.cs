@@ -23,7 +23,47 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void SaveFeatureCancelFromXButton()
+        public void SaveCloseAndOpen()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.SaveChangedSpreadsheet();
+            this.UIMap.Xout();
+
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.LoadChangedSpreadsheet();
+            this.UIMap.SelectA1();
+            this.UIMap.AssertOpenedChanged();
+            this.UIMap.Xout();
+        }
+
+        [TestMethod]
+        public void ManualSaveAndExit()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.ChangeSaveExit();
+        }
+
+        [TestMethod]
+        public void SaveToNewName()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.SaveNewName();
+            this.UIMap.CheckNewName();
+            this.UIMap.Xout();
+        }
+
+
+        [TestMethod]
+        public void SavePromptFromMenu()
+        {
+            this.UIMap.OpenSpreadsheet();
+            this.UIMap.SaveFromMenu();
+            this.UIMap.AssertSavePrompt();
+            this.UIMap.CancelSaveAndExit();
+        }
+
+        [TestMethod]
+        public void SafetyFeatureCancelFromXButton()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.CancelFromXButton();
@@ -31,7 +71,7 @@ namespace GUITests
         }
 
         [TestMethod]
-        public void SaveFeatureCancelFromMenu()
+        public void SafetyFeatureCancelFromMenu()
         {
             this.UIMap.OpenSpreadsheet();
             this.UIMap.CancelFromMenu();

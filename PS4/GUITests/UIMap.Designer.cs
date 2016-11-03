@@ -1379,6 +1379,342 @@ namespace GUITests
             Mouse.Click(uINOButton, new Point(48, 16));
         }
         
+        /// <summary>
+        /// Selects the save option from the menu.
+        /// </summary>
+        public void SaveFromMenu()
+        {
+            #region Variable Declarations
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            #endregion
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(45, 6));
+        }
+        
+        /// <summary>
+        /// Save Prompted from menu.
+        /// </summary>
+        public void AssertSavePrompt()
+        {
+            #region Variable Declarations
+            WinTitleBar uISaveTitleBar = this.UISaveWindow.UISaveTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+            Assert.AreEqual(this.AssertSavePromptExpectedValues.UISaveTitleBarDisplayText, uISaveTitleBar.DisplayText, "Save not prompted when selected from menu.");
+        }
+        
+        /// <summary>
+        /// Cancels the save and exits program.
+        /// </summary>
+        public void CancelSaveAndExit()
+        {
+            #region Variable Declarations
+            WinButton uICancelButton = this.UISaveWindow.UICancelWindow.UICancelButton;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(40, 19));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(17, 19));
+        }
+        
+        /// <summary>
+        /// saves to "NewName.Sprd"
+        /// </summary>
+        public void SaveToNewName()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            WinComboBox uIFilenameComboBox = this.UISaveWindow.UIDetailsPanePane.UIFilenameComboBox;
+            WinButton uISaveButton = this.UISaveWindow.UISaveWindow1.UISaveButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(83, 39));
+
+            // Type 'data' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.SaveToNewNameParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.SaveToNewNameParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(55, 16));
+
+            // Select 'NewName.sprd' in 'File name:' combo box
+            uIFilenameComboBox.EditableItem = this.SaveToNewNameParams.UIFilenameComboBoxEditableItem;
+
+            // Click '&Save' button
+            Mouse.Click(uISaveButton, new Point(57, 9));
+        }
+        
+        /// <summary>
+        /// Asserts the spreadsheet was saved to a new file name.
+        /// </summary>
+        public void AssertNewName()
+        {
+            #region Variable Declarations
+            WinTitleBar uICUsersmarcheseSourceTitleBar = this.UICUsersmarcheseSourceWindow.UICUsersmarcheseSourceTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+            Assert.AreNotEqual(this.AssertNewNameExpectedValues.UICUsersmarcheseSourceTitleBarDisplayText, uICUsersmarcheseSourceTitleBar.DisplayText, "Spreadsheet not saved to new file name.");
+        }
+        
+        /// <summary>
+        /// Saves Changed spreadsheet and opens a blank one.
+        /// </summary>
+        public void SaveAndOpenNew()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            WinComboBox uIFilenameComboBox = this.UISaveWindow.UIDetailsPanePane.UIFilenameComboBox;
+            WinButton uISaveButton = this.UISaveWindow.UISaveWindow1.UISaveButton;
+            WinMenuItem uINewMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UINewMenuItem;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(143, 84));
+
+            // Type 'NonEmptyCell' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.SaveAndOpenNewParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.SaveAndOpenNewParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(53, 18));
+
+            // Select 'ChangedSheet.sprd' in 'File name:' combo box
+            uIFilenameComboBox.EditableItem = this.SaveAndOpenNewParams.UIFilenameComboBoxEditableItem;
+
+            // Click '&Save' button
+            Mouse.Click(uISaveButton, new Point(55, 19));
+
+            // Click 'File' -> 'New' menu item
+            Mouse.Click(uINewMenuItem, new Point(37, 12));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(24, 20));
+        }
+        
+        /// <summary>
+        /// Opens the changed spreadsheet.
+        /// </summary>
+        public void OpenChanged()
+        {
+            #region Variable Declarations
+            WinMenuItem uIOpenMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UIOpenMenuItem;
+            WinEdit uINameEdit = this.UIOpenaSpreadsheetWindow.UIItemWindow.UIChangedSheetsprdListItem.UINameEdit;
+            WinSplitButton uIOpenSplitButton = this.UIOpenaSpreadsheetWindow.UIOpenWindow.UIOpenSplitButton;
+            #endregion
+
+            // Click 'File' -> 'Open' menu item
+            Mouse.Click(uIOpenMenuItem, new Point(42, 6));
+
+            // Click 'Name' text box
+            Mouse.Click(uINameEdit, new Point(77, 15));
+
+            // Click '&Open' split button
+            Mouse.Click(uIOpenSplitButton, new Point(50, 17));
+        }
+        
+        /// <summary>
+        /// Selects cell B3
+        /// </summary>
+        public void SelectB3()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UICUsersmarcheseSourceWindow1.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(147, 79));
+        }
+        
+        /// <summary>
+        /// Asserts the changed spreadsheet is loaded.
+        /// </summary>
+        public void AssertLoadedBack()
+        {
+            #region Variable Declarations
+            WinText uINonEmptyCellText = this.UICUsersmarcheseSourceWindow1.UINonEmptyCellWindow.UINonEmptyCellText;
+            #endregion
+
+            // Verify that the 'Name' property of 'NonEmptyCell' label equals 'NonEmptyCell'
+            Assert.AreEqual(this.AssertLoadedBackExpectedValues.UINonEmptyCellTextName, uINonEmptyCellText.Name, "Changed Spreadsheet not loaded.");
+        }
+        
+        /// <summary>
+        /// Saves spreadsheet as "NewName.sprd"
+        /// </summary>
+        public void SaveNewName()
+        {
+            #region Variable Declarations
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            WinComboBox uIFilenameComboBox = this.UISaveWindow.UIDetailsPanePane.UIFilenameComboBox;
+            WinButton uISaveButton = this.UISaveWindow.UISaveWindow1.UISaveButton;
+            WinButton uIYesButton = this.UIConfirmSaveAsWindow.UIConfirmSaveAsPane.UIYesButton;
+            #endregion
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(43, 10));
+
+            // Select 'NewName.sprd' in 'File name:' combo box
+            uIFilenameComboBox.EditableItem = this.SaveNewNameParams.UIFilenameComboBoxEditableItem;
+
+            // Click '&Save' button
+            Mouse.Click(uISaveButton, new Point(42, 13));
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(28, 12));
+        }
+        
+        /// <summary>
+        /// Asserts that the file name has changed after saving.
+        /// </summary>
+        public void CheckNewName()
+        {
+            #region Variable Declarations
+            WinTitleBar uICUsersmarcheseSourceTitleBar = this.UICUsersmarcheseSourceWindow.UICUsersmarcheseSourceTitleBar;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+            Assert.AreNotEqual(this.CheckNewNameExpectedValues.UICUsersmarcheseSourceTitleBarDisplayText, uICUsersmarcheseSourceTitleBar.DisplayText, "Spreadsheet not saved under a new name.");
+        }
+        
+        /// <summary>
+        /// Changes the spreadsheet , saves and exits. Spreadsheet should recognize all chnages as saved.
+        /// </summary>
+        public void ChangeSaveExit()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            WinComboBox uIFilenameComboBox = this.UISaveWindow.UIDetailsPanePane.UIFilenameComboBox;
+            WinEdit uIFilenameEdit = this.UISaveWindow.UIItemWindow.UIFilenameEdit;
+            WinButton uIYesButton = this.UIConfirmSaveAsWindow.UIConfirmSaveAsPane.UIYesButton;
+            WinButton uICloseButton = this.UINewSpreadsheetsprdWindow.UINewSpreadsheetsprdTitleBar.UICloseButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(73, 36));
+
+            // Type 'Changed' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.ChangeSaveExitParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.ChangeSaveExitParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(33, 6));
+
+            // Select 'NewName.sprd' in 'File name:' combo box
+            uIFilenameComboBox.EditableItem = this.ChangeSaveExitParams.UIFilenameComboBoxEditableItem;
+
+            // Type '{Enter}' in 'File name:' text box
+            Keyboard.SendKeys(uIFilenameEdit, this.ChangeSaveExitParams.UIFilenameEditSendKeys, ModifierKeys.None);
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(35, 13));
+
+            // Click 'Close' button
+            Mouse.Click(uICloseButton, new Point(17, 18));
+        }
+        
+        /// <summary>
+        /// saves spreadsheet to "NewName.sprd"
+        /// </summary>
+        public void SaveChangedSpreadsheet()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UINewSpreadsheetsprdWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            WinEdit uIContentsBoxEdit = this.UINewSpreadsheetsprdWindow.UIContentsBoxWindow.UIContentsBoxEdit;
+            WinMenuItem uISaveMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UISaveMenuItem;
+            WinComboBox uIFilenameComboBox = this.UISaveWindow.UIDetailsPanePane.UIFilenameComboBox;
+            WinButton uISaveButton = this.UISaveWindow.UISaveWindow1.UISaveButton;
+            WinButton uIYesButton = this.UIConfirmSaveAsWindow.UIConfirmSaveAsPane.UIYesButton;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(93, 42));
+
+            // Type 'Changed' in 'ContentsBox' text box
+            uIContentsBoxEdit.Text = this.SaveChangedSpreadsheetParams.UIContentsBoxEditText;
+
+            // Type '{Enter}' in 'ContentsBox' text box
+            Keyboard.SendKeys(uIContentsBoxEdit, this.SaveChangedSpreadsheetParams.UIContentsBoxEditSendKeys, ModifierKeys.None);
+
+            // Click 'File' -> 'Save' menu item
+            Mouse.Click(uISaveMenuItem, new Point(46, 7));
+
+            // Select 'NewName.sprd' in 'File name:' combo box
+            uIFilenameComboBox.EditableItem = this.SaveChangedSpreadsheetParams.UIFilenameComboBoxEditableItem;
+
+            // Click '&Save' button
+            Mouse.Click(uISaveButton, new Point(18, 5));
+
+            // Click '&Yes' button
+            Mouse.Click(uIYesButton, new Point(32, 6));
+        }
+        
+        /// <summary>
+        /// Opens "NewName.sprd"
+        /// </summary>
+        public void LoadChangedSpreadsheet()
+        {
+            #region Variable Declarations
+            WinMenuItem uIOpenMenuItem = this.UINewSpreadsheetsprdWindow.UIMenuStrip1MenuBar.UIFileMenuItem.UIOpenMenuItem;
+            WinEdit uINameEdit = this.UIOpenaSpreadsheetWindow.UIItemWindow.UINewNamesprdListItem.UINameEdit;
+            WinSplitButton uIOpenSplitButton = this.UIOpenaSpreadsheetWindow.UIOpenWindow.UIOpenSplitButton;
+            #endregion
+
+            // Click 'File' -> 'Open' menu item
+            Mouse.Click(uIOpenMenuItem, new Point(39, 7));
+
+            // Click 'Name' text box
+            Mouse.Click(uINameEdit, new Point(35, 14));
+
+            // Click '&Open' split button
+            Mouse.Click(uIOpenSplitButton, new Point(45, 20));
+        }
+        
+        /// <summary>
+        /// Selects cell A1
+        /// </summary>
+        public void SelectA1()
+        {
+            #region Variable Declarations
+            WinClient uISpreadsheetPanel1Client = this.UICUsersmarcheseSourceWindow.UIItemWindow.UISpreadsheetPanel1Client;
+            #endregion
+
+            // Click 'spreadsheetPanel1' client
+            Mouse.Click(uISpreadsheetPanel1Client, new Point(84, 38));
+        }
+        
+        /// <summary>
+        /// Asserts that the changed spreadsheet was loaded.
+        /// </summary>
+        public void AssertOpenedChanged()
+        {
+            #region Variable Declarations
+            WinText uIChangedText = this.UICUsersmarcheseSourceWindow.UIChangedWindow.UIChangedText;
+            #endregion
+
+            // Verify that the 'Name' property of 'Changed' label equals 'Changed'
+            Assert.AreEqual(this.AssertOpenedChangedExpectedValues.UIChangedTextName, uIChangedText.Name, "Changed spreadsheet not opened properly.");
+        }
+        
         #region Properties
         public virtual OpenSpreadsheetParams OpenSpreadsheetParams
         {
@@ -1956,6 +2292,126 @@ namespace GUITests
             }
         }
         
+        public virtual AssertSavePromptExpectedValues AssertSavePromptExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptExpectedValues == null))
+                {
+                    this.mAssertSavePromptExpectedValues = new AssertSavePromptExpectedValues();
+                }
+                return this.mAssertSavePromptExpectedValues;
+            }
+        }
+        
+        public virtual SaveToNewNameParams SaveToNewNameParams
+        {
+            get
+            {
+                if ((this.mSaveToNewNameParams == null))
+                {
+                    this.mSaveToNewNameParams = new SaveToNewNameParams();
+                }
+                return this.mSaveToNewNameParams;
+            }
+        }
+        
+        public virtual AssertNewNameExpectedValues AssertNewNameExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertNewNameExpectedValues == null))
+                {
+                    this.mAssertNewNameExpectedValues = new AssertNewNameExpectedValues();
+                }
+                return this.mAssertNewNameExpectedValues;
+            }
+        }
+        
+        public virtual SaveAndOpenNewParams SaveAndOpenNewParams
+        {
+            get
+            {
+                if ((this.mSaveAndOpenNewParams == null))
+                {
+                    this.mSaveAndOpenNewParams = new SaveAndOpenNewParams();
+                }
+                return this.mSaveAndOpenNewParams;
+            }
+        }
+        
+        public virtual AssertLoadedBackExpectedValues AssertLoadedBackExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertLoadedBackExpectedValues == null))
+                {
+                    this.mAssertLoadedBackExpectedValues = new AssertLoadedBackExpectedValues();
+                }
+                return this.mAssertLoadedBackExpectedValues;
+            }
+        }
+        
+        public virtual SaveNewNameParams SaveNewNameParams
+        {
+            get
+            {
+                if ((this.mSaveNewNameParams == null))
+                {
+                    this.mSaveNewNameParams = new SaveNewNameParams();
+                }
+                return this.mSaveNewNameParams;
+            }
+        }
+        
+        public virtual CheckNewNameExpectedValues CheckNewNameExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckNewNameExpectedValues == null))
+                {
+                    this.mCheckNewNameExpectedValues = new CheckNewNameExpectedValues();
+                }
+                return this.mCheckNewNameExpectedValues;
+            }
+        }
+        
+        public virtual ChangeSaveExitParams ChangeSaveExitParams
+        {
+            get
+            {
+                if ((this.mChangeSaveExitParams == null))
+                {
+                    this.mChangeSaveExitParams = new ChangeSaveExitParams();
+                }
+                return this.mChangeSaveExitParams;
+            }
+        }
+        
+        public virtual SaveChangedSpreadsheetParams SaveChangedSpreadsheetParams
+        {
+            get
+            {
+                if ((this.mSaveChangedSpreadsheetParams == null))
+                {
+                    this.mSaveChangedSpreadsheetParams = new SaveChangedSpreadsheetParams();
+                }
+                return this.mSaveChangedSpreadsheetParams;
+            }
+        }
+        
+        public virtual AssertOpenedChangedExpectedValues AssertOpenedChangedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertOpenedChangedExpectedValues == null))
+                {
+                    this.mAssertOpenedChangedExpectedValues = new AssertOpenedChangedExpectedValues();
+                }
+                return this.mAssertOpenedChangedExpectedValues;
+            }
+        }
+        
         public UINewSpreadsheetsprdWindow UINewSpreadsheetsprdWindow
         {
             get
@@ -2075,6 +2531,54 @@ namespace GUITests
                 return this.mUISaveWindow;
             }
         }
+        
+        public UICUsersmarcheseSourceWindow UICUsersmarcheseSourceWindow
+        {
+            get
+            {
+                if ((this.mUICUsersmarcheseSourceWindow == null))
+                {
+                    this.mUICUsersmarcheseSourceWindow = new UICUsersmarcheseSourceWindow();
+                }
+                return this.mUICUsersmarcheseSourceWindow;
+            }
+        }
+        
+        public UIOpenaSpreadsheetWindow UIOpenaSpreadsheetWindow
+        {
+            get
+            {
+                if ((this.mUIOpenaSpreadsheetWindow == null))
+                {
+                    this.mUIOpenaSpreadsheetWindow = new UIOpenaSpreadsheetWindow();
+                }
+                return this.mUIOpenaSpreadsheetWindow;
+            }
+        }
+        
+        public UICUsersmarcheseSourceWindow1 UICUsersmarcheseSourceWindow1
+        {
+            get
+            {
+                if ((this.mUICUsersmarcheseSourceWindow1 == null))
+                {
+                    this.mUICUsersmarcheseSourceWindow1 = new UICUsersmarcheseSourceWindow1();
+                }
+                return this.mUICUsersmarcheseSourceWindow1;
+            }
+        }
+        
+        public UIConfirmSaveAsWindow UIConfirmSaveAsWindow
+        {
+            get
+            {
+                if ((this.mUIConfirmSaveAsWindow == null))
+                {
+                    this.mUIConfirmSaveAsWindow = new UIConfirmSaveAsWindow();
+                }
+                return this.mUIConfirmSaveAsWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2174,6 +2678,26 @@ namespace GUITests
         
         private DeclineSaveMenuParams mDeclineSaveMenuParams;
         
+        private AssertSavePromptExpectedValues mAssertSavePromptExpectedValues;
+        
+        private SaveToNewNameParams mSaveToNewNameParams;
+        
+        private AssertNewNameExpectedValues mAssertNewNameExpectedValues;
+        
+        private SaveAndOpenNewParams mSaveAndOpenNewParams;
+        
+        private AssertLoadedBackExpectedValues mAssertLoadedBackExpectedValues;
+        
+        private SaveNewNameParams mSaveNewNameParams;
+        
+        private CheckNewNameExpectedValues mCheckNewNameExpectedValues;
+        
+        private ChangeSaveExitParams mChangeSaveExitParams;
+        
+        private SaveChangedSpreadsheetParams mSaveChangedSpreadsheetParams;
+        
+        private AssertOpenedChangedExpectedValues mAssertOpenedChangedExpectedValues;
+        
         private UINewSpreadsheetsprdWindow mUINewSpreadsheetsprdWindow;
         
         private UIThereareunsavedchangWindow mUIThereareunsavedchangWindow;
@@ -2193,6 +2717,14 @@ namespace GUITests
         private UIOpenFileSecurityWarnWindow mUIOpenFileSecurityWarnWindow;
         
         private UISaveWindow mUISaveWindow;
+        
+        private UICUsersmarcheseSourceWindow mUICUsersmarcheseSourceWindow;
+        
+        private UIOpenaSpreadsheetWindow mUIOpenaSpreadsheetWindow;
+        
+        private UICUsersmarcheseSourceWindow1 mUICUsersmarcheseSourceWindow1;
+        
+        private UIConfirmSaveAsWindow mUIConfirmSaveAsWindow;
         #endregion
     }
     
@@ -3104,6 +3636,201 @@ namespace GUITests
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'AssertSavePrompt'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSavePromptExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+        /// </summary>
+        public string UISaveTitleBarDisplayText = "Save";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveToNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveToNewNameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'data' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "data";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertNewNameExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+        /// </summary>
+        public string UICUsersmarcheseSourceTitleBarDisplayText = "NewSpreadsheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveAndOpenNew'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveAndOpenNewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'NonEmptyCell' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "NonEmptyCell";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'ChangedSheet.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "ChangedSheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertLoadedBack'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertLoadedBackExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'NonEmptyCell' label equals 'NonEmptyCell'
+        /// </summary>
+        public string UINonEmptyCellTextName = "NonEmptyCell";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveNewNameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckNewNameExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+        /// </summary>
+        public string UICUsersmarcheseSourceTitleBarDisplayText = "NewSpreadsheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'ChangeSaveExit'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ChangeSaveExitParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Changed";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'File name:' text box
+        /// </summary>
+        public string UIFilenameEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveChangedSpreadsheet'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveChangedSpreadsheetParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Changed";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertOpenedChanged'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertOpenedChangedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'Changed' label equals 'Changed'
+        /// </summary>
+        public string UIChangedTextName = "Changed";
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UINewSpreadsheetsprdWindow : WinWindow
     {
@@ -3771,12 +4498,50 @@ namespace GUITests
                 return this.mUICloseMenuItem;
             }
         }
+        
+        public WinMenuItem UISaveMenuItem
+        {
+            get
+            {
+                if ((this.mUISaveMenuItem == null))
+                {
+                    this.mUISaveMenuItem = new WinMenuItem(this);
+                    #region Search Criteria
+                    this.mUISaveMenuItem.SearchProperties[WinMenuItem.PropertyNames.Name] = "Save";
+                    this.mUISaveMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUISaveMenuItem.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUISaveMenuItem;
+            }
+        }
+        
+        public WinMenuItem UIOpenMenuItem
+        {
+            get
+            {
+                if ((this.mUIOpenMenuItem == null))
+                {
+                    this.mUIOpenMenuItem = new WinMenuItem(this);
+                    #region Search Criteria
+                    this.mUIOpenMenuItem.SearchProperties[WinMenuItem.PropertyNames.Name] = "Open";
+                    this.mUIOpenMenuItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIOpenMenuItem.WindowTitles.Add("NewSpreadsheet.sprd");
+                    #endregion
+                }
+                return this.mUIOpenMenuItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WinMenuItem mUINewMenuItem;
         
         private WinMenuItem mUICloseMenuItem;
+        
+        private WinMenuItem mUISaveMenuItem;
+        
+        private WinMenuItem mUIOpenMenuItem;
         #endregion
     }
     
@@ -4745,12 +5510,54 @@ namespace GUITests
                 return this.mUICancelWindow;
             }
         }
+        
+        public UIDetailsPanePane UIDetailsPanePane
+        {
+            get
+            {
+                if ((this.mUIDetailsPanePane == null))
+                {
+                    this.mUIDetailsPanePane = new UIDetailsPanePane(this);
+                }
+                return this.mUIDetailsPanePane;
+            }
+        }
+        
+        public UISaveWindow1 UISaveWindow1
+        {
+            get
+            {
+                if ((this.mUISaveWindow1 == null))
+                {
+                    this.mUISaveWindow1 = new UISaveWindow1(this);
+                }
+                return this.mUISaveWindow1;
+            }
+        }
+        
+        public UIItemWindow3 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow3(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private WinTitleBar mUISaveTitleBar;
         
         private UICancelWindow1 mUICancelWindow;
+        
+        private UIDetailsPanePane mUIDetailsPanePane;
+        
+        private UISaveWindow1 mUISaveWindow1;
+        
+        private UIItemWindow3 mUIItemWindow;
         #endregion
     }
     
@@ -4787,6 +5594,649 @@ namespace GUITests
         
         #region Fields
         private WinButton mUICancelButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDetailsPanePane : WinPane
+    {
+        
+        public UIDetailsPanePane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinControl.PropertyNames.Name] = "Details Pane";
+            this.WindowTitles.Add("Save");
+            #endregion
+        }
+        
+        #region Properties
+        public WinComboBox UIFilenameComboBox
+        {
+            get
+            {
+                if ((this.mUIFilenameComboBox == null))
+                {
+                    this.mUIFilenameComboBox = new WinComboBox(this);
+                    #region Search Criteria
+                    this.mUIFilenameComboBox.SearchProperties[WinComboBox.PropertyNames.Name] = "File name:";
+                    this.mUIFilenameComboBox.WindowTitles.Add("Save");
+                    #endregion
+                }
+                return this.mUIFilenameComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinComboBox mUIFilenameComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISaveWindow1 : WinWindow
+    {
+        
+        public UISaveWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "1";
+            this.WindowTitles.Add("Save");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UISaveButton
+        {
+            get
+            {
+                if ((this.mUISaveButton == null))
+                {
+                    this.mUISaveButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUISaveButton.SearchProperties[WinButton.PropertyNames.Name] = "Save";
+                    this.mUISaveButton.WindowTitles.Add("Save");
+                    #endregion
+                }
+                return this.mUISaveButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUISaveButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow3 : WinWindow
+    {
+        
+        public UIItemWindow3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "1001";
+            this.WindowTitles.Add("Save");
+            #endregion
+        }
+        
+        #region Properties
+        public WinEdit UIFilenameEdit
+        {
+            get
+            {
+                if ((this.mUIFilenameEdit == null))
+                {
+                    this.mUIFilenameEdit = new WinEdit(this);
+                    #region Search Criteria
+                    this.mUIFilenameEdit.SearchProperties[WinEdit.PropertyNames.Name] = "File name:";
+                    this.mUIFilenameEdit.WindowTitles.Add("Save");
+                    #endregion
+                }
+                return this.mUIFilenameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinEdit mUIFilenameEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICUsersmarcheseSourceWindow : WinWindow
+    {
+        
+        public UICUsersmarcheseSourceWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                "e.sprd";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                    "e.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinTitleBar UICUsersmarcheseSourceTitleBar
+        {
+            get
+            {
+                if ((this.mUICUsersmarcheseSourceTitleBar == null))
+                {
+                    this.mUICUsersmarcheseSourceTitleBar = new WinTitleBar(this);
+                    #region Search Criteria
+                    this.mUICUsersmarcheseSourceTitleBar.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                            "e.sprd");
+                    #endregion
+                }
+                return this.mUICUsersmarcheseSourceTitleBar;
+            }
+        }
+        
+        public UIItemWindow4 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow4(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
+        
+        public UIChangedWindow UIChangedWindow
+        {
+            get
+            {
+                if ((this.mUIChangedWindow == null))
+                {
+                    this.mUIChangedWindow = new UIChangedWindow(this);
+                }
+                return this.mUIChangedWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinTitleBar mUICUsersmarcheseSourceTitleBar;
+        
+        private UIItemWindow4 mUIItemWindow;
+        
+        private UIChangedWindow mUIChangedWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow4 : WinWindow
+    {
+        
+        public UIItemWindow4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WinWindow.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                    "e.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinClient UISpreadsheetPanel1Client
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Client == null))
+                {
+                    this.mUISpreadsheetPanel1Client = new WinClient(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetPanel1Client.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                            "e.sprd");
+                    #endregion
+                }
+                return this.mUISpreadsheetPanel1Client;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinClient mUISpreadsheetPanel1Client;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIChangedWindow : WinWindow
+    {
+        
+        public UIChangedWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "ValueLabel";
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                    "e.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UIChangedText
+        {
+            get
+            {
+                if ((this.mUIChangedText == null))
+                {
+                    this.mUIChangedText = new WinText(this);
+                    #region Search Criteria
+                    this.mUIChangedText.SearchProperties[WinText.PropertyNames.Name] = "Changed";
+                    this.mUIChangedText.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\NewNam" +
+                            "e.sprd");
+                    #endregion
+                }
+                return this.mUIChangedText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUIChangedText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOpenaSpreadsheetWindow : WinWindow
+    {
+        
+        public UIOpenaSpreadsheetWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Open a Spreadsheet";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Open a Spreadsheet");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemWindow5 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow5(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
+        
+        public UIOpenWindow1 UIOpenWindow
+        {
+            get
+            {
+                if ((this.mUIOpenWindow == null))
+                {
+                    this.mUIOpenWindow = new UIOpenWindow1(this);
+                }
+                return this.mUIOpenWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemWindow5 mUIItemWindow;
+        
+        private UIOpenWindow1 mUIOpenWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow5 : WinWindow
+    {
+        
+        public UIItemWindow5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.AccessibleName] = "Items View";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "DirectUIHWND";
+            this.WindowTitles.Add("Open a Spreadsheet");
+            #endregion
+        }
+        
+        #region Properties
+        public UIChangedSheetsprdListItem UIChangedSheetsprdListItem
+        {
+            get
+            {
+                if ((this.mUIChangedSheetsprdListItem == null))
+                {
+                    this.mUIChangedSheetsprdListItem = new UIChangedSheetsprdListItem(this);
+                }
+                return this.mUIChangedSheetsprdListItem;
+            }
+        }
+        
+        public UINewNamesprdListItem UINewNamesprdListItem
+        {
+            get
+            {
+                if ((this.mUINewNamesprdListItem == null))
+                {
+                    this.mUINewNamesprdListItem = new UINewNamesprdListItem(this);
+                }
+                return this.mUINewNamesprdListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIChangedSheetsprdListItem mUIChangedSheetsprdListItem;
+        
+        private UINewNamesprdListItem mUINewNamesprdListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIChangedSheetsprdListItem : WinListItem
+    {
+        
+        public UIChangedSheetsprdListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinListItem.PropertyNames.Name] = "ChangedSheet.sprd";
+            this.WindowTitles.Add("Open a Spreadsheet");
+            #endregion
+        }
+        
+        #region Properties
+        public WinEdit UINameEdit
+        {
+            get
+            {
+                if ((this.mUINameEdit == null))
+                {
+                    this.mUINameEdit = new WinEdit(this);
+                    #region Search Criteria
+                    this.mUINameEdit.SearchProperties[WinEdit.PropertyNames.Name] = "Name";
+                    this.mUINameEdit.WindowTitles.Add("Open a Spreadsheet");
+                    #endregion
+                }
+                return this.mUINameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinEdit mUINameEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UINewNamesprdListItem : WinListItem
+    {
+        
+        public UINewNamesprdListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinListItem.PropertyNames.Name] = "NewName.sprd";
+            this.WindowTitles.Add("Open a Spreadsheet");
+            #endregion
+        }
+        
+        #region Properties
+        public WinEdit UINameEdit
+        {
+            get
+            {
+                if ((this.mUINameEdit == null))
+                {
+                    this.mUINameEdit = new WinEdit(this);
+                    #region Search Criteria
+                    this.mUINameEdit.SearchProperties[WinEdit.PropertyNames.Name] = "Name";
+                    this.mUINameEdit.WindowTitles.Add("Open a Spreadsheet");
+                    #endregion
+                }
+                return this.mUINameEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinEdit mUINameEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIOpenWindow1 : WinWindow
+    {
+        
+        public UIOpenWindow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "1";
+            this.WindowTitles.Add("Open a Spreadsheet");
+            #endregion
+        }
+        
+        #region Properties
+        public WinSplitButton UIOpenSplitButton
+        {
+            get
+            {
+                if ((this.mUIOpenSplitButton == null))
+                {
+                    this.mUIOpenSplitButton = new WinSplitButton(this);
+                    #region Search Criteria
+                    this.mUIOpenSplitButton.SearchProperties[WinButton.PropertyNames.Name] = "Open";
+                    this.mUIOpenSplitButton.WindowTitles.Add("Open a Spreadsheet");
+                    #endregion
+                }
+                return this.mUIOpenSplitButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinSplitButton mUIOpenSplitButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UICUsersmarcheseSourceWindow1 : WinWindow
+    {
+        
+        public UICUsersmarcheseSourceWindow1()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                "dSheet.sprd";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                    "dSheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemWindow6 UIItemWindow
+        {
+            get
+            {
+                if ((this.mUIItemWindow == null))
+                {
+                    this.mUIItemWindow = new UIItemWindow6(this);
+                }
+                return this.mUIItemWindow;
+            }
+        }
+        
+        public UINonEmptyCellWindow UINonEmptyCellWindow
+        {
+            get
+            {
+                if ((this.mUINonEmptyCellWindow == null))
+                {
+                    this.mUINonEmptyCellWindow = new UINonEmptyCellWindow(this);
+                }
+                return this.mUINonEmptyCellWindow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemWindow6 mUIItemWindow;
+        
+        private UINonEmptyCellWindow mUINonEmptyCellWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemWindow6 : WinWindow
+    {
+        
+        public UIItemWindow6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "WindowsForms10.Window", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WinWindow.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                    "dSheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinClient UISpreadsheetPanel1Client
+        {
+            get
+            {
+                if ((this.mUISpreadsheetPanel1Client == null))
+                {
+                    this.mUISpreadsheetPanel1Client = new WinClient(this);
+                    #region Search Criteria
+                    this.mUISpreadsheetPanel1Client.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                            "dSheet.sprd");
+                    #endregion
+                }
+                return this.mUISpreadsheetPanel1Client;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinClient mUISpreadsheetPanel1Client;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UINonEmptyCellWindow : WinWindow
+    {
+        
+        public UINonEmptyCellWindow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlName] = "ValueLabel";
+            this.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                    "dSheet.sprd");
+            #endregion
+        }
+        
+        #region Properties
+        public WinText UINonEmptyCellText
+        {
+            get
+            {
+                if ((this.mUINonEmptyCellText == null))
+                {
+                    this.mUINonEmptyCellText = new WinText(this);
+                    #region Search Criteria
+                    this.mUINonEmptyCellText.SearchProperties[WinText.PropertyNames.Name] = "NonEmptyCell";
+                    this.mUINonEmptyCellText.WindowTitles.Add("C:\\Users\\marchese\\Source\\Repos\\CS3500_Tim_CoS\\PS4\\SpreadsheetGUI\\bin\\Debug\\Change" +
+                            "dSheet.sprd");
+                    #endregion
+                }
+                return this.mUINonEmptyCellText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinText mUINonEmptyCellText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIConfirmSaveAsWindow : WinWindow
+    {
+        
+        public UIConfirmSaveAsWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Confirm Save As";
+            this.SearchProperties[WinWindow.PropertyNames.ClassName] = "#32770";
+            this.WindowTitles.Add("Confirm Save As");
+            #endregion
+        }
+        
+        #region Properties
+        public UIConfirmSaveAsPane UIConfirmSaveAsPane
+        {
+            get
+            {
+                if ((this.mUIConfirmSaveAsPane == null))
+                {
+                    this.mUIConfirmSaveAsPane = new UIConfirmSaveAsPane(this);
+                }
+                return this.mUIConfirmSaveAsPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIConfirmSaveAsPane mUIConfirmSaveAsPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIConfirmSaveAsPane : WinPane
+    {
+        
+        public UIConfirmSaveAsPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinControl.PropertyNames.Name] = "Confirm Save As";
+            this.WindowTitles.Add("Confirm Save As");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton UIYesButton
+        {
+            get
+            {
+                if ((this.mUIYesButton == null))
+                {
+                    this.mUIYesButton = new WinButton(this);
+                    #region Search Criteria
+                    this.mUIYesButton.SearchProperties[WinButton.PropertyNames.Name] = "Yes";
+                    this.mUIYesButton.WindowTitles.Add("Confirm Save As");
+                    #endregion
+                }
+                return this.mUIYesButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mUIYesButton;
         #endregion
     }
 }
