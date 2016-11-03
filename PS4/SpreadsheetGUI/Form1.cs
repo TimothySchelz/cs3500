@@ -313,26 +313,19 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void keyPressed(object sender, KeyPressEventArgs e)
         {
-            // Chacks if the pressed button was the ENTER key
-            switch (e.KeyChar)
-            {
-                //If it was entered we update all cells as if the Update button was clicked
-                case (char)Keys.Enter:
-                    updateCells(sender, e);
-                    break;
-            }
+
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Tab)
             {
-                TabSelection(1);
+                MoveSelection(4);
                 return true;
             }
             if (keyData == (Keys.Tab | Keys.Shift))
             {
-                TabSelection(-1);
+                MoveSelection(3);
                 return true;
             }
 
@@ -340,21 +333,47 @@ namespace SpreadsheetGUI
         }
 
         
-
-        private void TabSelection(int shift)
+        /// <summary>
+        /// moves the selection by 1 either up down left or right
+        /// 
+        /// 1 up
+        /// 2 down
+        /// 3 left
+        /// 4 right
+        /// 
+        /// </summary>
+        /// <param name="Direction"></param>
+        private void MoveSelection(int Direction)
         {
-            
+            int HShift = 0, VShift = 0;
             int col, row;
             spreadsheetPanel1.GetSelection(out col, out row);
 
+            switch (Direction)
+            {
+                case 1:
+                    VShift = -1;
+                    break;
+                case 2:
+                    VShift = 1;
+                    break;
+                case 3:
+                    HShift = -1;
+                    break;
+                case 4:
+                    HShift = 1;
+                    break;
+            }
+
+
             //Make sure it is in range
-            if (col+shift >= 0 && col+shift <= 25)
+            if (col+HShift >= 0 && col+HShift <= 25 && row+VShift>=0 && row+VShift<=98)
             {
                 updateCells(this, new EventArgs());
                 //Change the selection to the cell to the right of the current one.
-                spreadsheetPanel1.SetSelection(col + shift, row);
+                spreadsheetPanel1.SetSelection(col + HShift, row+VShift);
                 //Changes all the labels and junk to the new selection
-                UpdateLabels(col + shift, row);
+                UpdateLabels(col + HShift, row+VShift);
             }
         }
 
@@ -510,6 +529,22 @@ namespace SpreadsheetGUI
         private void closeFromMenu(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                updateCells(sender, e);
+
+                if (e.Modifiers == Keys.Shift)
+                {
+                    MoveSelection(1);
+                } else
+                {
+                    MoveSelection(2);
+                }
+            }
         }
     }
 }
