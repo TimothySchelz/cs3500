@@ -21,7 +21,7 @@ namespace SpreadsheetGUI
     /// </summary>
     public partial class Form1 : Form
     {
-        
+
         //Back end utility for handling cell values
         private Spreadsheet guts;
 
@@ -43,7 +43,7 @@ namespace SpreadsheetGUI
             validator = delegate (string s)
             {
                 // Checks the leading letter
-                if ( !Char.IsLetter(s[0]))
+                if (!Char.IsLetter(s[0]))
                 {
                     return false;
                 }
@@ -54,7 +54,7 @@ namespace SpreadsheetGUI
 
                 // Checks to make sure the number is in the correct range.  If it 
                 // failed to parse row will not be in the range
-                if(row < 1 || row > 99)
+                if (row < 1 || row > 99)
                 {
                     return false;
                 }
@@ -84,11 +84,18 @@ namespace SpreadsheetGUI
         /// <param name="filename"></param>
         private void panelSetUp(String filename)
         {
+            //Registers handler
             spreadsheetPanel1.SelectionChanged += displaySelection;
-            ContentsBox.Focus();
+
+            //Ensures that when the application starts the focus is on the contents box
+            this.ActiveControl = ContentsBox;
+            //Initializes the contents label with an empty string
             ValueLabel.Text = "";
+            //Sets the name of this file to whatever was passed in
             this.filename = filename;
+            //Sets the text label at the top of the window to the name of the file
             Text = filename;
+            //Sets the starting selection to be A1
             spreadsheetPanel1.SetSelection(0, 0);
         }
 
@@ -114,7 +121,6 @@ namespace SpreadsheetGUI
             DemoApplicationContext.getAppContext().RunForm(new Form1());
         }
 
-
         /// <summary>
         /// Updates the display for cell value, contents, and address. Also redirects GUI focus to
         /// the contents box for quickly updating many cells.
@@ -123,11 +129,11 @@ namespace SpreadsheetGUI
         private void displaySelection(SpreadsheetPanel ss)
         {
             int row, col;
-            
+
 
             // Gets the selection
             ss.GetSelection(out col, out row);
-            
+
             //Changes the Name, Value labels and the contents box.
             UpdateLabels(col, row);
         }
@@ -178,7 +184,8 @@ namespace SpreadsheetGUI
             {
                 Formula cont = (Formula)contents;
                 return "=" + cont.ToString();
-            } else
+            }
+            else
             {
                 return contents.ToString();
             }
@@ -209,7 +216,7 @@ namespace SpreadsheetGUI
         /// <param name="col"></param>
         private void nameToCoordinate(string name, out int row, out int col)
         {
-            col = name[0]-65;  
+            col = name[0] - 65;
             Int32.TryParse(name.Substring(1), out row);
 
             row--;
@@ -238,13 +245,13 @@ namespace SpreadsheetGUI
             {
                 changedCells = guts.SetContentsOfCell(name, contents);
             }
-            catch(CircularException error)
+            catch (CircularException error)
             {
-                MessageBox.Show("The entered formula creates a circular dependency.  Make sure your formula"+
+                MessageBox.Show("The entered formula creates a circular dependency.  Make sure your formula" +
                     " does not depend on the cell it is in.");
                 return;
             }
-            catch(FormulaFormatException error)
+            catch (FormulaFormatException error)
             {
                 MessageBox.Show(error.Message);
                 // If there is a problem we don't want to do anything else.  This 
@@ -256,24 +263,22 @@ namespace SpreadsheetGUI
             //Attempts to evaluate inital updated cell
             object value = guts.GetCellValue(name);
 
-            //If a formula error occurs in evalutation, the error discription is displayed.
+            //If a formula error occurs in evalutation, We put the value as ERR
             //Otherwise, updates the value labels in the spreadsheet.
+
+            //Updates value label
             if (value is FormulaError)
             {
-                guts.SetContentsOfCell(name, originalContents);
-
-                FormulaError error = (FormulaError)value;
-                MessageBox.Show(error.Reason);
+                ValueLabel.Text = "I AM ERROR";
             }
-            // Otherwise we go through and change everythign that needs to be changed
-            else {
-
-                //Updates value label
+            else
+            {
                 ValueLabel.Text = "" + value;
-
-                // For every cell that could have been changed we set the value to the correct value
-                updateSpreadsheetCells(changedCells);
             }
+
+
+            // For every cell that could have been changed we set the value to the correct value
+            updateSpreadsheetCells(changedCells);
         }
 
 
@@ -287,24 +292,17 @@ namespace SpreadsheetGUI
             foreach (string cell in cells)
             {
                 nameToCoordinate(cell, out row, out col);
-                spreadsheetPanel1.SetValue(col, row, "" + guts.GetCellValue(cell));
-            }
-        }
 
-        /// <summary>
-        /// Listens for a key to be pressed and controls the spreadsheet accordingly.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void keyPressed(object sender, KeyPressEventArgs e)
-        {
-            // Chacks if the pressed button was the ENTER key
-            switch (e.KeyChar)
-            {
-                //If it was entered we update all cells as if the Update button was clicked
-                case (char)Keys.Enter:
-                    updateCells(sender, e);
-                    break;
+                //If it is a FormulaError put the value as "I AM ERROR"  otherwise just put the value in
+                if (guts.GetCellValue(cell) is FormulaError)
+                {
+                    spreadsheetPanel1.SetValue(col, row, "I AM ERROR");
+                }
+                else
+                {
+                    spreadsheetPanel1.SetValue(col, row, "" + guts.GetCellValue(cell));
+                }
+
             }
         }
 
@@ -312,27 +310,65 @@ namespace SpreadsheetGUI
         {
             if (keyData == Keys.Tab)
             {
-                TabSelection(1);
+                MoveSelection(4);
                 return true;
             }
             if (keyData == (Keys.Tab | Keys.Shift))
             {
-                TabSelection(-1);
+                MoveSelection(3);
                 return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void TabSelection(int shift)
+        
+        /// <summary>
+        /// moves the selection by 1 either up down left or right.
+        /// 
+        /// 1: up
+        /// 2: down
+        /// 3: left
+        /// 4: right
+        /// 
+        /// </summary>
+        /// <param name="Direction">The direction to move</param>
+        private void MoveSelection(int Direction)
         {
+            //Update the current cell
+            updateCells(this, new EventArgs());
+            //declare some stuff
+            int HShift = 0, VShift = 0;
             int col, row;
+            //Get the current selection
             spreadsheetPanel1.GetSelection(out col, out row);
-            
-            //Change the selection to the cell to the right of the current one.
-            spreadsheetPanel1.SetSelection(col + shift, row);
-            //Changes all the labels and junk to the new selection
-            UpdateLabels(col + shift, row);            
+
+            //Check the direction
+            switch (Direction)
+            {
+                case 1:
+                    VShift = -1;
+                    break;
+                case 2:
+                    VShift = 1;
+                    break;
+                case 3:
+                    HShift = -1;
+                    break;
+                case 4:
+                    HShift = 1;
+                    break;
+            }
+
+
+            //Make sure it is in range
+            if (col+HShift >= 0 && col+HShift <= 25 && row+VShift>=0 && row+VShift<=98)
+            {
+                //Change the selection to the cell to the right of the current one.
+                spreadsheetPanel1.SetSelection(col + HShift, row+VShift);
+                //Changes all the labels and junk to the new selection
+                UpdateLabels(col + HShift, row+VShift);
+            }
         }
 
         /// <summary>
@@ -351,7 +387,7 @@ namespace SpreadsheetGUI
 
             //If the User names the file an empty string, reports an error.
             //Otherwise, saves the spreadsheet with entered name.
-            if(saveDialog.FileName != "")
+            if (saveDialog.FileName != "")
             {
                 // Saves the spreadsheet and sets the name of this spreadsheet to the
                 // name of the spreadsheet
@@ -382,7 +418,7 @@ namespace SpreadsheetGUI
             String file;
 
             //Executes if the user has made a selection.
-            if(openDialog.ShowDialog() == DialogResult.OK)
+            if (openDialog.ShowDialog() == DialogResult.OK)
             {
                 // Gets the filename
                 file = openDialog.FileName;
@@ -394,7 +430,8 @@ namespace SpreadsheetGUI
                 {
                     //Attempts to construct a new internal spreadsheet representation
                     intermediateGuts = new Spreadsheet(file, validator, s => s.ToUpper(), "ps6");
-                } catch (SpreadsheetReadWriteException error)
+                }
+                catch (SpreadsheetReadWriteException error)
                 {
                     //If file loading is not sucessful, displays a message and exits dialog.
                     MessageBox.Show(error.Message);
@@ -407,7 +444,7 @@ namespace SpreadsheetGUI
 
                 // Loads all the cells that currently have entries into the list of cells to be 
                 // updated.  They may need to be replaced or erased for the new spreadsheeet.
-                foreach(String cell in guts.GetNamesOfAllNonemptyCells())
+                foreach (String cell in guts.GetNamesOfAllNonemptyCells())
                 {
                     cellsToUpdate.Add(cell);
                 }
@@ -429,7 +466,7 @@ namespace SpreadsheetGUI
                 //Updates all changed cells in the display.
                 updateSpreadsheetCells(cellsToUpdate);
             }
-            
+
         }
 
         /// <summary>
@@ -439,9 +476,9 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void AskForHelp(object sender, EventArgs e)
         {
-            MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value " + 
-                "are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can " + 
-                "change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the" + 
+            MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value " +
+                "are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can " +
+                "change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the" +
                 " cell.");
         }
 
@@ -486,6 +523,20 @@ namespace SpreadsheetGUI
         private void closeFromMenu(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (e.Modifiers == Keys.Shift)
+                {
+                    MoveSelection(1);
+                } else
+                {
+                    MoveSelection(2);
+                }
+            }
         }
     }
 }
