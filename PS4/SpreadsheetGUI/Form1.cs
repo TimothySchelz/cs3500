@@ -343,14 +343,19 @@ namespace SpreadsheetGUI
 
         private void TabSelection(int shift)
         {
-            updateCells(this, new EventArgs());
+            
             int col, row;
             spreadsheetPanel1.GetSelection(out col, out row);
 
-            //Change the selection to the cell to the right of the current one.
-            spreadsheetPanel1.SetSelection(col + shift, row);
-            //Changes all the labels and junk to the new selection
-            UpdateLabels(col + shift, row);
+            //Make sure it is in range
+            if (col+shift >= 0 && col+shift <= 25)
+            {
+                updateCells(this, new EventArgs());
+                //Change the selection to the cell to the right of the current one.
+                spreadsheetPanel1.SetSelection(col + shift, row);
+                //Changes all the labels and junk to the new selection
+                UpdateLabels(col + shift, row);
+            }
         }
 
         /// <summary>
