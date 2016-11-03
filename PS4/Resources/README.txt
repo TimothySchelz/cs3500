@@ -1,6 +1,7 @@
-﻿Read Me for PS5
-Last Updated 10/03/16
+﻿Read Me for PS6
+Last Updated 11/03/16
 Timothy Schelz, u0851027
+Gray Marchese, u
 
 The Spreadsheet class is implemented using a HashMap of each cell and a DependencyGraph with relationships between the cells in
 the hashmap.  There is an internal Cell class that will be the contents of the Hashmap. Each cell contains one of the valid entries.
@@ -23,3 +24,7 @@ Open, Save, and Close. New opens a new spreadsheet in a new window.  Open opens 
 Once a file is selected the saved file will be loaded into the current spreadsheet.  Save will open a dialog so that the user can save their
 spreadsheet.  Close will close the window.  If changes have been made to the spreadsheet a save warning will pop up.  There is also a Help menu.
 When the help menu is selected a pop up will appear describing basic use of the spreadsheet.
+
+11/3/2016
+The spreadsheet can be navigated with the tab and enter keys.  TAB moves the selection to the right, SHIFT+TAB moves it to the left.  ENTER 
+moves it down, and SHIFT+ENTER moves it up.  Whenever one of these are typed it also enters whatever is in the contentsbox into the cell.
