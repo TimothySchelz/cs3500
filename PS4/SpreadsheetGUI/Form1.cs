@@ -306,16 +306,6 @@ namespace SpreadsheetGUI
             }
         }
 
-        /// <summary>
-        /// Listens for a key to be pressed and controls the spreadsheet accordingly.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void keyPressed(object sender, KeyPressEventArgs e)
-        {
-
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Tab)
@@ -334,21 +324,26 @@ namespace SpreadsheetGUI
 
         
         /// <summary>
-        /// moves the selection by 1 either up down left or right
+        /// moves the selection by 1 either up down left or right.
         /// 
-        /// 1 up
-        /// 2 down
-        /// 3 left
-        /// 4 right
+        /// 1: up
+        /// 2: down
+        /// 3: left
+        /// 4: right
         /// 
         /// </summary>
-        /// <param name="Direction"></param>
+        /// <param name="Direction">The direction to move</param>
         private void MoveSelection(int Direction)
         {
+            //Update the current cell
+            updateCells(this, new EventArgs());
+            //declare some stuff
             int HShift = 0, VShift = 0;
             int col, row;
+            //Get the current selection
             spreadsheetPanel1.GetSelection(out col, out row);
 
+            //Check the direction
             switch (Direction)
             {
                 case 1:
@@ -369,7 +364,6 @@ namespace SpreadsheetGUI
             //Make sure it is in range
             if (col+HShift >= 0 && col+HShift <= 25 && row+VShift>=0 && row+VShift<=98)
             {
-                updateCells(this, new EventArgs());
                 //Change the selection to the cell to the right of the current one.
                 spreadsheetPanel1.SetSelection(col + HShift, row+VShift);
                 //Changes all the labels and junk to the new selection
@@ -535,8 +529,6 @@ namespace SpreadsheetGUI
         {
             if (e.KeyCode == Keys.Enter)
             {
-                updateCells(sender, e);
-
                 if (e.Modifiers == Keys.Shift)
                 {
                     MoveSelection(1);
