@@ -17,7 +17,7 @@ namespace GraphWindow
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Chart(new List<double>(), new List<double>()));
+            Application.Run(new Chart());
         }
     }
 }
