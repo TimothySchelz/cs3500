@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2C13535F-DDB4-42DB-9CE3-9AD39B4597E8}</ProjectGuid>
+    <ProjectGuid>{1B1FE7E0-3EB2-4321-A31F-538D69214875}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpreadsheetGUI</RootNamespace>
-    <AssemblyName>SpreadsheetGUI</AssemblyName>
+    <RootNamespace>GetRangeWindw</RootNamespace>
+    <AssemblyName>GetRangeWindw</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,15 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Formula">
-      <HintPath>..\Resources\Libraries\Formula.dll</HintPath>
-    </Reference>
-    <Reference Include="SpreadsheetPanel">
-      <HintPath>..\Resources\Libraries\SpreadsheetPanel.dll</HintPath>
-    </Reference>
-    <Reference Include="SpreadsheetUtilities">
-      <HintPath>..\Resources\Libraries\SpreadsheetUtilities.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GetRangeWindw\GetRangeWindw.csproj">
-      <Project>{1b1fe7e0-3eb2-4321-a31f-538d69214875}</Project>
-      <Name>GetRangeWindw</Name>
+    <ProjectReference Include="..\GraphWindow\GraphWindow.csproj">
+      <Project>{03505018-77ce-4677-ba1e-baee820756f4}</Project>
+      <Name>GraphWindow</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spreadsheet\Spreadsheet.csproj">
       <Project>{e13a4354-9e94-4e18-a27b-9b40af10f7ed}</Project>

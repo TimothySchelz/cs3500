@@ -44,6 +44,7 @@ namespace SpreadsheetGUI
             this.SelectionLabel = new System.Windows.Forms.Label();
             this.ValueLabel = new System.Windows.Forms.Label();
             this.EnterButton = new System.Windows.Forms.Button();
+            this.chartPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +65,8 @@ namespace SpreadsheetGUI
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.chartPointsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 1, 0, 1);
@@ -156,6 +158,13 @@ namespace SpreadsheetGUI
             this.EnterButton.UseVisualStyleBackColor = true;
             this.EnterButton.Click += new System.EventHandler(this.updateCells);
             // 
+            // chartPointsToolStripMenuItem
+            // 
+            this.chartPointsToolStripMenuItem.Name = "chartPointsToolStripMenuItem";
+            this.chartPointsToolStripMenuItem.Size = new System.Drawing.Size(99, 24);
+            this.chartPointsToolStripMenuItem.Text = "Chart Points";
+            this.chartPointsToolStripMenuItem.Click += new System.EventHandler(this.selectRange);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -193,6 +202,7 @@ namespace SpreadsheetGUI
         private System.Windows.Forms.Label SelectionLabel;
         private System.Windows.Forms.Label ValueLabel;
         private System.Windows.Forms.Button EnterButton;
+        private System.Windows.Forms.ToolStripMenuItem chartPointsToolStripMenuItem;
     }
 }
 

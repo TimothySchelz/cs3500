@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if false
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -236,3 +238,4 @@ namespace GUITests
         private UIMap map;
     }
 }
+#endif

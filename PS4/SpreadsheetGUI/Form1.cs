@@ -249,7 +249,7 @@ namespace SpreadsheetGUI
             {
                 changedCells = guts.SetContentsOfCell(name, contents);
             }
-            catch (CircularException error)
+            catch (CircularException)
             {
                 MessageBox.Show("The entered formula creates a circular dependency.  Make sure your formula" +
                     " does not depend on the cell it is in.");
@@ -570,6 +570,13 @@ namespace SpreadsheetGUI
             }
 
         }
-        
+
+        private void selectRange(object sender, EventArgs e)
+        {
+            GetRangeWindw.Form1 GetRange = new GetRangeWindw.Form1(guts);
+            GetRange.Show();
+        }
+
+
     }
 }
