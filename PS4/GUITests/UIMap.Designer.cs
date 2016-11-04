@@ -7,7 +7,7 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
-
+#if false
 namespace GUITests
 {
     using System;
@@ -6240,3 +6240,4 @@ namespace GUITests
         #endregion
     }
 }
+#endif
