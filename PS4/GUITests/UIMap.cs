@@ -1,4 +1,5 @@
-﻿namespace GUITests
+﻿#if false
+namespace GUITests
 {
     using System;
     using System.Collections.Generic;
@@ -18,3 +19,4 @@
     {
     }
 }
+#endif
