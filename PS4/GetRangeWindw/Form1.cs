@@ -26,9 +26,15 @@ namespace GetRangeWindw
 
             //Get Starting and Ending Cells
             String StartX = XStartBox.Text;
-            String StartY = XEndBox.Text;
+            String StartY = YStartBox.Text;
             String EndX = XEndBox.Text;
             String EndY = YEndBox.Text;
+
+            if (!checkEntries(StartX, StartY, EndX, EndY))
+            {
+                MessageBox.Show("Entered Start and end cell entries are invalid.");
+                return;
+            }
 
             int XStartRow, YStartRow, XEndRow, YEndRow;
 
@@ -37,14 +43,16 @@ namespace GetRangeWindw
             Int32.TryParse(EndX.Substring(1), out XEndRow);
             Int32.TryParse(EndY.Substring(1), out YEndRow);
 
-            if(XStartRow - XEndRow != YStartRow - YEndRow)
-            {
-                MessageBox.Show("Not the same number of X and Y values selected.");
-            }
-
             if ((XStartRow > XEndRow) || (YStartRow > YEndRow))
             {
                 MessageBox.Show("One of the start cells is larger than its end cell.  Please reverse them");
+                return;
+            }
+
+            if (!(XStartRow - XEndRow == YStartRow - YEndRow))
+            {
+                MessageBox.Show("Not the same number of X and Y values selected.");
+                return;
             }
 
             // Make a list for X nd Y values
@@ -68,6 +76,14 @@ namespace GetRangeWindw
 
             GraphWindow.Chart chart = new GraphWindow.Chart(XVals, YVals);
             chart.Show();
+        }
+
+        private bool checkEntries(string startX, string startY, string endX, string endY)
+        {
+            return startX.Length > 1 && startX.Length <= 3 &&
+                startY.Length > 1 && startY.Length <= 3 &&
+                endX.Length > 1 && endX.Length <= 3 &&
+                endY.Length > 1 && endY.Length <= 3;
         }
 
         /// <summary>
