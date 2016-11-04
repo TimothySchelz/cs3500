@@ -1,4 +1,9 @@
-﻿using SS;
+﻿
+/*
+ * Authored by Gray Marchese, u0884194, and Timothy Schelz, u0851027 
+ * November, 2016 
+ */
+using SS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
