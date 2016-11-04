@@ -1,5 +1,5 @@
 ﻿/*
- * Authored by Gray Marchese, u, and Timothy Schelz, u0851027 
+ * Authored by Gray Marchese, u0884194, and Timothy Schelz, u0851027 
  * November, 2016 
  */
 using SpreadsheetUtilities;
@@ -160,16 +160,20 @@ namespace SpreadsheetGUI
             // Sets the value of the value label to the value in the cell
             ValueLabel.Text = value;
 
-            // Puts the focus on the Contents box so that they can immediately start 
-            // typing
-            ContentsBox.Focus();
-
             //Updates contents box
             string name = valueToName(col + 1) + (row + 1);
             // Takes the content of the cell and converts it to a string
             contents = ContentsToString(guts.GetCellContents(name));
             // Puts the contents in the contentsBox
             ContentsBox.Text = contents;
+
+            // Puts the focus on the Contents box so that they can immediately start 
+            // typing
+            ContentsBox.Focus();
+
+            // Sets curser at the end of the Contents box.
+            ContentsBox.SelectionStart = ContentsBox.Text.Length;
+
         }
 
         /// <summary>
@@ -476,10 +480,11 @@ namespace SpreadsheetGUI
         /// <param name="e"></param>
         private void AskForHelp(object sender, EventArgs e)
         {
+            
             MessageBox.Show("Click on any cell with your mouse to select it.  At the top the cell name and the value " +
                 "are displayed.  Next to them is an editable textbox with the current contents of the cells.  You can " +
                 "change the contents in this textbox and then hit \"Update\" or type ENTER to update the contents of the" +
-                " cell.");
+                " cell.","Help");
         }
 
         /// <summary>
@@ -527,16 +532,44 @@ namespace SpreadsheetGUI
 
         private void KeyPressed(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            switch (e.KeyCode)
             {
-                if (e.Modifiers == Keys.Shift)
-                {
+
+                case Keys.Enter:
+            
+                    if (e.Modifiers == Keys.Shift)
+                    {
                     MoveSelection(1);
-                } else
-                {
+                    } else
+                    {
                     MoveSelection(2);
-                }
+                    }
+
+                    //Gets rid of awful noise whenever Enter key is pressed
+                    e.SuppressKeyPress = true;
+
+                    break;
+
+                case Keys.Down:
+                    MoveSelection(2);
+                    break;
+
+                case Keys.Up:
+                    MoveSelection(1);
+                    break;
+
+                case Keys.Left:
+                    MoveSelection(3);
+                    break;
+
+                case Keys.Right:
+                    MoveSelection(4);
+                    break;
+                
+            
             }
+
         }
+        
     }
 }
