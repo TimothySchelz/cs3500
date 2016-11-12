@@ -20,9 +20,10 @@ Extra Features:
 Space Filling Snake AI
 
 Unimplemented/Broken features:
+Everything is designed to just be a client at the moment.  The model and NetworkController will be expanded later to serve as a server as well later on, possibly in the next assignment.
 GUI
 Networking
 Extra Features
 
 Time Spent Working on Project:
-11/11/16 2:20PM - 
+11/11/16 2:20PM - 7:10PM
