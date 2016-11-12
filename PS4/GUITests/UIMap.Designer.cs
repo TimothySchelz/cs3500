@@ -2352,6 +2352,306 @@ namespace GUITests
             }
         }
         
+        public virtual CloseFromMenueWithChangesParams CloseFromMenueWithChangesParams
+        {
+            get
+            {
+                if ((this.mCloseFromMenueWithChangesParams == null))
+                {
+                    this.mCloseFromMenueWithChangesParams = new CloseFromMenueWithChangesParams();
+                }
+                return this.mCloseFromMenueWithChangesParams;
+            }
+        }
+        
+        public virtual TriggerSafetyFromMenuParams TriggerSafetyFromMenuParams
+        {
+            get
+            {
+                if ((this.mTriggerSafetyFromMenuParams == null))
+                {
+                    this.mTriggerSafetyFromMenuParams = new TriggerSafetyFromMenuParams();
+                }
+                return this.mTriggerSafetyFromMenuParams;
+            }
+        }
+        
+        public virtual AssertSafetyFeatureTriggeredExpectedValues AssertSafetyFeatureTriggeredExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSafetyFeatureTriggeredExpectedValues == null))
+                {
+                    this.mAssertSafetyFeatureTriggeredExpectedValues = new AssertSafetyFeatureTriggeredExpectedValues();
+                }
+                return this.mAssertSafetyFeatureTriggeredExpectedValues;
+            }
+        }
+        
+        public virtual TriggerSafetyFromXParams TriggerSafetyFromXParams
+        {
+            get
+            {
+                if ((this.mTriggerSafetyFromXParams == null))
+                {
+                    this.mTriggerSafetyFromXParams = new TriggerSafetyFromXParams();
+                }
+                return this.mTriggerSafetyFromXParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedExpectedValues AssertSavePromptedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedExpectedValues == null))
+                {
+                    this.mAssertSavePromptedExpectedValues = new AssertSavePromptedExpectedValues();
+                }
+                return this.mAssertSavePromptedExpectedValues;
+            }
+        }
+        
+        public virtual ChooseToSaveFromMenuParams ChooseToSaveFromMenuParams
+        {
+            get
+            {
+                if ((this.mChooseToSaveFromMenuParams == null))
+                {
+                    this.mChooseToSaveFromMenuParams = new ChooseToSaveFromMenuParams();
+                }
+                return this.mChooseToSaveFromMenuParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedFromMenuExpectedValues AssertSavePromptedFromMenuExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedFromMenuExpectedValues == null))
+                {
+                    this.mAssertSavePromptedFromMenuExpectedValues = new AssertSavePromptedFromMenuExpectedValues();
+                }
+                return this.mAssertSavePromptedFromMenuExpectedValues;
+            }
+        }
+        
+        public virtual ChooseToSaveFromXButtonParams ChooseToSaveFromXButtonParams
+        {
+            get
+            {
+                if ((this.mChooseToSaveFromXButtonParams == null))
+                {
+                    this.mChooseToSaveFromXButtonParams = new ChooseToSaveFromXButtonParams();
+                }
+                return this.mChooseToSaveFromXButtonParams;
+            }
+        }
+        
+        public virtual AssertSavePromptedFromXButtonExpectedValues AssertSavePromptedFromXButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptedFromXButtonExpectedValues == null))
+                {
+                    this.mAssertSavePromptedFromXButtonExpectedValues = new AssertSavePromptedFromXButtonExpectedValues();
+                }
+                return this.mAssertSavePromptedFromXButtonExpectedValues;
+            }
+        }
+        
+        public virtual CancelFromXButtonParams CancelFromXButtonParams
+        {
+            get
+            {
+                if ((this.mCancelFromXButtonParams == null))
+                {
+                    this.mCancelFromXButtonParams = new CancelFromXButtonParams();
+                }
+                return this.mCancelFromXButtonParams;
+            }
+        }
+        
+        public virtual SameSpreadsheetOpenXButtonExpectedValues SameSpreadsheetOpenXButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mSameSpreadsheetOpenXButtonExpectedValues == null))
+                {
+                    this.mSameSpreadsheetOpenXButtonExpectedValues = new SameSpreadsheetOpenXButtonExpectedValues();
+                }
+                return this.mSameSpreadsheetOpenXButtonExpectedValues;
+            }
+        }
+        
+        public virtual CancelFromMenuParams CancelFromMenuParams
+        {
+            get
+            {
+                if ((this.mCancelFromMenuParams == null))
+                {
+                    this.mCancelFromMenuParams = new CancelFromMenuParams();
+                }
+                return this.mCancelFromMenuParams;
+            }
+        }
+        
+        public virtual SameSpreadsheetOpenMenuExpectedValues SameSpreadsheetOpenMenuExpectedValues
+        {
+            get
+            {
+                if ((this.mSameSpreadsheetOpenMenuExpectedValues == null))
+                {
+                    this.mSameSpreadsheetOpenMenuExpectedValues = new SameSpreadsheetOpenMenuExpectedValues();
+                }
+                return this.mSameSpreadsheetOpenMenuExpectedValues;
+            }
+        }
+        
+        public virtual DeclineSaveXButtonParams DeclineSaveXButtonParams
+        {
+            get
+            {
+                if ((this.mDeclineSaveXButtonParams == null))
+                {
+                    this.mDeclineSaveXButtonParams = new DeclineSaveXButtonParams();
+                }
+                return this.mDeclineSaveXButtonParams;
+            }
+        }
+        
+        public virtual DeclineSaveMenuParams DeclineSaveMenuParams
+        {
+            get
+            {
+                if ((this.mDeclineSaveMenuParams == null))
+                {
+                    this.mDeclineSaveMenuParams = new DeclineSaveMenuParams();
+                }
+                return this.mDeclineSaveMenuParams;
+            }
+        }
+        
+        public virtual AssertSavePromptExpectedValues AssertSavePromptExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertSavePromptExpectedValues == null))
+                {
+                    this.mAssertSavePromptExpectedValues = new AssertSavePromptExpectedValues();
+                }
+                return this.mAssertSavePromptExpectedValues;
+            }
+        }
+        
+        public virtual SaveToNewNameParams SaveToNewNameParams
+        {
+            get
+            {
+                if ((this.mSaveToNewNameParams == null))
+                {
+                    this.mSaveToNewNameParams = new SaveToNewNameParams();
+                }
+                return this.mSaveToNewNameParams;
+            }
+        }
+        
+        public virtual AssertNewNameExpectedValues AssertNewNameExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertNewNameExpectedValues == null))
+                {
+                    this.mAssertNewNameExpectedValues = new AssertNewNameExpectedValues();
+                }
+                return this.mAssertNewNameExpectedValues;
+            }
+        }
+        
+        public virtual SaveAndOpenNewParams SaveAndOpenNewParams
+        {
+            get
+            {
+                if ((this.mSaveAndOpenNewParams == null))
+                {
+                    this.mSaveAndOpenNewParams = new SaveAndOpenNewParams();
+                }
+                return this.mSaveAndOpenNewParams;
+            }
+        }
+        
+        public virtual AssertLoadedBackExpectedValues AssertLoadedBackExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertLoadedBackExpectedValues == null))
+                {
+                    this.mAssertLoadedBackExpectedValues = new AssertLoadedBackExpectedValues();
+                }
+                return this.mAssertLoadedBackExpectedValues;
+            }
+        }
+        
+        public virtual SaveNewNameParams SaveNewNameParams
+        {
+            get
+            {
+                if ((this.mSaveNewNameParams == null))
+                {
+                    this.mSaveNewNameParams = new SaveNewNameParams();
+                }
+                return this.mSaveNewNameParams;
+            }
+        }
+        
+        public virtual CheckNewNameExpectedValues CheckNewNameExpectedValues
+        {
+            get
+            {
+                if ((this.mCheckNewNameExpectedValues == null))
+                {
+                    this.mCheckNewNameExpectedValues = new CheckNewNameExpectedValues();
+                }
+                return this.mCheckNewNameExpectedValues;
+            }
+        }
+        
+        public virtual ChangeSaveExitParams ChangeSaveExitParams
+        {
+            get
+            {
+                if ((this.mChangeSaveExitParams == null))
+                {
+                    this.mChangeSaveExitParams = new ChangeSaveExitParams();
+                }
+                return this.mChangeSaveExitParams;
+            }
+        }
+        
+        public virtual SaveChangedSpreadsheetParams SaveChangedSpreadsheetParams
+        {
+            get
+            {
+                if ((this.mSaveChangedSpreadsheetParams == null))
+                {
+                    this.mSaveChangedSpreadsheetParams = new SaveChangedSpreadsheetParams();
+                }
+                return this.mSaveChangedSpreadsheetParams;
+            }
+        }
+        
+        public virtual AssertOpenedChangedExpectedValues AssertOpenedChangedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertOpenedChangedExpectedValues == null))
+                {
+                    this.mAssertOpenedChangedExpectedValues = new AssertOpenedChangedExpectedValues();
+                }
+                return this.mAssertOpenedChangedExpectedValues;
+            }
+        }
+        
         public virtual SaveNewNameParams SaveNewNameParams
         {
             get
@@ -3584,6 +3884,253 @@ namespace GUITests
     /// <summary>
     /// Parameters to be passed into 'SameSpreadsheetOpenMenu'
     /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SameSpreadsheetOpenMenuExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'NewContent' label equals 'NewContent'
+        /// </summary>
+        public string UINewContentTextName = "NewContent";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'DeclineSaveXButton'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeclineSaveXButtonParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Prompt Save' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Prompt Save";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'DeclineSaveMenu'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeclineSaveMenuParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'prompt save' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "prompt save";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertSavePrompt'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertSavePromptExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'Save' title bar equals 'Save'
+        /// </summary>
+        public string UISaveTitleBarDisplayText = "Save";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveToNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveToNewNameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'data' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "data";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertNewNameExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+        /// </summary>
+        public string UICUsersmarcheseSourceTitleBarDisplayText = "NewSpreadsheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveAndOpenNew'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveAndOpenNewParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'NonEmptyCell' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "NonEmptyCell";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'ChangedSheet.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "ChangedSheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertLoadedBack'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertLoadedBackExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'NonEmptyCell' label equals 'NonEmptyCell'
+        /// </summary>
+        public string UINonEmptyCellTextName = "NonEmptyCell";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveNewNameParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'CheckNewName'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CheckNewNameExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'C:\Users\marchese\Source\Repos\CS3500_Tim_CoS\PS4\...' title bar is not equal to 'NewSpreadsheet.sprd'
+        /// </summary>
+        public string UICUsersmarcheseSourceTitleBarDisplayText = "NewSpreadsheet.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'ChangeSaveExit'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ChangeSaveExitParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Changed";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'File name:' text box
+        /// </summary>
+        public string UIFilenameEditSendKeys = "{Enter}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SaveChangedSpreadsheet'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SaveChangedSpreadsheetParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'Changed' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditText = "Changed";
+        
+        /// <summary>
+        /// Type '{Enter}' in 'ContentsBox' text box
+        /// </summary>
+        public string UIContentsBoxEditSendKeys = "{Enter}";
+        
+        /// <summary>
+        /// Select 'NewName.sprd' in 'File name:' combo box
+        /// </summary>
+        public string UIFilenameComboBoxEditableItem = "NewName.sprd";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertOpenedChanged'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertOpenedChangedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Name' property of 'Changed' label equals 'Changed'
+        /// </summary>
+        public string UIChangedTextName = "Changed";
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class SameSpreadsheetOpenMenuExpectedValues
     {

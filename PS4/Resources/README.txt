@@ -1,7 +1,14 @@
 ﻿Read Me for PS6
 Last Updated 11/03/16
 Timothy Schelz, u0851027
-Gray Marchese, u
+Gray Marchese, u0884194
+
+This is the working version of our PS6 Spreadsheet.  There was a problem with all the coded UI tests and since we were told in class that they wont be graded we commented them out.  We ran into a bunch of really weird bugs near the end and had to revert to an older version.  This is the most functional one we have.  Extra Features are listed below.
+
+Extra Feaures:
+1. Keyboard Navigation: We added the ability to navigate the spreadsheet using keyboard commands.  Tab and Shift+Tab move the selection left and right, Enter and Shift+Enter move it up and down.  Also Arrowkeys move the selection. Updated cells and relocated cursor for convenience whenever possible.
+2. Graphing Points:  We dded the ability to graph 2d points.  Just enter some X and Y values and hit the Chart menu.  It will ask you what columns you want to use for your Xs and Ys.  There is a problem that it has some default points it graphs but other than that it works.
+
 
 The Spreadsheet class is implemented using a HashMap of each cell and a DependencyGraph with relationships between the cells in
 the hashmap.  There is an internal Cell class that will be the contents of the Hashmap. Each cell contains one of the valid entries.
