@@ -18,7 +18,7 @@ namespace SnakeModel
 
         public World(int NumberOfPlayers, int Length, int Width)
         {
-            Map = new Int32[Length, Width];
+            Map = new Int32[Length+2, Width+2];
 
             Snakes = new HashSet<Snake>();
             Foods = new HashSet<Food>();
@@ -67,7 +67,6 @@ namespace SnakeModel
                 Map[currentFood.loc.X, currentFood.loc.Y] = -1;
             }
         }
-
     }
 }
 
