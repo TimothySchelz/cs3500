@@ -10,7 +10,7 @@ namespace SnakeModel
     {
 
         // A 2D array to model the worldspace.
-        Int32[,] Map; //first entry is X and the second entry is Y!!!!!
+        Int32[,] Map;                               //first entry is X and the second entry is Y!!!!!
         // All the snakes in the world
         HashSet<Snake> Snakes;
         // All the Food in the world
@@ -67,7 +67,6 @@ namespace SnakeModel
                 Map[currentFood.loc.X, currentFood.loc.Y] = -1;
             }
         }
-
 
     }
 }
