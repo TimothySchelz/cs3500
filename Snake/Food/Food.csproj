@@ -51,9 +51,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\World\World.csproj">
-      <Project>{66dda345-ee9c-4372-887c-cee1f3d3471e}</Project>
-      <Name>World</Name>
+    <ProjectReference Include="..\Snake\Snake.csproj">
+      <Project>{034f4bce-2304-40fd-afde-80a211ca43a7}</Project>
+      <Name>Snake</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

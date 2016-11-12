@@ -43,12 +43,6 @@
     <Compile Include="Snake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\World\World.csproj">
-      <Project>{66dda345-ee9c-4372-887c-cee1f3d3471e}</Project>
-      <Name>World</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
