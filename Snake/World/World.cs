@@ -10,11 +10,11 @@ namespace SnakeModel
     {
 
         // A 2D array to model the worldspace.
-        Int32[,] Map;                               //first entry is X and the second entry is Y!!!!!
+        private Int32[,] Map;                               //first entry is X and the second entry is Y!!!!!
         // All the snakes in the world
-        HashSet<Snake> Snakes;
+        private HashSet<Snake> Snakes;
         // All the Food in the world
-        HashSet<Food> Foods;
+        private HashSet<Food> Foods;
 
         public World(int NumberOfPlayers, int Length, int Width)
         {
@@ -25,10 +25,50 @@ namespace SnakeModel
         }
 
         /// <summary>
+        /// Gets all the snakes in the world
+        /// </summary>
+        /// <returns>Hashset of snakes in the world</returns>
+        public HashSet<Snake> GetSnakes()
+        {
+            // The copy of the snakes to be returned
+            HashSet<Snake> result = new HashSet<Snake>();
+
+            // cycle through all the snakes
+            foreach (Snake Voldemort in Snakes)
+            {
+                // add the current snake to set of things to be returned
+                result.Add(Voldemort);
+            }
+
+            // Return the list of snakes
+            return result;
+        }
+
+        /// <summary>
+        /// Returns all the Food in the world
+        /// </summary>
+        /// <returns>A hashset of food in the world</returns>
+        public HashSet<Food> GetFood()
+        {
+            // The copy of the Food to be returned
+            HashSet<Food> result = new HashSet<Food>();
+
+            // cycle through all the Food
+            foreach (Food ComboMeal in Foods)
+            {
+                // add the current Food to set of things to be returned
+                result.Add(ComboMeal);
+            }
+
+            // Return the list of Food
+            return result;
+        }
+
+        /// <summary>
         /// Takes in a new set of snakes and a set of food to replace the old ones
         /// </summary>
-        /// <param name="NewSnakes">The Snakes </param>
-        /// /// <param name="NewFood"></param>
+        /// <param name="NewSnakes">The new snakes to store</param>
+        /// /// <param name="NewFood">The new food to store</param>
         public void UpdateWorld(HashSet<Snake> NewSnakes, HashSet<Food> NewFood)
         {
             // Loop through the old snakes to change their cells to -1

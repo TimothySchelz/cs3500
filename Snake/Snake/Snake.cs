@@ -59,7 +59,7 @@ namespace SnakeModel
             {
                 result.AddLast(vertex);
             }
-            return Verticies;
+            return result;
         }
 
         /// <summary>
