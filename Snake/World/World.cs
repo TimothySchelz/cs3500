@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace SnakeModel
 {
@@ -15,13 +16,35 @@ namespace SnakeModel
         private HashSet<Snake> Snakes;
         // All the Food in the world
         private HashSet<Food> Foods;
+        // Saves each snake's assigned color;
+        private Dictionary<int, Color> SnakeColors;
 
-        public World(int NumberOfPlayers, int Length, int Width)
+        /// <summary>
+        /// Length of the game board.
+        /// </summary>
+        public int Height
         {
-            Map = new Int32[Length+2, Width+2];
+            get;
+            private set;
+        }
 
+        /// <summary>
+        /// Width of the game board.
+        /// </summary>
+        public int Width
+        {
+            get;
+            private set;
+        }
+
+        public World(int NumberOfPlayers, int Length, int Height)
+        {
+            this.Height = Height;
+            this.Width = Width;
+            Map = new Int32[Length+2, Width+2];
             Snakes = new HashSet<Snake>();
             Foods = new HashSet<Food>();
+            SnakeColors = new Dictionary<int, Color>();
         }
 
         /// <summary>
@@ -71,11 +94,17 @@ namespace SnakeModel
         /// /// <param name="NewFood">The new food to store</param>
         public void UpdateWorld(HashSet<Snake> NewSnakes, HashSet<Food> NewFood)
         {
+
             // Loop through the old snakes to change their cells to -1
             foreach(Snake currentSnake in Snakes)
             {
+                if (!SnakeColors.ContainsKey(currentSnake.ID))
+                {
+                    SnakeColors[currentSnake.ID] = Color.FromArgb(currentSnake.ID * 4567);
+                }
+
                 // Loop through each point in the snakes
-                foreach(Point currentPoint in currentSnake.GetSnakePoints())
+                foreach (Point currentPoint in currentSnake.GetSnakePoints())
                 {
                     Map[currentPoint.X, currentPoint.Y] = -1;
                 }
@@ -106,6 +135,21 @@ namespace SnakeModel
             {
                 Map[currentFood.loc.X, currentFood.loc.Y] = -1;
             }
+        }
+
+        /// <summary>
+        /// Returns the color of the snake with the given ID
+        /// </summary>
+        /// <param name="ID">The ID of the snake</param>
+        /// <returns>The color of the snake</returns>
+        public Color GetSnakeColor(int ID)
+        {
+            if (!SnakeColors.ContainsKey(ID))
+            {
+                return Color.Black;
+            }
+
+            return SnakeColors[ID];
         }
     }
 }
