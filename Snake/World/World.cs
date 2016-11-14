@@ -37,11 +37,11 @@ namespace SnakeModel
             private set;
         }
 
-        public World(int NumberOfPlayers, int Length, int Height)
+        public World(int NumberOfPlayers, int Width, int Height)
         {
             this.Height = Height;
             this.Width = Width;
-            Map = new Int32[Length+2, Width+2];
+            Map = new Int32[Width, Height];
             Snakes = new HashSet<Snake>();
             Foods = new HashSet<Food>();
             SnakeColors = new Dictionary<int, Color>();

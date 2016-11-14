@@ -19,6 +19,17 @@ namespace SnakeGUI
         {
             InitializeComponent();
 
+            Timer FrameTimer = new Timer();
+            FrameTimer.Interval = 33;
+            FrameTimer.Tick += UdpateFrame;
+            FrameTimer.Start();
+
+        }
+
+        private void UdpateFrame(object sender, EventArgs e)
+        {
+            gamePanel1.Invalidate();
+            scoreBoardPanel1.Invalidate();
         }
 
         private void OnStartUp(object sender, EventArgs e)
@@ -45,6 +56,9 @@ namespace SnakeGUI
             foods.Add(new Food(2, p2));
 
             world.UpdateWorld(snakes, foods);
+
+            gamePanel1.SetWorld(world);
+            scoreBoardPanel1.SetWorld(world);
         }
     }
 }
