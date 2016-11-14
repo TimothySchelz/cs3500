@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ScoreBoardPanel
+namespace SnakeGUI
 {
     public class ScoreBoardPanel : Panel
     {
@@ -32,6 +32,11 @@ namespace ScoreBoardPanel
         {
             base.OnPaint(e);
             int currentLine = 0;
+
+            if (world == null)
+            {
+                return;
+            }
 
             foreach(Snake currentSnake in world.GetSnakes())
             {

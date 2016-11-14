@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using SnakeModel;
 using System.Drawing;
 
-namespace GamePanel
+namespace SnakeGUI
 {
     public class GamePanel : Panel
     {
