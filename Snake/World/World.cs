@@ -13,9 +13,9 @@ namespace SnakeModel
         // A 2D array to model the worldspace.
         private Int32[,] Map;                               //first entry is X and the second entry is Y!!!!!
         // All the snakes in the world
-        private HashSet<Snake> Snakes;
+        private Dictionary<int, Snake> Snakes;
         // All the Food in the world
-        private HashSet<Food> Foods;
+        private Dictionary<int, Food> Foods;
         // Saves each snake's assigned color;
         private Dictionary<int, Color> SnakeColors;
 
@@ -42,8 +42,8 @@ namespace SnakeModel
             this.Height = Height;
             this.Width = Width;
             Map = new Int32[Width, Height];
-            Snakes = new HashSet<Snake>();
-            Foods = new HashSet<Food>();
+            Snakes = new Dictionary<int, Snake>();
+            Foods = new Dictionary<int, Food>();
             SnakeColors = new Dictionary<int, Color>();
         }
 
@@ -57,10 +57,10 @@ namespace SnakeModel
             HashSet<Snake> result = new HashSet<Snake>();
 
             // cycle through all the snakes
-            foreach (Snake Voldemort in Snakes)
+            foreach (KeyValuePair<int, Snake> Voldemort in Snakes)
             {
                 // add the current snake to set of things to be returned
-                result.Add(Voldemort);
+                result.Add(Voldemort.Value);
             }
 
             // Return the list of snakes
@@ -77,10 +77,10 @@ namespace SnakeModel
             HashSet<Food> result = new HashSet<Food>();
 
             // cycle through all the Food
-            foreach (Food ComboMeal in Foods)
+            foreach (KeyValuePair<int, Food> ComboMeal in Foods)
             {
                 // add the current Food to set of things to be returned
-                result.Add(ComboMeal);
+                result.Add(ComboMeal.Value);
             }
 
             // Return the list of Food
@@ -88,52 +88,79 @@ namespace SnakeModel
         }
 
         /// <summary>
-        /// Takes in a new set of snakes and a set of food to replace the old ones
+        /// Updates the given food item
         /// </summary>
-        /// <param name="NewSnakes">The new snakes to store</param>
-        /// /// <param name="NewFood">The new food to store</param>
-        public void UpdateWorld(HashSet<Snake> NewSnakes, HashSet<Food> NewFood)
+        /// <param name="newFood"></param>
+        public void updateFood(Food newFood)
         {
-
-            // Loop through the old snakes to change their cells to -1
-            foreach(Snake currentSnake in Snakes)
+            // check if the food is already known about
+            if (Foods.ContainsKey(newFood.ID))
             {
-                if (!SnakeColors.ContainsKey(currentSnake.ID))
+                // If the food hs been eaten we remove it
+                if(newFood.loc.X == -1)
                 {
-                    SnakeColors[currentSnake.ID] = Color.FromArgb(currentSnake.ID * 4567);
+                    Foods.Remove(newFood.ID);
                 }
 
-                // Loop through each point in the snakes
-                foreach (Point currentPoint in currentSnake.GetSnakePoints())
+                // Reset the food incase they implement moving food or something
+                Foods[newFood.ID] = newFood;
+            } else
+            {
+                // Check if the food has been eaten 
+                if (newFood.loc.X != -1)
                 {
-                    Map[currentPoint.X, currentPoint.Y] = -1;
+                    // if it hasn't, add it to our dictionary of food
+                    Foods.Add(newFood.ID, newFood);
+
+                    // otherwise don't do anything.  It is gone
                 }
             }
+        }
 
-            // Loop through all the old food and change their cells to -1
-            foreach (Food currentFood in Foods)
+        /// <summary>
+        /// Updates the given snake
+        /// </summary>
+        /// <param name="newSnake">Snake that needs to be updated</param>
+        public void updateSnake(Snake newSnake)
+        {
+            // Check if the new snake already existed
+            if (Snakes.ContainsKey(newSnake.ID))
             {
-                Map[currentFood.loc.X, currentFood.loc.Y] = -1;
-            }
-
-            // Updating what snakes and food we have
-            Snakes = NewSnakes;
-            Foods = NewFood;
-
-            // Loop through the new snakes to change their cells to -1
-            foreach (Snake currentSnake in Snakes)
-            {
-                // Loop through each point in the snakes
-                foreach (Point currentPoint in currentSnake.GetSnakePoints())
+                foreach(Point point in Snakes[newSnake.ID].GetSnakePoints())
                 {
-                    Map[currentPoint.X, currentPoint.Y] = -1;
+                    Map[point.X, point.Y] = -1;
                 }
-            }
 
-            // Loop through all the new food and change their cells to -1
-            foreach (Food currentFood in Foods)
+                // Check if the snake is dead
+                if (newSnake.GetVerticies().First.Value.X == -1)
+                {
+                    return;
+                }
+
+                // Loop through each point in the snake set the value to 2
+                foreach (Point currentPoint in newSnake.GetSnakePoints())
+                {
+                    Map[currentPoint.X, currentPoint.Y] = 2;
+                }
+
+                Snakes[newSnake.ID] = newSnake;
+            } else
             {
-                Map[currentFood.loc.X, currentFood.loc.Y] = -1;
+                SnakeColors[newSnake.ID] = Color.FromArgb(newSnake.ID * 4567);
+
+                // Check if the snake is dead
+                if (newSnake.GetVerticies().First.Value.X == -1)
+                {
+                    return;
+                }
+
+                // Loop through each point in the snake set the value to 2
+                foreach (Point currentPoint in newSnake.GetSnakePoints())
+                {
+                    Map[currentPoint.X, currentPoint.Y] = 2;
+                }
+
+                Snakes.Add(newSnake.ID, newSnake);
             }
         }
 
