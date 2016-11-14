@@ -36,7 +36,6 @@ namespace SnakeGUI
         {
             world = new World(1, 150, 150);
 
-            HashSet<Snake> snakes = new HashSet<Snake>();
             LinkedList<SnakeModel.Point> snakeVerts = new LinkedList<SnakeModel.Point>();
             SnakeModel.Point p1, p2;
             p1.X = 2;
@@ -45,17 +44,15 @@ namespace SnakeGUI
             p2.Y = 5;
             snakeVerts.AddFirst(p1);
             snakeVerts.AddLast(p2);
-            snakes.Add(new Snake(snakeVerts, 1, "TestSnake"));
 
-            HashSet<Food> foods = new HashSet<Food>();
             p1.X = 3;
             p1.Y = 4;
             p2.X = 4;
             p2.Y = 3;
-            foods.Add(new Food(1, p1));
-            foods.Add(new Food(2, p2));
 
-            world.UpdateWorld(snakes, foods);
+            world.updateSnake(new Snake(snakeVerts, 1, "TestSnake"));
+            world.updateFood(new Food(1, p1));
+            world.updateFood(new Food(2, p2));
 
             gamePanel1.SetWorld(world);
             scoreBoardPanel1.SetWorld(world);
