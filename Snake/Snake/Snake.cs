@@ -37,14 +37,18 @@ namespace SnakeModel
         }
 
         //Name of snake as decided by associated player.
-        private string name;
+        public string name
+        {
+            get;
+            private set;
+        }
 
         public Snake (LinkedList<Point> Verticies, int ID, string Name)
         {
             this.Verticies = Verticies;
             this.Length = this.GetSnakePoints().Count-1;
             this.ID = ID;
-            this.name = name;
+            this.name = Name;
         }
 
         /// <summary>
