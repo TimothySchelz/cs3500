@@ -51,6 +51,7 @@ namespace NetworkController
 
             System.Diagnostics.Debug.WriteLine("connecting  to " + Address);
 
+
             SocketState resultSocket;
             // Connect to a remote device.
             try
@@ -75,7 +76,7 @@ namespace NetworkController
                     // Didn't find any IPV4 addresses
                     if (!foundIPV4)
                     {
-                        System.Diagnostics.Debug.WriteLine("Invalid addres: " + Address);
+                        System.Diagnostics.Debug.WriteLine("Invalid address: " + Address);
                         return null;
                     }
                 }
@@ -100,7 +101,7 @@ namespace NetworkController
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Unable to connect to server. Error occured: " + e);
-                return null;
+                throw e;
             }
 
             return resultSocket;

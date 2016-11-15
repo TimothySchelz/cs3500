@@ -102,11 +102,32 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void Connect(object sender, EventArgs e)
         {
+            // Check to make sure we have valid name
+            if (NameBox.Text == "")
+            {
+                // Display Error
+                MessageBox.Show("Please enter a nonempty name");
+            }
+
+            // Check to make sure we have valid Address
+            if (ServerBox.Text == "")
+            {
+                // Display Error
+                MessageBox.Show("Please enter a nonempty address");
+            }
+
             // Gets the address the player wishes to connect to
             string Address = ServerBox.Text;
 
-            //Establishes a socket with the server, instructing it to get initial data.
-            theServer = Networking.ConnectToServer(FirstContact, Address);
+            try {
+                //Establishes a socket with the server, instructing it to get initial data.
+                theServer = Networking.ConnectToServer(FirstContact, Address);
+            }
+            catch (Exception error)
+            {
+                // Display Error
+                MessageBox.Show("We could not connect to the server.  Please check yo self before you, inadvertantly, wreck yo self");
+            }
         }
 
         /// <summary>

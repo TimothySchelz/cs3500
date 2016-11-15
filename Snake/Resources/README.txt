@@ -22,12 +22,13 @@ Extra Features:
 Space Filling Snake AI
 
 Unimplemented/Broken features:
-Connect Gui to Networking stuff
 Fix Gui Display
 Implement Zooming
-Networking
+Networking (send data)
 Extra Features
+Gamepanel constantly loads even when connection is not made.
 
 Time Spent Working on Project:
 11/11/16 2:20PM - 7:10PM
 11/13/16 2:00PM - 6:30PM
+11/14/16 5:00PM - 7:30PM
