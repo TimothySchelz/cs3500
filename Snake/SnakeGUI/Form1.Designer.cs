@@ -30,8 +30,8 @@
         {
             this.gamePanel1 = new SnakeGUI.GamePanel();
             this.ScoreBoardLabel = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.NameBox = new System.Windows.Forms.TextBox();
+            this.ServerBox = new System.Windows.Forms.TextBox();
             this.ServerLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.ConnectButton = new System.Windows.Forms.Button();
@@ -58,19 +58,19 @@
             this.ScoreBoardLabel.TabIndex = 2;
             this.ScoreBoardLabel.Text = "ScoreBoard";
             // 
-            // textBox1
+            // NameBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(120, 13);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 3;
+            this.NameBox.Location = new System.Drawing.Point(120, 13);
+            this.NameBox.Name = "NameBox";
+            this.NameBox.Size = new System.Drawing.Size(100, 22);
+            this.NameBox.TabIndex = 3;
             // 
-            // textBox2
+            // ServerBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(465, 13);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
-            this.textBox2.TabIndex = 4;
+            this.ServerBox.Location = new System.Drawing.Point(465, 13);
+            this.ServerBox.Name = "ServerBox";
+            this.ServerBox.Size = new System.Drawing.Size(100, 22);
+            this.ServerBox.TabIndex = 4;
             // 
             // ServerLabel
             // 
@@ -98,6 +98,7 @@
             this.ConnectButton.TabIndex = 7;
             this.ConnectButton.Text = "Go";
             this.ConnectButton.UseVisualStyleBackColor = true;
+            this.ConnectButton.Click += new System.EventHandler(this.Connect);
             // 
             // scoreBoardPanel1
             // 
@@ -115,8 +116,8 @@
             this.Controls.Add(this.ConnectButton);
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.ServerLabel);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.ServerBox);
+            this.Controls.Add(this.NameBox);
             this.Controls.Add(this.ScoreBoardLabel);
             this.Controls.Add(this.scoreBoardPanel1);
             this.Controls.Add(this.gamePanel1);
@@ -134,8 +135,8 @@
         private GamePanel gamePanel1;
         private ScoreBoardPanel scoreBoardPanel1;
         private System.Windows.Forms.Label ScoreBoardLabel;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox NameBox;
+        private System.Windows.Forms.TextBox ServerBox;
         private System.Windows.Forms.Label ServerLabel;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.Button ConnectButton;

@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +70,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -87,6 +92,10 @@
     <ProjectReference Include="..\GamePanel\GamePanel.csproj">
       <Project>{3ca6d388-70bd-43db-9369-4913b7ce7545}</Project>
       <Name>GamePanel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkController\NetworkController.csproj">
+      <Project>{cb514dbc-692f-4bd3-b212-791c8cdaa198}</Project>
+      <Name>NetworkController</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScoreBoardPanel\ScoreBoardPanel.csproj">
       <Project>{c135d11a-d9ae-4565-94cc-3dd4773945fc}</Project>

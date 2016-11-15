@@ -11,13 +11,17 @@ namespace SnakeModel
     {
 
         // A 2D array to model the worldspace.
-        private Int32[,] Map;                               //first entry is X and the second entry is Y!!!!!
+        private Int32[,] Map;                     //first entry is X and the second entry is Y!!!!!
         // All the snakes in the world
         private Dictionary<int, Snake> Snakes;
         // All the Food in the world
         private Dictionary<int, Food> Foods;
         // Saves each snake's assigned color;
         private Dictionary<int, Color> SnakeColors;
+
+        // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
+        Object SnakeLock = new object();
+        Object FoodLock = new object();
 
         /// <summary>
         /// Length of the game board.
@@ -53,18 +57,21 @@ namespace SnakeModel
         /// <returns>Hashset of snakes in the world</returns>
         public HashSet<Snake> GetSnakes()
         {
-            // The copy of the snakes to be returned
-            HashSet<Snake> result = new HashSet<Snake>();
-
-            // cycle through all the snakes
-            foreach (KeyValuePair<int, Snake> Voldemort in Snakes)
+            lock(SnakeLock)
             {
-                // add the current snake to set of things to be returned
-                result.Add(Voldemort.Value);
-            }
+                // The copy of the snakes to be returned
+                HashSet<Snake> result = new HashSet<Snake>();
 
-            // Return the list of snakes
-            return result;
+                // cycle through all the snakes
+                foreach (KeyValuePair<int, Snake> Voldemort in Snakes)
+                {
+                    // add the current snake to set of things to be returned
+                    result.Add(Voldemort.Value);
+                }
+
+                // Return the list of snakes
+                return result;
+            }
         }
 
         /// <summary>
@@ -73,18 +80,21 @@ namespace SnakeModel
         /// <returns>A hashset of food in the world</returns>
         public HashSet<Food> GetFood()
         {
-            // The copy of the Food to be returned
-            HashSet<Food> result = new HashSet<Food>();
-
-            // cycle through all the Food
-            foreach (KeyValuePair<int, Food> ComboMeal in Foods)
+            lock (FoodLock)
             {
-                // add the current Food to set of things to be returned
-                result.Add(ComboMeal.Value);
-            }
+                // The copy of the Food to be returned
+                HashSet<Food> result = new HashSet<Food>();
 
-            // Return the list of Food
-            return result;
+                // cycle through all the Food
+                foreach (KeyValuePair<int, Food> ComboMeal in Foods)
+                {
+                    // add the current Food to set of things to be returned
+                    result.Add(ComboMeal.Value);
+                }
+
+                // Return the list of Food
+                return result;
+            }
         }
 
         /// <summary>
@@ -93,26 +103,30 @@ namespace SnakeModel
         /// <param name="newFood"></param>
         public void updateFood(Food newFood)
         {
-            // check if the food is already known about
-            if (Foods.ContainsKey(newFood.ID))
+            lock (FoodLock)
             {
-                // If the food hs been eaten we remove it
-                if(newFood.loc.X == -1)
+                // check if the food is already known about
+                if (Foods.ContainsKey(newFood.ID))
                 {
-                    Foods.Remove(newFood.ID);
+                    // If the food hs been eaten we remove it
+                    if (newFood.loc.X == -1)
+                    {
+                        Foods.Remove(newFood.ID);
+                    }
+
+                    // Reset the food incase they implement moving food or something
+                    Foods[newFood.ID] = newFood;
                 }
-
-                // Reset the food incase they implement moving food or something
-                Foods[newFood.ID] = newFood;
-            } else
-            {
-                // Check if the food has been eaten 
-                if (newFood.loc.X != -1)
+                else
                 {
-                    // if it hasn't, add it to our dictionary of food
-                    Foods.Add(newFood.ID, newFood);
+                    // Check if the food has been eaten 
+                    if (newFood.loc.X != -1)
+                    {
+                        // if it hasn't, add it to our dictionary of food
+                        Foods.Add(newFood.ID, newFood);
 
-                    // otherwise don't do anything.  It is gone
+                        // otherwise don't do anything.  It is gone
+                    }
                 }
             }
         }
@@ -123,44 +137,48 @@ namespace SnakeModel
         /// <param name="newSnake">Snake that needs to be updated</param>
         public void updateSnake(Snake newSnake)
         {
-            // Check if the new snake already existed
-            if (Snakes.ContainsKey(newSnake.ID))
+            lock (SnakeLock)
             {
-                foreach(Point point in Snakes[newSnake.ID].GetSnakePoints())
+                // Check if the new snake already existed
+                if (Snakes.ContainsKey(newSnake.ID))
                 {
-                    Map[point.X, point.Y] = -1;
-                }
+                    foreach (Point point in Snakes[newSnake.ID].GetSnakePoints())
+                    {
+                        Map[point.X, point.Y] = -1;
+                    }
 
-                // Check if the snake is dead
-                if (newSnake.GetVerticies().First.Value.X == -1)
+                    // Check if the snake is dead
+                    if (newSnake.GetVerticies().First.Value.X == -1)
+                    {
+                        return;
+                    }
+
+                    // Loop through each point in the snake set the value to 2
+                    foreach (Point currentPoint in newSnake.GetSnakePoints())
+                    {
+                        Map[currentPoint.X, currentPoint.Y] = 2;
+                    }
+
+                    Snakes[newSnake.ID] = newSnake;
+                }
+                else
                 {
-                    return;
+                    SnakeColors[newSnake.ID] = Color.FromArgb(newSnake.ID * 4567);
+
+                    // Check if the snake is dead
+                    if (newSnake.GetVerticies().First.Value.X == -1)
+                    {
+                        return;
+                    }
+
+                    // Loop through each point in the snake set the value to 2
+                    foreach (Point currentPoint in newSnake.GetSnakePoints())
+                    {
+                        Map[currentPoint.X, currentPoint.Y] = 2;
+                    }
+
+                    Snakes.Add(newSnake.ID, newSnake);
                 }
-
-                // Loop through each point in the snake set the value to 2
-                foreach (Point currentPoint in newSnake.GetSnakePoints())
-                {
-                    Map[currentPoint.X, currentPoint.Y] = 2;
-                }
-
-                Snakes[newSnake.ID] = newSnake;
-            } else
-            {
-                SnakeColors[newSnake.ID] = Color.FromArgb(newSnake.ID * 4567);
-
-                // Check if the snake is dead
-                if (newSnake.GetVerticies().First.Value.X == -1)
-                {
-                    return;
-                }
-
-                // Loop through each point in the snake set the value to 2
-                foreach (Point currentPoint in newSnake.GetSnakePoints())
-                {
-                    Map[currentPoint.X, currentPoint.Y] = 2;
-                }
-
-                Snakes.Add(newSnake.ID, newSnake);
             }
         }
 
@@ -171,12 +189,15 @@ namespace SnakeModel
         /// <returns>The color of the snake</returns>
         public Color GetSnakeColor(int ID)
         {
-            if (!SnakeColors.ContainsKey(ID))
+            lock (SnakeLock)
             {
-                return Color.Black;
-            }
+                if (!SnakeColors.ContainsKey(ID))
+                {
+                    return Color.Black;
+                }
 
-            return SnakeColors[ID];
+                return SnakeColors[ID];
+            }
         }
     }
 }

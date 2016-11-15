@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SnakeModel
 {
     /// <summary>
     /// A struct to hold the X and Y values of whatever
     /// </summary>
-    public struct Point
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Point
     {
+        [JsonProperty]
         public int X;
+
+        [JsonProperty]
         public int Y;
     }
 
+    [JsonObject(MemberSerialization.OptIn)]
     public class Snake
     {
+
         //Head, turning points, and tail of the snake.
+        [JsonProperty]
         private LinkedList<Point> Verticies;
 
         //Length of snake
@@ -30,13 +39,17 @@ namespace SnakeModel
         /// <summary>
         /// ID of the snake.
         /// </summary>
+        [JsonProperty]
         public int ID
         {
             get;
             private set;
         }
 
-        //Name of snake as decided by associated player.
+        /// <summary>
+        /// The name of the snake choosen by the player
+        /// </summary>
+        [JsonProperty]
         public string name
         {
             get;

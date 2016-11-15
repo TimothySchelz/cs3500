@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SnakeModel
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Food
     {
         /// <summary>
         /// ID for this peice of food.
         /// </summary>
+        [JsonProperty]
         public int ID
         {
             get;
@@ -22,6 +26,7 @@ namespace SnakeModel
         /// X and Y coordinate point for the food's location. When food is eaten,
         /// the point is (-1,-1).
         /// </summary>
+        [JsonProperty]
         public Point loc
         {
             get;
