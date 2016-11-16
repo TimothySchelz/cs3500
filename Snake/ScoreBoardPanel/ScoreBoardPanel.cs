@@ -13,7 +13,7 @@ namespace SnakeGUI
     {
         private const int TOPMARGIN = 10;
         private const int NAMEALIGN = 10;
-        private const int SCOREALIGN = 100;
+        private const int SCOREALIGN = 200;
         private const int LINEHEIGHT = 24;
 
         private World world;
@@ -40,7 +40,7 @@ namespace SnakeGUI
 
             foreach(Snake currentSnake in world.GetSnakes())
             {
-                using(Font font = new Font("Ariel", LINEHEIGHT, FontStyle.Bold, GraphicsUnit.Pixel))
+                using(Font font = new Font("Arial", LINEHEIGHT, FontStyle.Bold, GraphicsUnit.Pixel))
                 {
                     System.Drawing.Point NameStart = new System.Drawing.Point(NAMEALIGN, LINEHEIGHT*currentLine+TOPMARGIN);
                     TextRenderer.DrawText(e.Graphics, currentSnake.name, font, NameStart, world.GetSnakeColor(currentSnake.ID));

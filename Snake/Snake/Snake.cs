@@ -56,6 +56,12 @@ namespace SnakeModel
             private set;
         }
 
+        /// <summary>
+        /// Constructor for the snake that takes a list of verticies, the id of the snake, and the name
+        /// </summary>
+        /// <param name="Verticies"></param>
+        /// <param name="ID"></param>
+        /// <param name="Name"></param>
         public Snake (LinkedList<Point> Verticies, int ID, string Name)
         {
             this.Verticies = Verticies;
@@ -93,14 +99,14 @@ namespace SnakeModel
             // Go through each vertice in this snake
             foreach(Point joint in Verticies)
             {
-                // Check if this is the first Virtice
-                if (joint.Equals(Verticies.First))
+                // Check if this is the first Vertice
+                if (joint.Equals(Verticies.First.Value))
                 {
                     // just set it as the previous point and we are done on this go around.
                     PreviousPoint = joint;
                 } else
                 {
-                    //Initilize the start and end vlaues to 0
+                    //Initilize the start and end values to 0
                     initial = 0;
                     end = 0;
 

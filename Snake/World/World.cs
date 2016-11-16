@@ -163,7 +163,7 @@ namespace SnakeModel
                 }
                 else
                 {
-                    SnakeColors[newSnake.ID] = Color.FromArgb(newSnake.ID * 4567);
+                    SnakeColors[newSnake.ID] = Color.Black);
 
                     // Check if the snake is dead
                     if (newSnake.GetVerticies().First.Value.X == -1)

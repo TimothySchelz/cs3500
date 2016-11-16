@@ -27,12 +27,6 @@ namespace SnakeGUI
         public Form1()
         {
             InitializeComponent();
-
-            Timer FrameTimer = new Timer();
-            FrameTimer.Interval = 33;
-            FrameTimer.Tick += UdpateFrame;
-            FrameTimer.Start();
-
         }
 
         /// <summary>
@@ -67,32 +61,72 @@ namespace SnakeGUI
             // Creates a filler world to be displayed
             world = new World(1, 150, 150);
 
+            
             // Creates snakes and food to be displayed
             LinkedList<SnakeModel.Point> snakeVerts = new LinkedList<SnakeModel.Point>();
             SnakeModel.Point p1, p2;
+            
             p1 = new SnakeModel.Point();
             p2 = new SnakeModel.Point();
-
-            p1.X = 2;
-            p1.Y = 2;
-            p2.X = 2;
-            p2.Y = 5;
+            p1.X = 30;
+            p1.Y = 25;
+            p2.X = 100;
+            p2.Y = 25;
             snakeVerts.AddFirst(p1);
             snakeVerts.AddLast(p2);
+            world.updateSnake(new Snake(snakeVerts, 1, "sss"));
 
+            snakeVerts = new LinkedList<SnakeModel.Point>();
+            p1 = new SnakeModel.Point();
+            p2 = new SnakeModel.Point();
+            p1.X = 23;
+            p1.Y = 64;
+            p2.X = 23;
+            p2.Y = 101;
+            snakeVerts.AddFirst(p1);
+            snakeVerts.AddLast(p2);
+            world.updateSnake(new Snake(snakeVerts, 6514, "Boaty Mc Boatface"));
+
+            snakeVerts = new LinkedList<SnakeModel.Point>();
+            p1 = new SnakeModel.Point();
+            p2 = new SnakeModel.Point();
+            p1.X = 56;
+            p1.Y = 2;
+            p2.X = 5;
+            p2.Y = 2;
+            snakeVerts.AddFirst(p1);
+            snakeVerts.AddLast(p2);
+            world.updateSnake(new Snake(snakeVerts, 21545, "zzzs"));
+
+            snakeVerts = new LinkedList<SnakeModel.Point>();
+            p1 = new SnakeModel.Point();
+            p2 = new SnakeModel.Point();
+            p1.X = 30;
+            p1.Y = 25;
+            p2.X = 100;
+            p2.Y = 25;
+            snakeVerts.AddFirst(p1);
+            snakeVerts.AddLast(p2);
+            world.updateSnake(new Snake(snakeVerts, 1, "sss"));
+
+
+            p1 = new SnakeModel.Point();
+            p2 = new SnakeModel.Point();
             p1.X = 3;
             p1.Y = 4;
             p2.X = 4;
             p2.Y = 3;
 
             // Adds the snakes and food to the world
-            world.updateSnake(new Snake(snakeVerts, 1, "TestSnake"));
+            
             world.updateFood(new Food(1, p1));
             world.updateFood(new Food(2, p2));
-
+            
             // Sets the world to be the world for both panels
             gamePanel1.SetWorld(world);
             scoreBoardPanel1.SetWorld(world);
+
+            UdpateFrame();
         }
 
         /// <summary>
