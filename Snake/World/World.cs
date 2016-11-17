@@ -19,6 +19,9 @@ namespace SnakeModel
         // Saves each snake's assigned color;
         private Dictionary<int, Color> SnakeColors;
 
+        // RNG to get  colors for the snakes
+        Random rando = new Random();
+
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
         Object FoodLock = new object();
@@ -163,7 +166,8 @@ namespace SnakeModel
                 }
                 else
                 {
-                    SnakeColors[newSnake.ID] = Color.Black);
+                    
+                    SnakeColors[newSnake.ID] = Color.FromArgb(rando.Next(255), rando.Next(255), rando.Next(255));
 
                     // Check if the snake is dead
                     if (newSnake.GetVerticies().First.Value.X == -1)

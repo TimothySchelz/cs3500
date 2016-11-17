@@ -52,7 +52,7 @@ namespace SnakeGUI
                 return;
 
             // turn on antialiasing
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+           // e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // Paint all the items in the world
             PaintWalls(e);
