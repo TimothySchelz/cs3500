@@ -94,6 +94,8 @@ namespace NetworkController
 
                 resultSocket = new SocketState(socket, -1);
 
+                resultSocket.CallMe = Action;
+
                 resultSocket.theSocket.BeginConnect(ipAddress, Networking.DEFAULT_PORT, ConnectedCallback, resultSocket);
 
             }
@@ -163,6 +165,7 @@ namespace NetworkController
         /// <param name="ss">The socketstate to receive data from</param>
         public static void GetData(SocketState ss)
         {
+
             // Starts the event loop again to receive data
             ss.theSocket.BeginReceive(ss.messageBuffer, 0, ss.messageBuffer.Length, SocketFlags.None, Networking.ReceiveCallback, ss);
         }
@@ -194,7 +197,7 @@ namespace NetworkController
             ss.theSocket.EndSend(ar);
 
             // Do whatever the socketstate wants to do after finishing sending
-            ss.SendCallback(ss);
+            ss.CallMe(ss);
         }
     }
 
