@@ -21,6 +21,12 @@ namespace NetworkController
         public Callback SendCallback;
         public delegate void Callback(SocketState State);
 
+        public int BufferSize
+        {
+            get;
+            set;
+        }
+
         // This is the buffer where we will receive message data from the client
         public byte[] messageBuffer = new byte[1024];
 
@@ -31,6 +37,7 @@ namespace NetworkController
         {
             theSocket = s;
             ID = id;
+            BufferSize = 1024;
         }
     }
 
@@ -196,8 +203,13 @@ namespace NetworkController
             // End the send
             ss.theSocket.EndSend(ar);
 
-            // Do whatever the socketstate wants to do after finishing sending
-            ss.CallMe(ss);
+            // Check if  sendcallback is null
+            if (ss.SendCallback != null)
+            {
+                // Do whatever the socketstate wants to do after finishing sending
+                ss.CallMe(ss);
+            }
+            
         }
     }
 

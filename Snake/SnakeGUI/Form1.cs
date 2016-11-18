@@ -187,47 +187,50 @@ namespace SnakeGUI
         /// <param name="ss">The socket over which startup data is received</param>
         private void RecieveStartup(SocketState ss)
         {
-            // Pulled a string out of the Stringbuilder
-            string message = ss.sb.ToString();
+            // Get string out of StringBuilder
+            String message = ss.sb.ToString();
 
-            //Split it up into different strings delineated by \n
-            string[] argVector = message.Split('\n');
+            List < String >  messageLines= new List<String>();
 
-            if (argVector.Length >= 3) {
-                //Tried parsing the first one into the player's ID
-                Int32.TryParse(argVector[0], out PlayerID);
+            // Check if we have all the startup info
+            if (messageLines.Count >= 3)
+            {
+                int height, width;
+                bool IDParsed, WidthParsed, HeightParsed;
 
-                // Tried parseing the next two into the width and height of the world
-                int Height, Width;
-                Int32.TryParse(argVector[1], out Width);
-                Int32.TryParse(argVector[2], out Height); // TODO: add a check to make sure they parsed correctly
+                // Parsed the infor out of the string
+                IDParsed = Int32.TryParse(messageLines[0], out PlayerID);
+                WidthParsed = Int32.TryParse(messageLines[1], out width);
+                HeightParsed = Int32.TryParse(messageLines[2], out height);
 
-                //Counts Parsed Characters and removes them from stringbuilder
-                int parsedChars = argVector[0].Length + argVector[1].Length + argVector[2].Length + 3;
-                ss.sb.Remove(0, parsedChars);
+                // check to make sure the info parsed correctly
+                if (!(IDParsed && WidthParsed && HeightParsed))
+                {
+                    MessageBox.Show("Wonky data came from server");
+                    return;
+                }
 
-                // Creating the world
-                world = new World(PlayerID, Width, Height);
+                // create the world
+                World world = new World(PlayerID, width, height);
 
-                // Change the SS's Callback to start receiving the world info
-                ss.CallMe = ReceiveWorld;
+                // Calculate how many characters were parsed so we delete them
+                int CharsParsed = messageLines[0].Length + messageLines[1].Length + messageLines[2].Length + 3;
 
-                // Sets the new world to be the world for both panels
-                gamePanel1.SetWorld(world);
-                scoreBoardPanel1.SetWorld(world);
+                // Remove parsed info from SB
+                ss.sb.Remove(0, CharsParsed);
+
+                // Any remaining info in the SB gets put in the string head
+                prevStringHead = ss.sb.ToString();
+
+                // clear SB and Buffer
+                ss.sb.Clear();
+                ss.messageBuffer = new byte[ss.BufferSize];
+
+                // Set the callback to ReceiveWorld so we can receive world data
+                ss.CallMe = ReceiveWorld;  
             }
 
-            //Clears the buffer, as we've processed all data in it.
-            ss.messageBuffer = new byte[ss.messageBuffer.Length];
-
-            // Set the rest of the junk in the sb to the previousStringHead so that we can take care of it once we start
-            // receiving world data.
-            prevStringHead = ss.sb.ToString();
-
-            // Clear out the string builder
-            ss.sb.Clear();
-
-            // Tell the Network controller to continue listening for data
+            // Start Listening for more data
             Networking.GetData(ss);
         }
 
@@ -237,66 +240,7 @@ namespace SnakeGUI
         /// <param name="ss">The socket over which data has been received</param>
         private void ReceiveWorld(SocketState ss)
         {
-
-            // Places previous incomplete message at the beginning of the stringbuilder
-            ss.sb.Insert(0, prevStringHead);
-
-            // pull Json Objects out of the SB
-            String message = ss.sb.ToString();
-
-            // Doesn't try to parse data with nothing there, resets event loop, gets moar data.
-            if (ss.sb.Length == 0)
-            {
-                Networking.GetData(ss);
-                return;
-            }
-
-            // Tests if final character is '\n' and all objects are complete
-            bool isComplete = (message[message.Length - 1] == '\n');
-
-            //Split it up into different strings delineated by \n
-            string[] argVector = message.Split('\n');
-
-            // Turn Json Objects into normal objects
-            for(int index = 0; index < argVector.Length-1; index++) { 
-
-                JObject obj = JObject.Parse(argVector[index]);
-                JToken snakeProp = obj["vertices"];
-                JToken foodProp = obj["loc"];
-
-                // Update world with these Objects
-
-                // Object is a snake
-                if (snakeProp != null)
-                {
-                        Snake newSnake = JsonConvert.DeserializeObject<Snake>(argVector[index]);
-                        world.updateSnake(newSnake);
-                }
-                // Object is a food
-                if (foodProp != null)
-                {
-                        Food newFood = JsonConvert.DeserializeObject<Food>(argVector[index]);
-                        world.updateFood(newFood);
-                }
-            }
-
-            //Adds the newline character if all JSON ojbects were complete
-            if (isComplete)
-                prevStringHead = argVector[argVector.Length - 1]+'\n';
-            else
-                prevStringHead = argVector[argVector.Length - 1];
-
-            //Clears the stringbuilder
-            ss.sb.Clear();
-
-            //Clears the buffer, as we've processed all data in it.
-            ss.messageBuffer = new byte[ss.messageBuffer.Length];
-
-            //Resets event loop
-            Networking.GetData(ss);
-
-            // Redraw Everything
-            UdpateFrame();
+            Console.Write("Started to receive the world");
         }
 
     }

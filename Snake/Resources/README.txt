@@ -27,6 +27,8 @@ Implement Zooming
 Networking (send data)
 Extra Features
 Gamepanel constantly loads even when connection is not made.
+Receiving unexpected IndexOutOfBounds Exc in ReceiveWorld after already clearing stringbuilder.
+Also ending up with messages that begin in the middle of JSON strings.
 
 Time Spent Working on Project:
 11/11/16 2:20PM - 7:10PM

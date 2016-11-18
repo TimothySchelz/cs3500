@@ -18,6 +18,8 @@ namespace SnakeModel
         private Dictionary<int, Food> Foods;
         // Saves each snake's assigned color;
         private Dictionary<int, Color> SnakeColors;
+        // The player
+        int PlayerID;
 
         // RNG to get  colors for the snakes
         Random rando = new Random();
@@ -44,7 +46,7 @@ namespace SnakeModel
             private set;
         }
 
-        public World(int NumberOfPlayers, int Width, int Height)
+        public World(int PlayerID, int Width, int Height)
         {
             this.Height = Height;
             this.Width = Width;
@@ -52,6 +54,7 @@ namespace SnakeModel
             Snakes = new Dictionary<int, Snake>();
             Foods = new Dictionary<int, Food>();
             SnakeColors = new Dictionary<int, Color>();
+            this.PlayerID = PlayerID;
         }
 
         /// <summary>
