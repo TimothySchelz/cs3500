@@ -19,6 +19,7 @@ namespace SnakeModel
 
         [JsonProperty]
         public int Y;
+
     }
 
     [JsonObject(MemberSerialization.OptIn)]
@@ -62,10 +63,10 @@ namespace SnakeModel
         /// <param name="Verticies"></param>
         /// <param name="ID"></param>
         /// <param name="Name"></param>
-        public Snake (LinkedList<Point> Verticies, int ID, string Name)
+        public Snake(LinkedList<Point> Verticies, int ID, string Name)
         {
             this.Verticies = Verticies;
-            this.Length = this.GetSnakePoints().Count-1;
+            this.Length = this.GetSnakePoints().Count - 1;
             this.ID = ID;
             this.name = Name;
         }
@@ -93,72 +94,88 @@ namespace SnakeModel
         {
             HashSet<Point> result = new HashSet<Point>();
             Point PreviousPoint = new Point();
-            int initial;
-            int end;
-            
+
             // Go through each vertice in this snake
-            foreach(Point joint in Verticies)
+            foreach (Point nextPoint in Verticies)
             {
-                // Check if this is the first Vertice
-                if (joint.Equals(Verticies.First.Value))
+                // If it isn't the first verticie do this junk
+                if (!nextPoint.Equals(Verticies.First.Value))
                 {
-                    // just set it as the previous point and we are done on this go around.
-                    PreviousPoint = joint;
-                } else
-                {
-                    //Initilize the start and end values to 0
-                    initial = 0;
-                    end = 0;
-
-                    // Check if the current vertice and the last one have the same X value
-                    if (PreviousPoint.X == joint.X)
+                    // Look at the case where they have the same  but ifferent y values
+                    if (PreviousPoint.X == nextPoint.X)
                     {
-                        // Figure out which one has the smaller Y value and let that be our starting point
-                        if (PreviousPoint.Y < joint.Y)
+                        // if previous points Y is the larger one we decrement down to nextpoint y
+                        if (PreviousPoint.Y > nextPoint.Y)
                         {
-                            initial = PreviousPoint.Y;
-                            end = joint.Y;
-                        } else
-                        {
-                            initial = joint.Y;
-                            end = PreviousPoint.Y;
+                            // loop through and add all the points between the vertices
+                            for (int i = PreviousPoint.Y; i > nextPoint.Y; i--)
+                            {
+                                // go ahead and add the current point to the result
+                                Point current = new Point();
+                                current.X = nextPoint.X;
+                                current.Y = i;
+                                if (nextPoint.Y != current.Y)
+                                    result.Add(current);
+                            }
+                            
                         }
-
-                        // loop through and add all the points between the vertices
-                        for(int i = initial; i <= end; i++)
+                        // If previouspoint Y is smaller than the next point Y we increment up to it
+                        else if (PreviousPoint.Y < nextPoint.Y)
                         {
-                            Point current = new Point();
-                            current.X = joint.X;
-                            current.Y = i;
-                            result.Add(current);
+                            // loop through and add all the points between the vertices
+                            for (int i = PreviousPoint.Y; i < nextPoint.Y; i++)
+                            {
+                                // go ahead and add the current point to the result
+                                Point current = new Point();
+                                current.X = nextPoint.X;
+                                current.Y = i;
+                                if (nextPoint.Y != current.Y)
+                                    result.Add(current);
+                            }
                         }
-                    // Check if the current vertice and the last one have the same Y value
                     }
-                    else if (PreviousPoint.Y == joint.Y)
+                    else if (PreviousPoint.Y == nextPoint.Y)
                     {
-                        // Figure out which one has the smaller Y value and let that be our starting point
-                        if (PreviousPoint.X < joint.X)
+                        // if previous points X is the larger one we decrement down to nextpoint x
+                        if (PreviousPoint.X > nextPoint.X)
                         {
-                            initial = PreviousPoint.X;
-                            end = joint.X;
-                        }
-                        else
-                        {
-                            initial = joint.X;
-                            end = PreviousPoint.X;
-                        }
+                            // loop through and add all the points between the vertices
+                            for (int i = PreviousPoint.X; i > nextPoint.X; i--)
+                            {
+                                // go ahead and add the current point to the result
+                                Point current = new Point();
+                                current.Y = nextPoint.Y;
+                                current.X = i;
+                                if (nextPoint.X != current.X)
+                                    result.Add(current);
+                            }
 
-                        // loop through and add all the points between the vertices
-                        for (int i = initial; i <= end; i++)
-                        {
-                            Point current = new Point();
-                            current.Y = joint.Y;
-                            current.X = i;
-                            result.Add(current);
                         }
+                        // If previouspoint X is smaller than the next point X we increment up to it
+                        else if (PreviousPoint.X < nextPoint.X)
+                        {
+                            // loop through and add all the points between the vertices
+                            for (int i = PreviousPoint.X; i < nextPoint.X; i++)
+                            {
+                                // go ahead and add the current point to the result
+                                Point current = new Point();
+                                current.Y = nextPoint.Y;
+                                current.X = i;
+                                if (nextPoint.X != current.X)
+                                    result.Add(current);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("The verticies of the snake do not make sense");
                     }
                 }
+
+                PreviousPoint = nextPoint;
             }
+            // Add the last verticie into the reslut.  It would not be add in the above algorithm
+            result.Add(Verticies.Last.Value);
             return result;
         }
 
