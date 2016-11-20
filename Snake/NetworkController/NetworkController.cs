@@ -203,7 +203,7 @@ namespace NetworkController
             // End the send
             ss.theSocket.EndSend(ar);
 
-            // Check if  sendcallback is null
+            // Check if sendcallback is null
             if (ss.SendCallback != null)
             {
                 // Do whatever the socketstate wants to do after finishing sending

@@ -47,7 +47,7 @@ namespace SnakeGUI
                     TextRenderer.DrawText(e.Graphics, currentSnake.name, font, NameStart, world.GetSnakeColor(currentSnake.ID));
 
                     System.Drawing.Point ScoreStart = new System.Drawing.Point(SCOREALIGN, LINEHEIGHT * currentLine + TOPMARGIN);
-                    TextRenderer.DrawText(e.Graphics, ""+currentSnake.Length, font, ScoreStart, world.GetSnakeColor(currentSnake.ID));
+                    TextRenderer.DrawText(e.Graphics, ""+currentSnake.GetLength(), font, ScoreStart, world.GetSnakeColor(currentSnake.ID));
                 }
 
                 currentLine++;

@@ -25,18 +25,23 @@ namespace SnakeGUI
         private SocketState theServer;
         //Possibly incomplete heads of incomming data
         private string prevStringHead;
+        //A method invoker so the form updates when another thread gets data
+        MethodInvoker notifyFormUpdate;
 
         public Form1()
         {
             InitializeComponent();
             this.BackColor = Color.LightGray;
+
+            notifyFormUpdate = new MethodInvoker(UpdateFrame);
+
         }
 
         /// <summary>
         /// Method to be called everytime we want to display another frame.
         /// Hopefully at least 60 per second
         /// </summary>
-        private void UdpateFrame()
+        private void UpdateFrame()
         {
             gamePanel1.Invalidate();
             scoreBoardPanel1.Invalidate();
@@ -51,7 +56,7 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void UdpateFrame(object sender, EventArgs e)
         {
-            UdpateFrame();
+            UpdateFrame();
         }
 
         /// <summary>
@@ -118,7 +123,7 @@ namespace SnakeGUI
             gamePanel1.SetWorld(world);
             scoreBoardPanel1.SetWorld(world);
 
-            UdpateFrame();
+            UpdateFrame();
         }
 
         /// <summary>
@@ -182,6 +187,13 @@ namespace SnakeGUI
 
             List < String >  messageLines= new List<String>();
 
+            // Loop through adding each split line into our messageLines list
+            foreach(String line in message.Split('\n'))
+            {
+                if(line != "")
+                    messageLines.Add(line);
+            }
+
             // Check if we have all the startup info
             if (messageLines.Count >= 3)
             {
@@ -230,7 +242,62 @@ namespace SnakeGUI
         /// <param name="ss">The socket over which data has been received</param>
         private void ReceiveWorld(SocketState ss)
         {
-            
+            //Attach the end of the previous message to this string
+            ss.sb.Insert(0, prevStringHead);
+
+            // Get string out of StringBuilder
+            String message = ss.sb.ToString();
+
+            List<String> messageLines = new List<String>();
+
+            // Loop through adding each split line into our messageLines list
+            foreach (String line in message.Split('\n'))
+            {
+                if (line != "")
+                    messageLines.Add(line);
+            }
+
+            //Saves the last line of info and deletes it from the string list
+            prevStringHead = messageLines.Last();
+            messageLines.RemoveAt(messageLines.Count - 1);
+
+            //Clears the string builder & ayte array
+            ss.sb.Clear();
+            ss.messageBuffer = new byte[ss.BufferSize];
+
+            Console.WriteLine("Batch of info"); //PRINT TO CONSOLE!!!!
+
+            //Parses each complete string line.
+            foreach(string JsonString in messageLines)
+            {
+                Console.WriteLine(JsonString); //PRINT TO CONSOLE!!!
+
+                // Parser the JSON string so we can examine it to determine what type of object it represents.
+                JObject obj = JObject.Parse(JsonString);
+                JToken snakeProp = obj["vertices"];
+                JToken foodProp = obj["loc"];
+
+                if (snakeProp != null)
+                {
+                    Snake s = JsonConvert.DeserializeObject<Snake>(JsonString);
+                    world.updateSnake(s);
+                    Console.WriteLine(s);
+                }
+
+                if (foodProp != null)
+                {
+                    Food f = JsonConvert.DeserializeObject<Food>(JsonString);
+                    world.updateFood(f);
+                    Console.WriteLine(f);
+                }
+
+            }
+
+            //Invokes Form1 to redraw itself
+            this.Invoke(notifyFormUpdate);
+
+            //Restarts the loop
+            Networking.GetData(ss);
         }
 
     }

@@ -61,7 +61,7 @@ namespace SnakeGUI
                 return;
 
             // The Length of the snake
-            SnakeSize = (float)world.PlayerSnake.Length + 1;
+            SnakeSize = (float)world.PlayerSnake.GetLength() + 1;
 
             // What to scale the world by
             ScalingFactor = 2.5F*world.Height*PIXELSPERCELL / (SnakeSize);
@@ -77,8 +77,8 @@ namespace SnakeGUI
 
 
             // Shift to snakehead
-            float xOffset = -(world.PlayerSnake.Head.X - world.PlayerSnake.Length)*PIXELSPERCELL;
-            float yOffset = -(world.PlayerSnake.Head.Y - world.PlayerSnake.Length)* PIXELSPERCELL;
+            float xOffset = -(world.PlayerSnake.GetHead().X - world.PlayerSnake.GetLength())*PIXELSPERCELL;
+            float yOffset = -(world.PlayerSnake.GetHead().Y - world.PlayerSnake.GetLength())* PIXELSPERCELL;
 
             e.Graphics.TranslateTransform(xOffset, yOffset);
 
@@ -139,7 +139,6 @@ namespace SnakeGUI
                         Rectangle drawPoint = new Rectangle(point.X * PIXELSPERCELL, point.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
                         e.Graphics.FillRectangle(drawBrush, drawPoint);
                     }
-
                 }
             }
         }

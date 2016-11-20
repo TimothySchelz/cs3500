@@ -25,23 +25,32 @@ namespace SnakeModel
     [JsonObject(MemberSerialization.OptIn)]
     public class Snake
     {
-
+        private int length;
         //Head, turning points, and tail of the snake.
         [JsonProperty]
-        private LinkedList<Point> Verticies;
+        private LinkedList<Point> verticies;
 
-        //Length of snake
-        public int Length
+        /// <summary>
+        /// Returns the length of the snake.  The first time being called it may take a moment.  After that it should run in constant time.
+        /// </summary>
+        /// <returns>The length of the snake</returns>
+        public int GetLength()
         {
-            get;
-            private set;
+            if (length == 0)
+            {
+                length = this.GetSnakePoints().Count - 1;
+            }
+
+            return length;
         }
 
-        //Head of the snake
-        public Point Head
+        /// <summary>
+        /// Returns the head of the snake as a point
+        /// </summary>
+        /// <returns>A point representing the head of the snake</returns>
+        public Point GetHead()
         {
-            get;
-            private set;
+            return verticies.Last.Value;
         }
 
 
@@ -71,13 +80,12 @@ namespace SnakeModel
         /// <param name="Verticies"></param>
         /// <param name="ID"></param>
         /// <param name="Name"></param>
+        [JsonConstructor]
         public Snake(LinkedList<Point> Verticies, int ID, string Name)
         {
-            this.Verticies = Verticies;
-            this.Length = this.GetSnakePoints().Count - 1;
+            this.verticies = Verticies;
             this.ID = ID;
             this.name = Name;
-            this.Head = Verticies.Last.Value;
         }
 
         /// <summary>
@@ -88,7 +96,7 @@ namespace SnakeModel
         {
             LinkedList<Point> result = new LinkedList<Point>();
 
-            foreach (Point vertex in Verticies)
+            foreach (Point vertex in verticies)
             {
                 result.AddLast(vertex);
             }
@@ -105,10 +113,10 @@ namespace SnakeModel
             Point PreviousPoint = new Point();
 
             // Go through each vertice in this snake
-            foreach (Point nextPoint in Verticies)
+            foreach (Point nextPoint in verticies)
             {
                 // If it isn't the first verticie do this junk
-                if (!nextPoint.Equals(Verticies.First.Value))
+                if (!nextPoint.Equals(verticies.First.Value))
                 {
                     // Look at the case where they have the same  but ifferent y values
                     if (PreviousPoint.X == nextPoint.X)
@@ -184,7 +192,7 @@ namespace SnakeModel
                 PreviousPoint = nextPoint;
             }
             // Add the last verticie into the reslut.  It would not be add in the above algorithm
-            result.Add(Verticies.Last.Value);
+            result.Add(verticies.Last.Value);
             return result;
         }
 
