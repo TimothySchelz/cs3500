@@ -19,18 +19,24 @@ To keep tack of the cells that each snake or food occupies there is a Point Stru
 Everything is designed to just be a client at the moment.  The model and NetworkController will be expanded later to serve as a server as well later on, possibly in the next assignment.
 
 Extra Features:
-Space Filling Snake AI
+
 
 Unimplemented/Broken features:
-Fix Gui Display
-Implement Zooming
-Networking (send data)
-Extra Features
-Gamepanel constantly loads even when connection is not made.
-Receiving unexpected IndexOutOfBounds Exc in ReceiveWorld after already clearing stringbuilder.
-Also ending up with messages that begin in the middle of JSON strings.
+- Implement Zooming (when snake is big enough show full world)
+- Networking (send data)
+- Gamepanel constantly loads even when connection is not made.
+- Sometimes we will end up with 2 items not seperated by \n
+- snakes are remaining in game panel when they don't exist
+- same in scoreboard
+- Test and deal with then invalid stuff entered in boxes
+- Deal with long player names
+- Exception from the method evoker when closing
 
 Time Spent Working on Project:
 11/11/16 2:20PM - 7:10PM
 11/13/16 2:00PM - 6:30PM
 11/14/16 5:00PM - 7:30PM
+11/15/16 3:20PM - 5:30PM
+11/17/16 7:00PM	- 10:00PM
+11/18/16 7:30PM - 10:30PM
+11/19/16 2:10PM	- 

@@ -28,7 +28,7 @@ namespace SnakeModel
         private int length;
         //Head, turning points, and tail of the snake.
         [JsonProperty]
-        private LinkedList<Point> verticies;
+        private List<Point> vertices;
 
         /// <summary>
         /// Returns the length of the snake.  The first time being called it may take a moment.  After that it should run in constant time.
@@ -50,7 +50,7 @@ namespace SnakeModel
         /// <returns>A point representing the head of the snake</returns>
         public Point GetHead()
         {
-            return verticies.Last.Value;
+            return vertices.Last();
         }
 
 
@@ -81,9 +81,9 @@ namespace SnakeModel
         /// <param name="ID"></param>
         /// <param name="Name"></param>
         [JsonConstructor]
-        public Snake(LinkedList<Point> Verticies, int ID, string Name)
+        public Snake(List<Point> Verticies, int ID, string Name)
         {
-            this.verticies = Verticies;
+            this.vertices = Verticies;
             this.ID = ID;
             this.name = Name;
         }
@@ -96,7 +96,7 @@ namespace SnakeModel
         {
             LinkedList<Point> result = new LinkedList<Point>();
 
-            foreach (Point vertex in verticies)
+            foreach (Point vertex in vertices)
             {
                 result.AddLast(vertex);
             }
@@ -113,10 +113,10 @@ namespace SnakeModel
             Point PreviousPoint = new Point();
 
             // Go through each vertice in this snake
-            foreach (Point nextPoint in verticies)
+            foreach (Point nextPoint in vertices)
             {
                 // If it isn't the first verticie do this junk
-                if (!nextPoint.Equals(verticies.First.Value))
+                if (!nextPoint.Equals(vertices.First()))
                 {
                     // Look at the case where they have the same  but ifferent y values
                     if (PreviousPoint.X == nextPoint.X)
@@ -192,7 +192,7 @@ namespace SnakeModel
                 PreviousPoint = nextPoint;
             }
             // Add the last verticie into the reslut.  It would not be add in the above algorithm
-            result.Add(verticies.Last.Value);
+            result.Add(vertices.Last());
             return result;
         }
 

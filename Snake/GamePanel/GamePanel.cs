@@ -63,26 +63,34 @@ namespace SnakeGUI
             // The Length of the snake
             SnakeSize = (float)world.PlayerSnake.GetLength() + 1;
 
-            // What to scale the world by
-            ScalingFactor = 2.5F*world.Height*PIXELSPERCELL / (SnakeSize);
-
-
-            // Scale
-            e.Graphics.ScaleTransform(ScalingFactor, ScalingFactor);
-
-
 
             // turn on antialiasing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
+            if (SnakeSize < world.Width / 2)
+            {
+                PIXELSPERCELL = 1;
 
-            // Shift to snakehead
-            float xOffset = -(world.PlayerSnake.GetHead().X - world.PlayerSnake.GetLength())*PIXELSPERCELL;
-            float yOffset = -(world.PlayerSnake.GetHead().Y - world.PlayerSnake.GetLength())* PIXELSPERCELL;
+                // What to scale the world by
+                ScalingFactor = 2.5F * world.Height * PIXELSPERCELL / (SnakeSize);
 
-            e.Graphics.TranslateTransform(xOffset, yOffset);
 
-            
+                // Scale
+                e.Graphics.ScaleTransform(ScalingFactor, ScalingFactor);
+
+
+
+                // Shift to snakehead
+                float xOffset = -(world.PlayerSnake.GetHead().X - world.PlayerSnake.GetLength())*PIXELSPERCELL;
+                float yOffset = -(world.PlayerSnake.GetHead().Y - world.PlayerSnake.GetLength())* PIXELSPERCELL;
+
+                e.Graphics.TranslateTransform(xOffset, yOffset);
+            }
+            else
+            {
+                PIXELSPERCELL = 5;
+            }
+
 
 
             // Paint all the items in the world

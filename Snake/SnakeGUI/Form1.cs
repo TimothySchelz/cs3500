@@ -71,7 +71,7 @@ namespace SnakeGUI
 
             
             // Creates snakes and food to be displayed
-            LinkedList<SnakeModel.Point> snakeVerts = new LinkedList<SnakeModel.Point>();
+            List<SnakeModel.Point> snakeVerts = new List<SnakeModel.Point>();
             SnakeModel.Point p1, p2;
             
             p1 = new SnakeModel.Point();
@@ -80,30 +80,30 @@ namespace SnakeGUI
             p1.Y = 25;
             p2.X = 100;
             p2.Y = 25;
-            snakeVerts.AddFirst(p1);
-            snakeVerts.AddLast(p2);
+            snakeVerts.Insert(0, p1);
+            snakeVerts.Insert(0, p2);
             world.updateSnake(new Snake(snakeVerts, 3, "sss"));
 
-            snakeVerts = new LinkedList<SnakeModel.Point>();
+            snakeVerts = new List<SnakeModel.Point>();
             p1 = new SnakeModel.Point();
             p2 = new SnakeModel.Point();
             p1.X = 1;
             p1.Y = 1;
             p2.X = 1;
             p2.Y = 10;
-            snakeVerts.AddFirst(p1);
-            snakeVerts.AddLast(p2);
+            snakeVerts.Insert(0, p1);
+            snakeVerts.Insert(0, p2);
             world.updateSnake(new Snake(snakeVerts, 2, "Boaty Mc Boatface"));
 
-            snakeVerts = new LinkedList<SnakeModel.Point>();
+            snakeVerts = new List<SnakeModel.Point>();
             p1 = new SnakeModel.Point();
             p2 = new SnakeModel.Point();
-            p1.X = 56;
-            p1.Y = 2;
-            p2.X = 5;
-            p2.Y = 2;
-            snakeVerts.AddFirst(p1);
-            snakeVerts.AddLast(p2);
+            p1.X = 1;
+            p1.Y = 1;
+            p2.X = 1;
+            p2.Y = 148;
+            snakeVerts.Insert(0, p1);
+            snakeVerts.Insert(1, p2);
             world.updateSnake(new Snake(snakeVerts, 1, "zzzs"));
 
 
@@ -138,6 +138,7 @@ namespace SnakeGUI
             {
                 // Display Error
                 MessageBox.Show("Please enter a nonempty name");
+                return;
             }
 
             // Check to make sure we have valid Address
@@ -145,8 +146,10 @@ namespace SnakeGUI
             {
                 // Display Error
                 MessageBox.Show("Please enter a nonempty address");
+                return;
             }
 
+            ConnectButton.Enabled = false;
             // Sets previous incomplete message received to the empty string
             prevStringHead = "";
 
@@ -213,7 +216,7 @@ namespace SnakeGUI
                 }
 
                 // create the world
-                World world = new World(PlayerID, width, height);
+                world = new World(PlayerID, width, height);
 
                 // Calculate how many characters were parsed so we delete them
                 int CharsParsed = messageLines[0].Length + messageLines[1].Length + messageLines[2].Length + 3;
@@ -259,6 +262,14 @@ namespace SnakeGUI
 
             //Saves the last line of info and deletes it from the string list
             prevStringHead = messageLines.Last();
+
+            // check if he last char in sb is a newline. We want to include it in our prevStringHead
+            if (ss.sb[ss.sb.Length-1].Equals('\n'))
+            {
+                //Saves the last line of info and deletes it from the string list
+                prevStringHead += '\n';
+            }
+
             messageLines.RemoveAt(messageLines.Count - 1);
 
             //Clears the string builder & ayte array

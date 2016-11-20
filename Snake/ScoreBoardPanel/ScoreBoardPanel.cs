@@ -31,7 +31,8 @@ namespace SnakeGUI
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
+            
+            //base.OnPaint(e);
             int currentLine = 0;
 
             if (world == null)
