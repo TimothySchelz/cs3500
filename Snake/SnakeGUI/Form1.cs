@@ -29,6 +29,7 @@ namespace SnakeGUI
         public Form1()
         {
             InitializeComponent();
+            this.BackColor = Color.LightGray;
         }
 
         /// <summary>
@@ -76,18 +77,18 @@ namespace SnakeGUI
             p2.Y = 25;
             snakeVerts.AddFirst(p1);
             snakeVerts.AddLast(p2);
-            world.updateSnake(new Snake(snakeVerts, 1, "sss"));
+            world.updateSnake(new Snake(snakeVerts, 3, "sss"));
 
             snakeVerts = new LinkedList<SnakeModel.Point>();
             p1 = new SnakeModel.Point();
             p2 = new SnakeModel.Point();
-            p1.X = 23;
-            p1.Y = 64;
-            p2.X = 23;
-            p2.Y = 101;
+            p1.X = 1;
+            p1.Y = 1;
+            p2.X = 1;
+            p2.Y = 10;
             snakeVerts.AddFirst(p1);
             snakeVerts.AddLast(p2);
-            world.updateSnake(new Snake(snakeVerts, 6514, "Boaty Mc Boatface"));
+            world.updateSnake(new Snake(snakeVerts, 2, "Boaty Mc Boatface"));
 
             snakeVerts = new LinkedList<SnakeModel.Point>();
             p1 = new SnakeModel.Point();
@@ -98,18 +99,7 @@ namespace SnakeGUI
             p2.Y = 2;
             snakeVerts.AddFirst(p1);
             snakeVerts.AddLast(p2);
-            world.updateSnake(new Snake(snakeVerts, 21545, "zzzs"));
-
-            snakeVerts = new LinkedList<SnakeModel.Point>();
-            p1 = new SnakeModel.Point();
-            p2 = new SnakeModel.Point();
-            p1.X = 30;
-            p1.Y = 25;
-            p2.X = 100;
-            p2.Y = 25;
-            snakeVerts.AddFirst(p1);
-            snakeVerts.AddLast(p2);
-            world.updateSnake(new Snake(snakeVerts, 1, "sss"));
+            world.updateSnake(new Snake(snakeVerts, 1, "zzzs"));
 
 
             p1 = new SnakeModel.Point();
@@ -240,7 +230,7 @@ namespace SnakeGUI
         /// <param name="ss">The socket over which data has been received</param>
         private void ReceiveWorld(SocketState ss)
         {
-            Console.Write("Started to receive the world");
+            
         }
 
     }

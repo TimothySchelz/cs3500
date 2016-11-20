@@ -21,6 +21,7 @@ namespace SnakeGUI
         public ScoreBoardPanel()
         {
             this.DoubleBuffered = true;
+            this.BackColor = Color.LightGray;
         }
 
         public void SetWorld(World newWorld)

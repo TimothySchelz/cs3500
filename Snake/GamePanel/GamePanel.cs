@@ -19,7 +19,15 @@ namespace SnakeGUI
         private World world;
 
         // The length and width of each cell
-        private const int PIXELSPERCELL = 5;
+        private int PIXELSPERCELL = 1;
+
+        float ScalingFactor;
+
+        // Current length of the player
+        private float SnakeSize;
+
+        // Point storing current player head location.
+        private SnakeModel.Point Head;
 
 
         /// <summary>
@@ -28,6 +36,7 @@ namespace SnakeGUI
         public GamePanel()
         {
             this.DoubleBuffered = true;
+            this.BackColor = Color.White;
         }
         
         /// <summary>
@@ -51,8 +60,30 @@ namespace SnakeGUI
             if (world == null)
                 return;
 
+            // The Length of the snake
+            SnakeSize = (float)world.PlayerSnake.Length + 1;
+
+            // What to scale the world by
+            ScalingFactor = 2.5F*world.Height*PIXELSPERCELL / (SnakeSize);
+
+
+            // Scale
+            e.Graphics.ScaleTransform(ScalingFactor, ScalingFactor);
+
+
+
             // turn on antialiasing
-           // e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
+            // Shift to snakehead
+            float xOffset = -(world.PlayerSnake.Head.X - world.PlayerSnake.Length)*PIXELSPERCELL;
+            float yOffset = -(world.PlayerSnake.Head.Y - world.PlayerSnake.Length)* PIXELSPERCELL;
+
+            e.Graphics.TranslateTransform(xOffset, yOffset);
+
+            
+
 
             // Paint all the items in the world
             PaintWalls(e);
@@ -71,9 +102,11 @@ namespace SnakeGUI
             {
                 HashSet<Food> Foods = world.GetFood();
 
-                // go through all he food
+                // go through all the food
                 foreach( Food food in Foods)
                 {
+                    
+
                     //draw the food
                     Rectangle dropFood = new Rectangle(food.loc.X * PIXELSPERCELL, food.loc.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
                     e.Graphics.FillEllipse(drawBrush, dropFood);
@@ -87,6 +120,8 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void PaintSnakes(PaintEventArgs e)
         {
+
+
             // Use the brush
             using (SolidBrush drawBrush = new SolidBrush(Color.Black))
             {

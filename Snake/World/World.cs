@@ -21,6 +21,15 @@ namespace SnakeModel
         // The player
         int PlayerID;
 
+        /// <summary>
+        /// Snake being controlled by the player.
+        /// </summary>
+        public Snake PlayerSnake
+        {
+            get;
+            private set;
+        }
+
         // RNG to get  colors for the snakes
         Random rando = new Random();
 
@@ -145,6 +154,12 @@ namespace SnakeModel
         {
             lock (SnakeLock)
             {
+                //Makes sure we can reference the player's snake easily.
+                if(newSnake.ID == PlayerID)
+                {
+                    PlayerSnake = newSnake;
+                }
+
                 // Check if the new snake already existed
                 if (Snakes.ContainsKey(newSnake.ID))
                 {

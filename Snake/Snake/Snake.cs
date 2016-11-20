@@ -37,6 +37,14 @@ namespace SnakeModel
             private set;
         }
 
+        //Head of the snake
+        public Point Head
+        {
+            get;
+            private set;
+        }
+
+
         /// <summary>
         /// ID of the snake.
         /// </summary>
@@ -69,6 +77,7 @@ namespace SnakeModel
             this.Length = this.GetSnakePoints().Count - 1;
             this.ID = ID;
             this.name = Name;
+            this.Head = Verticies.Last.Value;
         }
 
         /// <summary>
