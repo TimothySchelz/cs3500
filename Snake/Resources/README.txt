@@ -35,6 +35,7 @@ Everything is designed to just be a client at the moment.  The model and Network
 Extra Features:
 Benny Hill (Need to Implement)
 Sound Effects? (Need to Implement)
+Background? (Need to Implement)
 
 
 Time Spent Working on Project:
