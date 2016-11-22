@@ -111,15 +111,11 @@ namespace SnakeGUI
                 // go through all the food
                 foreach( Food food in Foods)
                 {
-                    /*If this food is within a snake length of the player's head, it is drawn.
-                    //It is not drawn if it has been eaten.
-                    if (Math.Abs(food.loc.X - world.PlayerSnake.GetHead().X) > world.PlayerSnake.GetLength() + 1
-                        || Math.Abs(food.loc.Y - world.PlayerSnake.GetHead().Y) > world.PlayerSnake.GetLength() + 1
-                        || food.loc.X == -1)
+                    
+                    //don't draw eaten phood
+                    if (food.loc.X == -1)
                         continue;
-                        */
-                        
-
+                       
                     //draw the food
                     Rectangle dropFood = new Rectangle(food.loc.X * PIXELSPERCELL, food.loc.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
                     e.Graphics.FillEllipse(drawBrush, dropFood);
@@ -145,13 +141,10 @@ namespace SnakeGUI
                     HashSet<SnakeModel.Point> snakePoints = snake.GetSnakePoints();
                     foreach (SnakeModel.Point point in snakePoints)
                     {
-                        /*If this point is within a snake length of the player's head, it is drawn.
-                        //It is not drawn if it is part of a dead snake.
-                        if (Math.Abs(point.X - world.PlayerSnake.GetHead().X) > world.PlayerSnake.GetLength() + 1
-                        || Math.Abs(point.Y - world.PlayerSnake.GetHead().Y) > world.PlayerSnake.GetLength() + 1
-                        || point.X == -1)
+                        
+                        //don't draw dead sneaks
+                        if (point.X == -1)
                             continue;
-                            */
 
                         // change the color
                         drawBrush.Color = world.GetSnakeColor(snake.ID);

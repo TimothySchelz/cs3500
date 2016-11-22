@@ -21,17 +21,6 @@ Everything is designed to just be a client at the moment.  The model and Network
 Extra Features:
 
 
-Unimplemented/Broken features:
-- Implement Zooming (when snake is big enough show full world)
-- Networking (send data)
-- Gamepanel constantly loads even when connection is not made.
-- Sometimes we will end up with 2 items not seperated by \n
-- snakes are remaining in game panel when they don't exist
-- same in scoreboard
-- Test and deal with then invalid stuff entered in boxes
-- Deal with long player names
-- Exception from the method evoker when closing
-
 Time Spent Working on Project:
 11/11/16 2:20PM - 7:10PM
 11/13/16 2:00PM - 6:30PM
@@ -40,4 +29,4 @@ Time Spent Working on Project:
 11/17/16 7:00PM	- 10:00PM
 11/18/16 7:30PM - 10:30PM
 11/19/16 2:10PM	- 5:30PM
-11/21/16 4:30PM - 
+11/21/16 4:30PM - 7:45PM

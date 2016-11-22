@@ -15,6 +15,7 @@ namespace SnakeGUI
         private const int NAMEALIGN = 10;
         private const int SCOREALIGN = 200;
         private const int LINEHEIGHT = 24;
+        private const int LINESPACE = 5;
 
         private World world;
 
@@ -33,7 +34,7 @@ namespace SnakeGUI
         {
             
             //base.OnPaint(e);
-            int currentLine = 0;
+            int currentLine = TOPMARGIN;
 
             if (world == null)
             {
@@ -42,16 +43,21 @@ namespace SnakeGUI
 
             foreach(Snake currentSnake in world.GetSnakes())
             {
-                using(Font font = new Font("Arial", LINEHEIGHT, FontStyle.Bold, GraphicsUnit.Pixel))
+
+                int fontSize = Math.Min(LINEHEIGHT, 10 * LINEHEIGHT / currentSnake.name.Length);
+
+                using(Font font = new Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel))
                 {
-                    System.Drawing.Point NameStart = new System.Drawing.Point(NAMEALIGN, LINEHEIGHT*currentLine+TOPMARGIN);
+                    // Draw the names
+                    System.Drawing.Point NameStart = new System.Drawing.Point(NAMEALIGN, currentLine);
                     TextRenderer.DrawText(e.Graphics, currentSnake.name, font, NameStart, world.GetSnakeColor(currentSnake.ID));
 
-                    System.Drawing.Point ScoreStart = new System.Drawing.Point(SCOREALIGN, LINEHEIGHT * currentLine + TOPMARGIN);
+                    // Draw the score
+                    System.Drawing.Point ScoreStart = new System.Drawing.Point(SCOREALIGN, currentLine);
                     TextRenderer.DrawText(e.Graphics, ""+currentSnake.GetLength(), font, ScoreStart, world.GetSnakeColor(currentSnake.ID));
                 }
 
-                currentLine++;
+                currentLine += fontSize + LINESPACE;
             }
         }
     }

@@ -149,9 +149,6 @@ namespace SnakeGUI
                 return;
             }
 
-            ConnectButton.Enabled = false;
-            NameBox.Enabled = false;
-            ServerBox.Enabled = false;
             // Sets previous incomplete message received to the empty string
             prevStringHead = "";
 
@@ -166,7 +163,12 @@ namespace SnakeGUI
             {
                 // Display Error
                 MessageBox.Show("We could not connect to the server.  Please check yo self before you, inadvertantly, wreck yo self");
+                return;
             }
+
+            ConnectButton.Enabled = false;
+            NameBox.Enabled = false;
+            ServerBox.Enabled = false;
         }
 
         /// <summary>
@@ -307,11 +309,12 @@ namespace SnakeGUI
 
             try
             {
-                //Invokes Form1 to redraw itself
                 this.Invoke(notifyFormUpdate);
-            } catch (ObjectDisposedException)
+            }
+            catch(Exception e)
             {
-                Console.WriteLine("MethodInvoker exploded again");
+                if (!(e is InvalidOperationException || e is ObjectDisposedException))
+                    throw e;
             }
             
 
