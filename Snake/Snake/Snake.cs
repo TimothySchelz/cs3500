@@ -14,18 +14,29 @@ namespace SnakeModel
     [JsonObject(MemberSerialization.OptIn)]
     public class Point
     {
+        /// <summary>
+        /// The X coordinate of the piont
+        /// </summary>
         [JsonProperty]
         public int X;
 
+        /// <summary>
+        /// The Y coordinate of the point
+        /// </summary>
         [JsonProperty]
         public int Y;
 
     }
 
+    /// <summary>
+    /// A class to represent a Snake.
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class Snake
     {
+        // the length of the snake.  It is the number of points the snake takes up -1
         private int length;
+
         //Head, turning points, and tail of the snake.
         [JsonProperty]
         private List<Point> vertices;
@@ -36,11 +47,13 @@ namespace SnakeModel
         /// <returns>The length of the snake</returns>
         public int GetLength()
         {
+            // Calculate and store the length if it hasn't been done before
             if (length == 0)
             {
                 length = this.GetSnakePoints().Count - 1;
             }
 
+            // return the length
             return length;
         }
 
@@ -96,10 +109,13 @@ namespace SnakeModel
         {
             LinkedList<Point> result = new LinkedList<Point>();
 
+            // adds each vertex to a list
             foreach (Point vertex in vertices)
             {
                 result.AddLast(vertex);
             }
+
+            // return the list
             return result;
         }
 
@@ -109,7 +125,9 @@ namespace SnakeModel
         /// <returns>All the points in this snake</returns>
         public HashSet<Point> GetSnakePoints()
         {
+            // A haset that stores all the points to be returned
             HashSet<Point> result = new HashSet<Point>();
+            // The previous vertex
             Point PreviousPoint = new Point();
 
             // Go through each vertice in this snake
@@ -185,6 +203,7 @@ namespace SnakeModel
                     }
                     else
                     {
+                        // If the snake is not composed of vertical and horizontal lines we throw an exception.  That is a bad snake! Bad, bad snake!
                         throw new Exception("The verticies of the snake do not make sense");
                     }
                 }

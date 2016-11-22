@@ -15,12 +15,16 @@ namespace NetworkController
     /// </summary>
     public class SocketState
     {
+        
         public Socket theSocket;
         public int ID;
         public Callback CallMe;
         public Callback SendCallback;
         public delegate void Callback(SocketState State);
 
+        /// <summary>
+        /// Keeps track of the size of the buffer
+        /// </summary>
         public int BufferSize
         {
             get;
@@ -33,6 +37,11 @@ namespace NetworkController
         // This is a larger (growable) buffer, in case a single receive does not contain the full message.
         public StringBuilder sb = new StringBuilder();
 
+        /// <summary>
+        /// Creates a SocketState from a socket and the ID of the socket
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="id"></param>
         public SocketState(Socket s, int id)
         {
             theSocket = s;
@@ -41,6 +50,9 @@ namespace NetworkController
         }
     }
 
+    /// <summary>
+    /// A static class of methods to help with networking.  It uses the SocketState class
+    /// </summary>
     public static class Networking
     {
 
@@ -97,22 +109,27 @@ namespace NetworkController
                 // Create a TCP/IP socket.
                 Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
+                // set some options
                 socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
 
+                // creates the SocketState
                 resultSocket = new SocketState(socket, -1);
 
+                // Sets the Callback function
                 resultSocket.CallMe = Action;
 
+                // Begins event loop
                 resultSocket.theSocket.BeginConnect(ipAddress, Networking.DEFAULT_PORT, ConnectedCallback, resultSocket);
 
             }
-
+            // catches when stuff breaks
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Unable to connect to server. Error occured: " + e);
                 throw e;
             }
 
+            // return the socketstate
             return resultSocket;
         }
 

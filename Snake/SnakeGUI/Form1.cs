@@ -15,6 +15,9 @@ using Newtonsoft.Json.Linq;
 
 namespace SnakeGUI
 {
+    /// <summary>
+    /// The client's display.
+    /// </summary>
     public partial class Form1 : Form
     {
         // Stores the game world
@@ -28,6 +31,9 @@ namespace SnakeGUI
         //A method invoker so the form updates when another thread gets data
         MethodInvoker notifyFormUpdate;
 
+        /// <summary>
+        /// Constructor that initializes, sets some colors, and initializes some stuff
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -45,18 +51,6 @@ namespace SnakeGUI
         {
             gamePanel1.Invalidate();
             scoreBoardPanel1.Invalidate();
-        }
-
-        /// <summary>
-        /// Method to be called everytime we want to display another frame.  This is a wrapper for UpdateFrame so that
-        /// we can use it as an event handler.
-        /// Hopefully at least 60 per second
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UdpateFrame(object sender, EventArgs e)
-        {
-            UpdateFrame();
         }
 
         /// <summary>
@@ -166,6 +160,7 @@ namespace SnakeGUI
                 return;
             }
 
+            // Deactivates the button and the textboxes while playing
             ConnectButton.Enabled = false;
             NameBox.Enabled = false;
             ServerBox.Enabled = false;
@@ -329,7 +324,7 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void KeysPressed(object sender, KeyEventArgs e)
         {
-            // Check to make sure we are allowed to send the server information
+            // Check to make sure we are allowed to turn at this point in time
             if (world.PlayerSnake != null && world.PlayerSnake.GetHead().X != -1)
             {
                 switch (e.KeyCode)

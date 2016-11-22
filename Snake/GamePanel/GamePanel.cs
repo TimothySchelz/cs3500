@@ -67,6 +67,7 @@ namespace SnakeGUI
             // Game is scaled and focused if the snake is relatively small and alive.
             if ((SnakeSize < world.Width / 2) && world.PlayerSnake.GetHead().X != -1)
             {
+                // Sets the number of pixels per cell to 1 so we can just work with the graphics scaling methods
                 PIXELSPERCELL = 1;
 
                 // What to scale the world by
@@ -76,8 +77,6 @@ namespace SnakeGUI
                 // Scale
                 e.Graphics.ScaleTransform(ScalingFactor, ScalingFactor);
 
-
-
                 // Shift to snakehead
                 float xOffset = -(world.PlayerSnake.GetHead().X - world.PlayerSnake.GetLength())*PIXELSPERCELL;
                 float yOffset = -(world.PlayerSnake.GetHead().Y - world.PlayerSnake.GetLength())* PIXELSPERCELL;
@@ -86,6 +85,7 @@ namespace SnakeGUI
             }
             else
             {
+                // we are not using the graphics scaling junk so we will use a Pixels per cell of 5
                 PIXELSPERCELL = 5;
             }
 

@@ -9,6 +9,9 @@ using Newtonsoft.Json.Linq;
 
 namespace SnakeModel
 {
+    /// <summary>
+    /// Represents food.  Kinda obvious.  It has an ID, and a location
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class Food
     {
@@ -33,6 +36,11 @@ namespace SnakeModel
             private set;
         }
 
+        /// <summary>
+        /// A constructor to create a food
+        /// </summary>
+        /// <param name="ID">The ID the food should have</param>
+        /// <param name="loc">The location of the Food as a SnakeModel.Point</param>
         public Food( int ID, Point loc)
         {
             this.ID = ID;

@@ -7,6 +7,10 @@ using System.Drawing;
 
 namespace SnakeModel
 {
+    /// <summary>
+    /// This class represents the world!  It contains all snakes and food. 
+    /// As a reminder, first entry is X and second entry is Y!!!
+    /// </summary>
     public class World
     {
 
@@ -20,6 +24,11 @@ namespace SnakeModel
         private Dictionary<int, Color> SnakeColors;
         // The player
         int PlayerID;
+        // RNG to get colors for the snakes
+        Random rando = new Random();
+        // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
+        Object SnakeLock = new object();
+        Object FoodLock = new object();
 
         /// <summary>
         /// Snake being controlled by the player.
@@ -29,13 +38,6 @@ namespace SnakeModel
             get;
             private set;
         }
-
-        // RNG to get  colors for the snakes
-        Random rando = new Random();
-
-        // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
-        Object SnakeLock = new object();
-        Object FoodLock = new object();
 
         /// <summary>
         /// Length of the game board.
@@ -55,8 +57,19 @@ namespace SnakeModel
             private set;
         }
 
+        /// <summary>
+        /// Creates A whole new world, 
+        /// A new fantastic point of view
+        /// No one to tell us no
+        /// Or where to go
+        /// Or say we're only dreaming
+        /// </summary>
+        /// <param name="PlayerID">The ID of the player snake</param>
+        /// <param name="Width">The width of the world</param>
+        /// <param name="Height">The height of the world</param>
         public World(int PlayerID, int Width, int Height)
         {
+            // initializes and sets everything
             this.Height = Height;
             this.Width = Width;
             Map = new Int32[Width, Height];
@@ -72,6 +85,9 @@ namespace SnakeModel
         /// <returns>Hashset of snakes in the world</returns>
         public HashSet<Snake> GetSnakes()
         {
+            // No one messes with the Tunnel Snakes!
+            // Tunnel Snakes Rule!
+            // These snakes on the other hand can be messed with 1 thread at a time.
             lock(SnakeLock)
             {
                 // The copy of the snakes to be returned
@@ -95,6 +111,7 @@ namespace SnakeModel
         /// <returns>A hashset of food in the world</returns>
         public HashSet<Food> GetFood()
         {
+            // Only 1 thread messes with food at a time.
             lock (FoodLock)
             {
                 // The copy of the Food to be returned
@@ -118,6 +135,7 @@ namespace SnakeModel
         /// <param name="newFood"></param>
         public void updateFood(Food newFood)
         {
+            // Only 1 thread messes with food at a time.
             lock (FoodLock)
             {
                 // check if the food is already known about
@@ -152,6 +170,9 @@ namespace SnakeModel
         /// <param name="newSnake">Snake that needs to be updated</param>
         public void updateSnake(Snake newSnake)
         {
+            // No one messes with the Tunnel Snakes!
+            // Tunnel Snakes Rule!
+            // These snakes on the other hand can be messed with 1 thread at a time.
             lock (SnakeLock)
             {
                 //Makes sure we can reference the player's snake easily.
@@ -213,6 +234,9 @@ namespace SnakeModel
         /// <returns>The color of the snake</returns>
         public Color GetSnakeColor(int ID)
         {
+            // No one messes with the Tunnel Snakes!
+            // Tunnel Snakes Rule!
+            // These snakes on the other hand can be messed with 1 thread at a time.
             lock (SnakeLock)
             {
                 if (!SnakeColors.ContainsKey(ID))
