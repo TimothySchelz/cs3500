@@ -26,9 +26,6 @@ namespace SnakeGUI
         // Current length of the player
         private float SnakeSize;
 
-        // Point storing current player head location.
-        private SnakeModel.Point Head;
-
 
         /// <summary>
         /// Constructor for creating a Game panel.
@@ -54,20 +51,21 @@ namespace SnakeGUI
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-
             // check if the world exists.  If it doesn't we are done
             if (world == null)
                 return;
 
-            // The Length of the snake
-            SnakeSize = (float)world.PlayerSnake.GetLength() + 1;
-
+            if (world.PlayerSnake != null)
+            {
+                // The Length of the snake
+                SnakeSize = (float)world.PlayerSnake.GetLength() + 1;
+            }
 
             // turn on antialiasing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            if (SnakeSize < world.Width / 2)
+            // Game is scaled and focused if the snake is relatively small and alive.
+            if ((SnakeSize < world.Width / 2) && world.PlayerSnake.GetHead().X != -1)
             {
                 PIXELSPERCELL = 1;
 
@@ -94,9 +92,9 @@ namespace SnakeGUI
 
 
             // Paint all the items in the world
-            PaintWalls(e);
             PaintSnakes(e);
             PaintFood(e);
+            PaintWalls(e);
         }
 
         /// <summary>
@@ -113,7 +111,14 @@ namespace SnakeGUI
                 // go through all the food
                 foreach( Food food in Foods)
                 {
-                    
+                    /*If this food is within a snake length of the player's head, it is drawn.
+                    //It is not drawn if it has been eaten.
+                    if (Math.Abs(food.loc.X - world.PlayerSnake.GetHead().X) > world.PlayerSnake.GetLength() + 1
+                        || Math.Abs(food.loc.Y - world.PlayerSnake.GetHead().Y) > world.PlayerSnake.GetLength() + 1
+                        || food.loc.X == -1)
+                        continue;
+                        */
+                        
 
                     //draw the food
                     Rectangle dropFood = new Rectangle(food.loc.X * PIXELSPERCELL, food.loc.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
@@ -140,6 +145,14 @@ namespace SnakeGUI
                     HashSet<SnakeModel.Point> snakePoints = snake.GetSnakePoints();
                     foreach (SnakeModel.Point point in snakePoints)
                     {
+                        /*If this point is within a snake length of the player's head, it is drawn.
+                        //It is not drawn if it is part of a dead snake.
+                        if (Math.Abs(point.X - world.PlayerSnake.GetHead().X) > world.PlayerSnake.GetLength() + 1
+                        || Math.Abs(point.Y - world.PlayerSnake.GetHead().Y) > world.PlayerSnake.GetLength() + 1
+                        || point.X == -1)
+                            continue;
+                            */
+
                         // change the color
                         drawBrush.Color = world.GetSnakeColor(snake.ID);
 

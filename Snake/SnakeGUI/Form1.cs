@@ -33,7 +33,7 @@ namespace SnakeGUI
             InitializeComponent();
             this.BackColor = Color.LightGray;
 
-            notifyFormUpdate = new MethodInvoker(UpdateFrame);
+            notifyFormUpdate = UpdateFrame;
 
         }
 
@@ -150,6 +150,8 @@ namespace SnakeGUI
             }
 
             ConnectButton.Enabled = false;
+            NameBox.Enabled = false;
+            ServerBox.Enabled = false;
             // Sets previous incomplete message received to the empty string
             prevStringHead = "";
 
@@ -174,7 +176,7 @@ namespace SnakeGUI
         /// <param name="ss">The socket stat connected to the server sending the firstcontact</param>
         private void FirstContact(SocketState ss)
         {
-            ss.CallMe = RecieveStartup;
+            ss.CallMe = ReceiveStartup;
             string name = NameBox.Text;
             Networking.SendData(ss, name+'\n');
         }
@@ -183,7 +185,7 @@ namespace SnakeGUI
         /// his method is called when the start up information is sent from the server
         /// </summary>
         /// <param name="ss">The socket over which startup data is received</param>
-        private void RecieveStartup(SocketState ss)
+        private void ReceiveStartup(SocketState ss)
         {
             // Get string out of StringBuilder
             String message = ss.sb.ToString();
@@ -217,6 +219,10 @@ namespace SnakeGUI
 
                 // create the world
                 world = new World(PlayerID, width, height);
+
+                // Pass this world into the panels
+                gamePanel1.SetWorld(world);
+                scoreBoardPanel1.SetWorld(world);
 
                 // Calculate how many characters were parsed so we delete them
                 int CharsParsed = messageLines[0].Length + messageLines[1].Length + messageLines[2].Length + 3;
@@ -276,12 +282,9 @@ namespace SnakeGUI
             ss.sb.Clear();
             ss.messageBuffer = new byte[ss.BufferSize];
 
-            Console.WriteLine("Batch of info"); //PRINT TO CONSOLE!!!!
-
             //Parses each complete string line.
             foreach(string JsonString in messageLines)
             {
-                Console.WriteLine(JsonString); //PRINT TO CONSOLE!!!
 
                 // Parser the JSON string so we can examine it to determine what type of object it represents.
                 JObject obj = JObject.Parse(JsonString);
@@ -292,24 +295,60 @@ namespace SnakeGUI
                 {
                     Snake s = JsonConvert.DeserializeObject<Snake>(JsonString);
                     world.updateSnake(s);
-                    Console.WriteLine(s);
                 }
 
                 if (foodProp != null)
                 {
                     Food f = JsonConvert.DeserializeObject<Food>(JsonString);
                     world.updateFood(f);
-                    Console.WriteLine(f);
                 }
 
             }
 
-            //Invokes Form1 to redraw itself
-            this.Invoke(notifyFormUpdate);
+            try
+            {
+                //Invokes Form1 to redraw itself
+                this.Invoke(notifyFormUpdate);
+            } catch (ObjectDisposedException)
+            {
+                Console.WriteLine("MethodInvoker exploded again");
+            }
+            
 
             //Restarts the loop
             Networking.GetData(ss);
         }
 
+        /// <summary>
+        /// Tells the server which way we want to turn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KeysPressed(object sender, KeyEventArgs e)
+        {
+            // Check to make sure we are allowed to send the server information
+            if (world.PlayerSnake != null && world.PlayerSnake.GetHead().X != -1)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Down:
+                        Networking.SendData(theServer, "(3)\n");
+                        break;
+
+                    case Keys.Up:
+                        Networking.SendData(theServer, "(1)\n");
+                        break;
+
+                    case Keys.Left:
+                        Networking.SendData(theServer, "(4)\n");
+                        break;
+
+                    case Keys.Right:
+                        Networking.SendData(theServer, "(2)\n");
+                        break;
+
+                }
+            }
+        }
     }
 }

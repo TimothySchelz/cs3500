@@ -171,6 +171,7 @@ namespace SnakeModel
                     // Check if the snake is dead
                     if (newSnake.GetVerticies().First.Value.X == -1)
                     {
+                        Snakes.Remove(newSnake.ID);
                         return;
                     }
 
@@ -190,6 +191,7 @@ namespace SnakeModel
                     // Check if the snake is dead
                     if (newSnake.GetVerticies().First.Value.X == -1)
                     {
+                        Snakes.Remove(newSnake.ID);
                         return;
                     }
 
