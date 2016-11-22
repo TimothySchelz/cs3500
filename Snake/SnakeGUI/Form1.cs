@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using NetworkController;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using System.Media;
 
 namespace SnakeGUI
 {
@@ -30,6 +30,10 @@ namespace SnakeGUI
         private string prevStringHead;
         //A method invoker so the form updates when another thread gets data
         MethodInvoker notifyFormUpdate;
+
+        // sound player
+        SoundPlayer music = new SoundPlayer("PropellerEngine.wav");
+
 
         /// <summary>
         /// Constructor that initializes, sets some colors, and initializes some stuff
@@ -118,6 +122,7 @@ namespace SnakeGUI
             scoreBoardPanel1.SetWorld(world);
 
             UpdateFrame();
+            
         }
 
         /// <summary>
@@ -176,6 +181,7 @@ namespace SnakeGUI
             ss.CallMe = ReceiveStartup;
             string name = NameBox.Text;
             Networking.SendData(ss, name+'\n');
+
         }
 
         /// <summary>
@@ -240,6 +246,9 @@ namespace SnakeGUI
 
             // Start Listening for more data
             Networking.GetData(ss);
+
+            // Starts playing the music
+            music.PlayLooping();
         }
 
         /// <summary>
@@ -312,6 +321,12 @@ namespace SnakeGUI
                     throw e;
             }
             
+            // check if snake is dead.  Stop playing music
+            if (world.PlayerSnake.GetHead().X == -1)
+            {
+                // stops playing the music
+                music.Stop();
+            }
 
             //Restarts the loop
             Networking.GetData(ss);
