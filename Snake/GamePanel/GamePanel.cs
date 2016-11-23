@@ -95,9 +95,15 @@ namespace SnakeGUI
 
 
             // Paint all the items in the world
+            PaintBackground(e);
             PaintSnakes(e);
             PaintFood(e);
             PaintWalls(e);
+        }
+
+        private void PaintBackground(PaintEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         /// <summary>

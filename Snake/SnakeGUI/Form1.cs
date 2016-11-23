@@ -32,7 +32,7 @@ namespace SnakeGUI
         MethodInvoker notifyFormUpdate;
 
         // sound player
-        SoundPlayer music = new SoundPlayer("PropellerEngine.wav");
+        SoundPlayer music = new SoundPlayer(@"..\..\..\Resources\Media\YaketySax.wav");
 
 
         /// <summary>

@@ -33,7 +33,7 @@ appropriate information and deals with them.  It also sends inputs from the play
 Everything is designed to just be a client at the moment.  The model and NetworkController will be expanded later to serve as a server in the next assignment.
 
 Extra Features:
-Benny Hill (Need to Implement)
+Benny Hill
 Background? (Need to Implement)
 
 
