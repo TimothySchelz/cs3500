@@ -39,7 +39,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Media\Background.jpg" />
+    <Content Include="Media\background.bmp" />
     <Content Include="Media\YaketySax.wav" />
     <Content Include="README.txt" />
   </ItemGroup>

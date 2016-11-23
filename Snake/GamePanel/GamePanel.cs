@@ -32,7 +32,7 @@ namespace SnakeGUI
         public GamePanel()
         {
             this.DoubleBuffered = true;
-            this.BackColor = Color.White;
+            this.BackColor = Color.Black;
         }
 
         /// <summary>
@@ -103,7 +103,27 @@ namespace SnakeGUI
 
         private void PaintBackground(PaintEventArgs e)
         {
-            //throw new NotImplementedException();
+            Bitmap original;
+            Bitmap resized = null;
+            try
+            {
+                original = (Bitmap)Image.FromFile(@"..\..\..\Resources\Media\background.bmp", true);
+
+                resized = new Bitmap(original, new Size(world.Width, world.Height));
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                MessageBox.Show("There was an error opening the bitmap." +
+                    "Please check the path.");
+                return;
+            }
+
+            using (TextureBrush texture = new TextureBrush(resized))
+            {
+                texture.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
+
+                e.Graphics.FillRectangle(texture, new Rectangle(0, 0, world.Height, world.Width));
+            }
         }
 
         /// <summary>
