@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SnakeModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SnakeGUI
 {
@@ -18,10 +19,8 @@ namespace SnakeGUI
         // the world that this panel should draw
         private World world;
 
-        // The length and width of each cell
-        private int PIXELSPERCELL = 1;
-
-        float ScalingFactor;
+        float SnakeScaling;
+        float WorldScaling;
 
         // Current length of the player
         private float SnakeSize;
@@ -35,12 +34,12 @@ namespace SnakeGUI
             this.DoubleBuffered = true;
             this.BackColor = Color.White;
         }
-        
+
         /// <summary>
         /// Sets the world
         /// </summary>
         /// <param name="newWorld"></param>
-        public void SetWorld( World newWorld)
+        public void SetWorld(World newWorld)
         {
             world = newWorld;
         }
@@ -52,7 +51,7 @@ namespace SnakeGUI
         protected override void OnPaint(PaintEventArgs e)
         {
             // check if the world exists.  If it doesn't we are done
-            if (world == null)
+            if (world == null || world.PlayerSnake == null)
                 return;
 
             if (world.PlayerSnake != null)
@@ -65,30 +64,34 @@ namespace SnakeGUI
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // Game is scaled and focused if the snake is relatively small and alive.
-            if ((SnakeSize < world.Width / 2) && world.PlayerSnake.GetHead().X != -1)
+
+            if ((SnakeSize < Math.Min(world.Width, world.Height) / 2) && world.PlayerSnake.GetHead().X != -1)
             {
-                // Sets the number of pixels per cell to 1 so we can just work with the graphics scaling methods
-                PIXELSPERCELL = 1;
 
-                // What to scale the world by
-                ScalingFactor = 2.5F * world.Height * PIXELSPERCELL / (SnakeSize);
-
-
-                // Scale
-                e.Graphics.ScaleTransform(ScalingFactor, ScalingFactor);
+                // What to scale the width by
+                SnakeScaling = (float)this.Height / ((float)2 * (SnakeSize));
 
                 // Shift to snakehead
-                float xOffset = -(world.PlayerSnake.GetHead().X - world.PlayerSnake.GetLength())*PIXELSPERCELL;
-                float yOffset = -(world.PlayerSnake.GetHead().Y - world.PlayerSnake.GetLength())* PIXELSPERCELL;
+                float xOff = (((float)this.Width / (2F)) - world.PlayerSnake.GetHead().X * SnakeScaling);
+                float yOff = (((float)this.Height / (2F)) - world.PlayerSnake.GetHead().Y * SnakeScaling);
 
-                e.Graphics.TranslateTransform(xOffset, yOffset);
-            }
-            else
+                e.Graphics.TranslateTransform(xOff, yOff);
+
+                // Scale
+                e.Graphics.ScaleTransform(SnakeScaling, SnakeScaling);
+
+            } else
             {
-                // we are not using the graphics scaling junk so we will use a Pixels per cell of 5
-                PIXELSPERCELL = 5;
-            }
+                // Do the world scaling
+                WorldScaling = (float)this.Height / (float)Math.Max(world.Height, world.Width);
 
+                e.Graphics.ScaleTransform(WorldScaling, WorldScaling);
+
+                float xOffset = this.Width / 2F - (world.Width * WorldScaling) / 2F;
+                float yOffset = this.Height / 2F - (world.Height * WorldScaling) / 2F;
+
+                e.Graphics.TranslateTransform(xOffset / WorldScaling, yOffset / WorldScaling);
+            }
 
 
             // Paint all the items in the world
@@ -109,15 +112,15 @@ namespace SnakeGUI
                 HashSet<Food> Foods = world.GetFood();
 
                 // go through all the food
-                foreach( Food food in Foods)
+                foreach (Food food in Foods)
                 {
-                    
+
                     //don't draw eaten phood
                     if (food.loc.X == -1)
                         continue;
-                       
+
                     //draw the food
-                    Rectangle dropFood = new Rectangle(food.loc.X * PIXELSPERCELL, food.loc.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
+                    Rectangle dropFood = new Rectangle(food.loc.X, food.loc.Y, 1, 1);
                     e.Graphics.FillEllipse(drawBrush, dropFood);
                 }
             }
@@ -129,8 +132,6 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void PaintSnakes(PaintEventArgs e)
         {
-
-
             // Use the brush
             using (SolidBrush drawBrush = new SolidBrush(Color.Black))
             {
@@ -141,7 +142,7 @@ namespace SnakeGUI
                     HashSet<SnakeModel.Point> snakePoints = snake.GetSnakePoints();
                     foreach (SnakeModel.Point point in snakePoints)
                     {
-                        
+
                         //don't draw dead sneaks
                         if (point.X == -1)
                             continue;
@@ -150,7 +151,7 @@ namespace SnakeGUI
                         drawBrush.Color = world.GetSnakeColor(snake.ID);
 
                         // Draw this point
-                        Rectangle drawPoint = new Rectangle(point.X * PIXELSPERCELL, point.Y * PIXELSPERCELL, PIXELSPERCELL, PIXELSPERCELL);
+                        Rectangle drawPoint = new Rectangle(point.X, point.Y, 1, 1);
                         e.Graphics.FillRectangle(drawBrush, drawPoint);
                     }
                 }
@@ -163,18 +164,18 @@ namespace SnakeGUI
         /// <param name="e"></param>
         private void PaintWalls(PaintEventArgs e)
         {
-            using(SolidBrush drawBrush = new SolidBrush(Color.Black))
+            using (SolidBrush drawBrush = new SolidBrush(Color.Black))
             {
-                Rectangle TopWall = new Rectangle(0, 0, world.Width * PIXELSPERCELL, PIXELSPERCELL);
+                Rectangle TopWall = new Rectangle(0, 0, world.Width, 1);
                 e.Graphics.FillRectangle(drawBrush, TopWall);
 
-                Rectangle BottomWall = new Rectangle(0, (world.Height - 1) * PIXELSPERCELL, world.Width * PIXELSPERCELL, PIXELSPERCELL);
+                Rectangle BottomWall = new Rectangle(0, (world.Height - 1), world.Width, 1);
                 e.Graphics.FillRectangle(drawBrush, BottomWall);
 
-                Rectangle LeftWall = new Rectangle(0, 0, PIXELSPERCELL, world.Height * PIXELSPERCELL);
+                Rectangle LeftWall = new Rectangle(0, 0, 1, world.Height);
                 e.Graphics.FillRectangle(drawBrush, LeftWall);
 
-                Rectangle RightWall = new Rectangle((world.Width - 1) * PIXELSPERCELL, 0, PIXELSPERCELL, world.Height * PIXELSPERCELL);
+                Rectangle RightWall = new Rectangle((world.Width - 1), 0, 1, world.Height);
                 e.Graphics.FillRectangle(drawBrush, RightWall);
             }
         }

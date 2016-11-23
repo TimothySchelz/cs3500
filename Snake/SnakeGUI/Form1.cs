@@ -158,7 +158,7 @@ namespace SnakeGUI
                 //Establishes a socket with the server, instructing it to get initial data.
                 theServer = Networking.ConnectToServer(FirstContact, Address);
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 // Display Error
                 MessageBox.Show("We could not connect to the server.  Please check yo self before you, inadvertantly, wreck yo self");
@@ -322,7 +322,7 @@ namespace SnakeGUI
             }
             
             // check if snake is dead.  Stop playing music
-            if (world.PlayerSnake.GetHead().X == -1)
+            if (world.PlayerSnake != null && world.PlayerSnake.GetHead().X == -1)
             {
                 // stops playing the music
                 music.Stop();
