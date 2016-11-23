@@ -32,7 +32,7 @@ namespace SnakeGUI
         public ScoreBoardPanel()
         {
             this.DoubleBuffered = true;
-            this.BackColor = Color.White;
+            this.BackColor = Color.LightGray;
         }
 
         /// <summary>

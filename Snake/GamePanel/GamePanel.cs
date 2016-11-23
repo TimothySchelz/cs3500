@@ -98,7 +98,7 @@ namespace SnakeGUI
 
 
             // Paint all the items in the world
-            PaintBackground(e);
+            //PaintBackground(e);  // It was causing flickering in the snake heads and tails and so we removed it
             PaintSnakes(e);
             PaintFood(e);
             PaintWalls(e);
@@ -212,8 +212,6 @@ namespace SnakeGUI
                         prevPoint = point;
 
                     }
-
-
 
                 }
             }

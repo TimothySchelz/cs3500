@@ -33,7 +33,7 @@ Everything is designed to just be a client at the moment.  The model and Network
 
 Extra Features:
 Added sound
-Added a Background
+Almost added a Background.  We had it working but had a strange flickering and so we commented it out.  Just go to GamePanel.cs and uncomment line 101 to check it out
 
 
 Time Spent Working on Project:
@@ -45,6 +45,6 @@ Time Spent Working on Project:
 11/18/16 7:30PM - 10:30PM
 11/19/16 2:10PM	- 5:30PM
 11/21/16 4:30PM - 7:45PM
-11/22/16 3:30PM - 7:30PM
+11/22/16 3:30PM - 7:45PM
 
 Total: 26:35

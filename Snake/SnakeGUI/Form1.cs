@@ -43,7 +43,7 @@ namespace SnakeGUI
         public Form1()
         {
             InitializeComponent();
-            this.BackColor = Color.White;
+            this.BackColor = Color.LightGray;
 
             notifyFormUpdate = UpdateFrame;
 
