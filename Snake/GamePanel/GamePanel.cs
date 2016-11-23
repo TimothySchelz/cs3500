@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Created by Gray Marchese, u0884194, and Timothy Schelz, u0851027
+// Last Date Updated: 11/22/16
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -80,7 +82,8 @@ namespace SnakeGUI
                 // Scale
                 e.Graphics.ScaleTransform(SnakeScaling, SnakeScaling);
 
-            } else
+            }
+            else
             {
                 // Do the world scaling
                 WorldScaling = (float)this.Height / (float)Math.Max(world.Height, world.Width);
@@ -101,14 +104,21 @@ namespace SnakeGUI
             PaintWalls(e);
         }
 
+        /// <summary>
+        /// Paints the background of the game panel. ... It's space
+        /// </summary>
+        /// <param name="e"></param>
         private void PaintBackground(PaintEventArgs e)
         {
+            // bitmaps to store the background and then resize it
             Bitmap original;
             Bitmap resized = null;
             try
             {
+                // get the image
                 original = (Bitmap)Image.FromFile(@"..\..\..\Resources\Media\background.bmp", true);
 
+                // resize the image
                 resized = new Bitmap(original, new Size(world.Width, world.Height));
             }
             catch (System.IO.FileNotFoundException)
@@ -120,8 +130,10 @@ namespace SnakeGUI
 
             using (TextureBrush texture = new TextureBrush(resized))
             {
+                // set it to tesselate
                 texture.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
 
+                //Draws the background
                 e.Graphics.FillRectangle(texture, new Rectangle(0, 0, world.Height, world.Width));
             }
         }
@@ -133,7 +145,7 @@ namespace SnakeGUI
         private void PaintFood(PaintEventArgs e)
         {
             // Use a brush
-            using (SolidBrush drawBrush = new SolidBrush(Color.Brown))
+            using (SolidBrush drawBrush = new SolidBrush(Color.GreenYellow))
             {
                 HashSet<Food> Foods = world.GetFood();
 
@@ -166,8 +178,20 @@ namespace SnakeGUI
                 {
                     // Go through each point in this snake
                     HashSet<SnakeModel.Point> snakePoints = snake.GetSnakePoints();
+                    LinkedList<SnakeModel.Point> vertices = snake.GetVerticies();
+
+                    SnakeModel.Point prevPoint = null;
+                    int avgX = -1;
+                    int avgY = -1;
+
                     foreach (SnakeModel.Point point in snakePoints)
                     {
+                        //Find average placement between rectangles to 'fill spaces'
+                        if (prevPoint != null)
+                        {
+                            avgX = (prevPoint.X + point.X) / 2;
+                            avgY = (prevPoint.Y + point.Y) / 2;
+                        }
 
                         //don't draw dead sneaks
                         if (point.X == -1)
@@ -176,10 +200,21 @@ namespace SnakeGUI
                         // change the color
                         drawBrush.Color = world.GetSnakeColor(snake.ID);
 
-                        // Draw this point
+
+                        // Draw this point, round it if it is a vertex
                         Rectangle drawPoint = new Rectangle(point.X, point.Y, 1, 1);
                         e.Graphics.FillRectangle(drawBrush, drawPoint);
+
+                        // Connect this point to the previous point
+                        Rectangle connectPoint = new Rectangle(avgX, avgY, 1, 1);
+                        e.Graphics.FillRectangle(drawBrush, connectPoint);
+
+                        prevPoint = point;
+
                     }
+
+
+
                 }
             }
         }

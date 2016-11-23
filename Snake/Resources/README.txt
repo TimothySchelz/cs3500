@@ -20,7 +20,7 @@ corresponding with what is in each cell.  The values are listed below.
 1 Food
 2 Snake
 
-This 2D array is never actually used.  It will just be useful later on when we write the server.  Everything is designed to just be a client at the moment.  
+This 2D array is never actually used.  It will just be useful later on when we write the server.  Everything is designed to just be a client at the moment except the 2D array.  
 The Model will be expanded later in the next assignment.
 
 View/Control:
@@ -29,12 +29,11 @@ It consists of some buttons and boxes for connecting to a server, a ScoreboardPa
 GamePanel draws the different players scores on the side.  The SnakeGUI also communicates with the server.  It gets all the JSON objects converts them to the
 appropriate information and deals with them.  It also sends inputs from the player to the server.
 
-
 Everything is designed to just be a client at the moment.  The model and NetworkController will be expanded later to serve as a server in the next assignment.
 
 Extra Features:
-Benny Hill
-Background? (Need to Implement)
+Added sound
+Added a Background
 
 
 Time Spent Working on Project:
@@ -46,5 +45,6 @@ Time Spent Working on Project:
 11/18/16 7:30PM - 10:30PM
 11/19/16 2:10PM	- 5:30PM
 11/21/16 4:30PM - 7:45PM
+11/22/16 3:30PM - 7:30PM
 
 Total: 26:35

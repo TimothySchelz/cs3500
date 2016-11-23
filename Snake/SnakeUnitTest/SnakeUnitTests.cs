@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Created by Gray Marchese, u0884194, and Timothy Schelz, u0851027
+// Last Date Updated: 11/22/16
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SnakeModel;
 using System.Collections.Generic;

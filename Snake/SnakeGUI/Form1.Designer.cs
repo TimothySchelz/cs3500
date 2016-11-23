@@ -42,7 +42,7 @@
             // 
             this.ScoreBoardLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.ScoreBoardLabel.AutoSize = true;
-            this.ScoreBoardLabel.Location = new System.Drawing.Point(803, 45);
+            this.ScoreBoardLabel.Location = new System.Drawing.Point(882, 45);
             this.ScoreBoardLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ScoreBoardLabel.Name = "ScoreBoardLabel";
             this.ScoreBoardLabel.Size = new System.Drawing.Size(63, 13);
@@ -52,7 +52,7 @@
             // NameBox
             // 
             this.NameBox.Location = new System.Drawing.Point(90, 11);
-            this.NameBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.NameBox.Margin = new System.Windows.Forms.Padding(2);
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(76, 20);
             this.NameBox.TabIndex = 3;
@@ -61,7 +61,7 @@
             // ServerBox
             // 
             this.ServerBox.Location = new System.Drawing.Point(349, 11);
-            this.ServerBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ServerBox.Margin = new System.Windows.Forms.Padding(2);
             this.ServerBox.Name = "ServerBox";
             this.ServerBox.Size = new System.Drawing.Size(76, 20);
             this.ServerBox.TabIndex = 4;
@@ -90,7 +90,7 @@
             // ConnectButton
             // 
             this.ConnectButton.Location = new System.Drawing.Point(599, 11);
-            this.ConnectButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ConnectButton.Margin = new System.Windows.Forms.Padding(2);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(56, 19);
             this.ConnectButton.TabIndex = 7;
@@ -133,12 +133,11 @@
             this.Controls.Add(this.ScoreBoardLabel);
             this.Controls.Add(this.scoreBoardPanel1);
             this.Controls.Add(this.gamePanel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1069, 840);
             this.MinimumSize = new System.Drawing.Size(1069, 840);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.OnStartUp);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeysPressed);
             this.ResumeLayout(false);
             this.PerformLayout();

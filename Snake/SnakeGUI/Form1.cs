@@ -1,4 +1,6 @@
-﻿using SnakeModel;
+﻿// Created by Gray Marchese, u0884194, and Timothy Schelz, u0851027
+// Last Date Updated: 11/22/16
+using SnakeModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,74 +57,6 @@ namespace SnakeGUI
         {
             gamePanel1.Invalidate();
             scoreBoardPanel1.Invalidate();
-        }
-
-        /// <summary>
-        /// Method to be called when the program originally starts up
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnStartUp(object sender, EventArgs e)
-        {
-            // Creates a filler world to be displayed
-            world = new World(1, 150, 150);
-
-            
-            // Creates snakes and food to be displayed
-            List<SnakeModel.Point> snakeVerts = new List<SnakeModel.Point>();
-            SnakeModel.Point p1, p2;
-            
-            p1 = new SnakeModel.Point();
-            p2 = new SnakeModel.Point();
-            p1.X = 30;
-            p1.Y = 25;
-            p2.X = 100;
-            p2.Y = 25;
-            snakeVerts.Insert(0, p1);
-            snakeVerts.Insert(0, p2);
-            world.updateSnake(new Snake(snakeVerts, 3, "sss"));
-
-            snakeVerts = new List<SnakeModel.Point>();
-            p1 = new SnakeModel.Point();
-            p2 = new SnakeModel.Point();
-            p1.X = 1;
-            p1.Y = 1;
-            p2.X = 1;
-            p2.Y = 10;
-            snakeVerts.Insert(0, p1);
-            snakeVerts.Insert(0, p2);
-            world.updateSnake(new Snake(snakeVerts, 2, "Boaty Mc Boatface"));
-
-            snakeVerts = new List<SnakeModel.Point>();
-            p1 = new SnakeModel.Point();
-            p2 = new SnakeModel.Point();
-            p1.X = 1;
-            p1.Y = 1;
-            p2.X = 1;
-            p2.Y = 148;
-            snakeVerts.Insert(0, p1);
-            snakeVerts.Insert(1, p2);
-            world.updateSnake(new Snake(snakeVerts, 1, "zzzs"));
-
-
-            p1 = new SnakeModel.Point();
-            p2 = new SnakeModel.Point();
-            p1.X = 3;
-            p1.Y = 4;
-            p2.X = 4;
-            p2.Y = 3;
-
-            // Adds the snakes and food to the world
-            
-            world.updateFood(new Food(1, p1));
-            world.updateFood(new Food(2, p2));
-            
-            // Sets the world to be the world for both panels
-            gamePanel1.SetWorld(world);
-            scoreBoardPanel1.SetWorld(world);
-
-            UpdateFrame();
-            
         }
 
         /// <summary>
