@@ -53,6 +53,39 @@ namespace NetworkController
     }
 
     /// <summary>
+    /// Saves the state of the TCP listener and the current callback action.
+    /// </summary>
+    public class listenerState
+    {
+        //The TCP listener curretnly in use by the server
+        public TcpListener theListener
+        {
+            get;
+            private set;
+        }
+
+        //Current callback action to be completed when a client connects
+        public Callback CallMe
+        {
+            get;
+            set;
+        }
+
+        //Type for our callback function
+        public delegate void Callback(SocketState State);
+
+        //Single parameter contructor for our TCP listenerState.
+        public listenerState(TcpListener lstnr, Callback CallMe)
+        {
+            this.theListener = lstnr;
+            this.CallMe = CallMe;
+
+            //Starts the listener
+            theListener.Start();
+        }
+    }
+
+    /// <summary>
     /// A static class of methods to help with networking.  It uses the SocketState class
     /// </summary>
     public static class Networking
@@ -229,6 +262,60 @@ namespace NetworkController
                 ss.CallMe(ss);
             }
             
+        }
+
+
+        /*
+        BELOW METHODS ARE FOR THE SERVER'S USE ONLY
+        */
+
+        /// <summary>
+        /// A method to be called as the server starts. This will assure that the server is 
+        /// constently listenting fr clients and adds them when a connection is recognized by
+        /// a TCP listener.
+        /// </summary>
+        /// <param name="CallMe"></param>
+        public static void ServerAwaitingClientLoop(listenerState.Callback CallMe)
+        {
+            System.Diagnostics.Debug.WriteLine("Listening for connections");
+
+            IPAddress LocalAddress = Dns.GetHostEntry("localhost").AddressList[0];
+
+            //Creates TCP listener
+            TcpListener lstnr = new TcpListener(LocalAddress, DEFAULT_PORT);
+
+            //Stores the state of the listener in a listener state
+            listenerState ls = new listenerState(lstnr, CallMe);
+
+
+            //Begins an event loop for listening for IP addresses.
+            ls.theListener.BeginAcceptSocket(AcceptNewClient, ls);
+        }
+
+        /// <summary>
+        /// Callback to be used when someone tries to connect to the server.  Performs the necessary junk and then 
+        /// calls the ListenerState's callback
+        /// </summary>
+        /// <param name="ar"></param>
+        private static void AcceptNewClient(IAsyncResult ar)
+        {
+            //retrievs the listener state that triggered this method
+            listenerState ls = (listenerState)ar.AsyncState;
+
+            //gets socket from the established connection
+            Socket socket = ls.theListener.EndAcceptSocket(ar);
+
+            //Grabs the IP address from the remote end of our socket
+            IPAddress ip = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+
+            //Creates a socket state
+            SocketState ss = new SocketState(socket, ip.GetHashCode());
+
+            //Perfrom's callback method retrieved from the newly connected socket
+            ls.CallMe(ss);
+
+            //Restarts the event loop to listen for more clients
+            ls.theListener.BeginAcceptSocket(AcceptNewClient, ls);
         }
     }
 
