@@ -279,10 +279,8 @@ namespace NetworkController
         {
             System.Diagnostics.Debug.WriteLine("Listening for connections");
 
-            IPAddress LocalAddress = Dns.GetHostEntry("localhost").AddressList[0];
-
             //Creates TCP listener
-            TcpListener lstnr = new TcpListener(LocalAddress, DEFAULT_PORT);
+            TcpListener lstnr = new TcpListener(IPAddress.Any, DEFAULT_PORT);
 
             //Stores the state of the listener in a listener state
             listenerState ls = new listenerState(lstnr, CallMe);
@@ -299,6 +297,7 @@ namespace NetworkController
         /// <param name="ar"></param>
         private static void AcceptNewClient(IAsyncResult ar)
         {
+            System.Diagnostics.Debug.WriteLine("Client connected");
             //retrievs the listener state that triggered this method
             listenerState ls = (listenerState)ar.AsyncState;
 

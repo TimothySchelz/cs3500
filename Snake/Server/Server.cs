@@ -67,7 +67,7 @@ namespace Server
             FrameTimer = new System.Timers.Timer(33);
             FrameTimer.Elapsed += UpdateFrame;
             
-            //Establishes an non-blocking loop to collect clients
+            //Establishes a non-blocking loop to collect clients
             Networking.ServerAwaitingClientLoop(ClientConnected);
 
             // Keep console window open
@@ -126,6 +126,8 @@ namespace Server
         /// <param name="State"></param>
         private void RecieveName(SocketState State)
         {
+            //Assigns a uniuqe ID that will be used for this client and its snake.
+            State.ID = clients.GetNextID();
 
             //Generates start-up info for the newly connected client
             string startUpInfo = "" + State.ID + '\n' + world.Width + '\n' + world.Height + '\n';
@@ -175,12 +177,15 @@ namespace Server
             //Collection of socet states
             private Dictionary<int,SocketState> clients;
 
+            private int NextID;
+
             /// <summary>
             /// Zero-parameter constructor that creates an empty collection of clients.
             /// </summary>
             public Clients()
             {
                 clients = new Dictionary<int, SocketState>();
+                NextID = 0;
             }
 
             /// <summary>
@@ -222,6 +227,19 @@ namespace Server
                 {
                     return clients[ID];
                 }
+            }
+
+            /// <summary>
+            /// Returns an unused ID number unique to this client.
+            /// </summary>
+            /// <returns></returns>
+            public int GetNextID()
+            {
+                lock (this)
+                {
+                    NextID++;
+                    return NextID -1;
+                }                
             }
 
 
