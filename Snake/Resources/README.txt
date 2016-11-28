@@ -31,12 +31,12 @@ appropriate information and deals with them.  It also sends inputs from the play
 
 Everything is designed to just be a client at the moment.  The model and NetworkController will be expanded later to serve as a server in the next assignment.
 
-Extra Features:
+Extra Features(Client):
 Added sound
 Almost added a Background.  We had it working but had a strange flickering and so we commented it out.  Just go to GamePanel.cs and uncomment line 101 to check it out
 
 
-Time Spent Working on Project:
+Time Spent Working on PS7:
 11/11/16 2:20PM - 7:10PM
 11/13/16 2:00PM - 6:30PM
 11/14/16 5:00PM - 7:30PM
@@ -47,4 +47,7 @@ Time Spent Working on Project:
 11/21/16 4:30PM - 7:45PM
 11/22/16 3:30PM - 7:45PM
 
-Total: 26:35
+Total: 30:50
+
+Time Spend Working on PS8:
+11/27/16 1:45PM - 

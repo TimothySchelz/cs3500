@@ -43,6 +43,10 @@ namespace SnakeModel
         [JsonProperty]
         private List<Point> vertices;
 
+        private int direction;
+        private int prevDirection;
+
+
         /// <summary>
         /// Returns the length of the snake.  The first time being called it may take a moment.  After that it should run in constant time.
         /// </summary>
@@ -87,6 +91,54 @@ namespace SnakeModel
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The direction the snake is pointing
+        /// 1: up
+        /// 2: right
+        /// 3: down
+        /// 4: left
+        /// </summary>
+        public int Direction
+        {
+            get
+            {
+                return direction;
+            }
+
+            set
+            {
+                if (value >= 1 && value <= 4 && prevDirection-value % 2 != 0)
+                {
+                    direction = value;
+                } 
+            }
+        }
+
+        /// <summary>
+        /// The direction the snake moved on the last update
+        /// 1: up
+        /// 2: right
+        /// 3: down
+        /// 4: left
+        /// 
+        /// Should only be changed when the world is updated
+        /// </summary>
+        public int PrevDirection
+        {
+            get
+            {
+                return prevDirection;
+            }
+
+            set
+            {
+                if (value >= 1 && value <= 4 && prevDirection - value % 2 != 0)
+                {
+                    prevDirection = value;
+                }
+            }
         }
 
         /// <summary>

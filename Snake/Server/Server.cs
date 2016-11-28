@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SnakeModel;
 using System.Collections;
+using System.Timers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Server
 {
@@ -15,7 +18,8 @@ namespace Server
         Clients clients;
         // The world the game is taking plce in
         World world = new World(0, 150, 150);
-        // 
+        // Timer to go off when a new frame should be sent to the clients
+        System.Timers.Timer FrameTimer;
 
         /// <summary>
         /// Main method to run when the server is staarted
@@ -59,6 +63,9 @@ namespace Server
 
 
             Console.WriteLine("Server Started up.");
+
+            FrameTimer = new System.Timers.Timer(33);
+            FrameTimer.Elapsed += UpdateFrame;
             
             //Establishes an non-blocking loop to collect clients
             Networking.ServerAwaitingClientLoop(ClientConnected);
@@ -68,6 +75,40 @@ namespace Server
 
         }
 
+        /// <summary>
+        /// Tells everything to update for the next frame and then send the info to the clients
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdateFrame(object sender, ElapsedEventArgs e)
+        {
+            //Update the world
+            throw new NotImplementedException();
+
+
+            // Compile the date to be sent
+            // Create a stringbuilder to hold data to be sent and append new items on
+            StringBuilder data = new StringBuilder();
+            // Append all the snakes onto the StringBuilder
+            foreach (Snake snake in world.GetSnakes())
+            {
+                data.Append(JsonConvert.SerializeObject(snake) + "\n");
+            }
+            // Append all the food onto the StringBuider
+            foreach (Food food in world.GetFood())
+            {
+                data.Append(JsonConvert.SerializeObject(food) + "\n");
+            }
+
+            String message = data.ToString();
+
+            //Send data to Clients
+            foreach(SocketState client in clients.GetAllClients())
+            {
+                Networking.SendData(client, message);
+            }
+        }
+
         public void ClientConnected(SocketState Client)
         {
             //Updates callback
@@ -75,7 +116,6 @@ namespace Server
 
             //Begins listening for name information from client
             Networking.GetData(Client);
-
         }
 
         /// <summary>
@@ -112,13 +152,19 @@ namespace Server
         /// <param name="State"></param>
         private void GetInput(SocketState State)
         {
-
-            //PARSE INFO FROM CLIENT
             Console.WriteLine(State.ID + ": " + State.sb.ToString());
+
+            //pull info from string builder and clear it
+            String message = State.sb.ToString();
             State.sb.Clear();
 
-            Networking.GetData(State);
+            // Get the actual irection the layer wishes to move
+            char direction = message[message.Length-3];
 
+            //Changes
+            world.ChangeSnakeDirection(State.ID, direction);
+
+            Networking.GetData(State);
         }
 
         /// <summary>
