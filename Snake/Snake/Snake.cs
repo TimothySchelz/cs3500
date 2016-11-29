@@ -104,15 +104,21 @@ namespace SnakeModel
         {
             get
             {
-                return direction;
+                lock (this)
+                {
+                    return direction;
+                }
             }
 
             set
             {
-                if (value >= 1 && value <= 4 && prevDirection-value % 2 != 0)
+                lock (this)
                 {
-                    direction = value;
-                } 
+                    if (value >= 1 && value <= 4 && prevDirection - value % 2 != 0)
+                    {
+                        direction = value;
+                    }
+                }
             }
         }
 
@@ -153,6 +159,128 @@ namespace SnakeModel
             this.vertices = Verticies;
             this.ID = ID;
             this.name = Name;
+        }
+
+        /// <summary>
+        /// Moves this snakes head by 1 in the direction it wants to go
+        /// </summary>
+        public void moveHeadForward()
+        {
+            Point Head = GetHead();
+
+            // Check if direction has changed
+            if (direction == prevDirection)
+            {
+
+                //Increment/or decrement coordinate in the dicrection of motion
+                switch (direction)
+                {
+                    case 1:
+                        Head.Y--;
+                        break;
+
+                    case 2:
+                        Head.X++;
+                        break;
+
+                    case 3:
+                        Head.Y++;
+                        break;
+
+                    case 4:
+                        Head.X--;
+                        break;
+                }
+
+            }
+            else
+            {
+
+                Point newHead = new Point();
+
+                //If direction has changed, create a new head in the correct position in relation to
+                //the previous head.
+                switch (direction)
+                {
+                    case 1:
+                        newHead.Y = Head.Y - 1;
+                        newHead.X = Head.X;
+                        break;
+
+                    case 2:
+                        newHead.X = Head.X + 1;
+                        newHead.Y = Head.Y;
+                        break;
+
+                    case 3:
+                        newHead.Y = Head.Y + 1;
+                        newHead.X = Head.X;
+                        break;
+
+                    case 4:
+                        newHead.X = Head.X - 1;
+                        newHead.Y = Head.Y;
+                        break;
+                }
+
+                //Adds the new head to the end of our vertex list.
+                vertices.Add(newHead);
+
+            }
+        }
+
+        /// <summary>
+        /// Moves this snakes tail forward by 1
+        /// </summary>
+        public void moveTailForward()
+        {
+            //Gets points of the tail and next to last vertex
+            Point Tail = vertices.First();
+            Point NextToLast = vertices.ElementAt(1);
+
+            bool finalVerticiesAdj;
+
+            //Checks whether or not the tail is adjacent to the next to last vertex.
+            finalVerticiesAdj = ((Tail.X == NextToLast.X) && (Math.Abs(Tail.Y - NextToLast.Y) == 1))
+                             || ((Tail.Y == NextToLast.Y) && (Math.Abs(Tail.X - NextToLast.X) == 1));
+
+            //If adjacent, the tail can be removed. 
+            if (finalVerticiesAdj)
+            {
+                vertices.RemoveAt(0);
+            }
+
+            //If not adjacent, the tail moves toward the second to last vertex
+            else
+            {
+                
+                if(Tail.X == NextToLast.X)
+                {
+                    //Tail differs in the Y direction. move accordingly.
+                    if(Tail.Y > NextToLast.Y)
+                    {
+                        Tail.Y--;
+                    }
+                    else
+                    {
+                        Tail.Y++;
+                    }
+                }
+                else
+                {
+                    //Tail differs in the X direction. move accordingly.
+                    if (Tail.X > NextToLast.X)
+                    {
+                        Tail.X--;
+                    }
+                    else
+                    {
+                        Tail.X++;
+                    }
+                }
+
+            }
+
         }
 
         /// <summary>

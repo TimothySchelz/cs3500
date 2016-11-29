@@ -89,7 +89,7 @@ namespace SnakeModel
         /// <summary>
         /// Advances the world to the next frame of the game. Responsible for snake motion and food generation.
         /// </summary>
-        public void UpdateWorld()
+        public void UpdateWorld(int FoodDensity, double SnakeRecycleRate)
         {
 
             // Move snakes
@@ -99,7 +99,7 @@ namespace SnakeModel
             Interactions();
 
             // Generate food
-            PopulateWithFood();
+            PopulateWithFood(FoodDensity);
         }
 
         private void Interactions()
@@ -107,14 +107,41 @@ namespace SnakeModel
             throw new NotImplementedException();
         }
 
-        private void PopulateWithFood()
+        /// <summary>
+        /// Populares the world with food until we have enough food to feed every snake.
+        /// </summary>
+        /// <param name="FoodDensity">The amount of food per snake</param>
+        private void PopulateWithFood(int FoodDensity)
         {
-            throw new NotImplementedException();
+            int FoodDisparity = (Snakes.Count * FoodDensity) - Foods.Count;
+
+            if (FoodDisparity > 0)
+            {
+                for(int i = 0; i < FoodDisparity; i++)
+                {
+                    generateFood();
+                }
+            }
         }
 
+        /// <summary>
+        /// Moves the snakes in the direction they want to go by 1
+        /// </summary>
         private void MoveSnakes()
         {
-            throw new NotImplementedException();
+            foreach(KeyValuePair<int,Snake> snakePair in Snakes)
+            {
+                //Do nothing if the snake is dead.
+                if (snakePair.Value.GetHead().X == -1)
+                    continue;
+
+                // Move head Forward
+                snakePair.Value.moveHeadForward();
+
+                // move tail forward
+                snakePair.Value.moveTailForward();
+            }
+
         }
 
         /// <summary>

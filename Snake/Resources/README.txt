@@ -35,6 +35,10 @@ Extra Features(Client):
 Added sound
 Almost added a Background.  We had it working but had a strange flickering and so we commented it out.  Just go to GamePanel.cs and uncomment line 101 to check it out
 
+Extra Features(Server):
+?Severed snake becomes another snake, reversing direction
+?Severed snake becomes food.
+
 Current Issues:
 Needs to handle client disconnection gracefully.
 
