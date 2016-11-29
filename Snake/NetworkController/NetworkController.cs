@@ -204,7 +204,8 @@ namespace NetworkController
         {
             SocketState ss = (SocketState)ar.AsyncState;
 
-            int bytesRead = ss.theSocket.EndReceive(ar);
+            
+            int bytesRead = ss.theSocket.EndReceive(ar);        //TODO: Throws a SocketException when a client disconnects
 
             // If the socket is still open
             if (bytesRead > 0)

@@ -43,6 +43,7 @@
     <Content Include="Media\background.bmp" />
     <Content Include="Media\YaketySax.wav" />
     <Content Include="README.txt" />
+    <Content Include="Settings.XML" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

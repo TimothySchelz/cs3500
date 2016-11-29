@@ -9,6 +9,7 @@ using System.Collections;
 using System.Timers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Xml;
 
 namespace Server
 {
@@ -20,6 +21,15 @@ namespace Server
         World world = new World(0, 150, 150);
         // Timer to go off when a new frame should be sent to the clients
         System.Timers.Timer FrameTimer;
+
+
+        // Server settings to be read in from the settings file
+        private const String SETTINGSFILE = @"..\..\..\Resources\Settings.XML";
+        private int boardWidth;
+        private int boardHeight;
+        private int MSPerFrame;
+        private int FoodDensity;
+        private double SnakeRecycleRate;
 
         /// <summary>
         /// Main method to run when the server is staarted
@@ -38,41 +48,136 @@ namespace Server
             // create the hashset of clients
             clients = new Clients();
 
+            // Read info from the settings file
+            readSettings(SETTINGSFILE);
+
             // create a World
-            world = new World(0, 150, 150);
-
-            List<Point> verts = new List<Point>();
-
-            Point p1 = new Point();
-            Point p2 = new Point();
-            p1.X = 1;
-            p1.Y = 1;
-            p2.X = 1;
-            p2.Y = 10;
-            verts.Add(p1);
-            verts.Add(p2);
-            Snake s1 = new Snake(verts, 1, "Snek");
-
-            Point p3 = new Point();
-            p3.X = 3;
-            p3.Y = 3;
-            Food f1 = new Food(1, p3);
-
-            world.updateFood(f1);
-            world.updateSnake(s1);
-
+            world = new World(0, boardWidth, boardHeight);
 
             Console.WriteLine("Server Started up.");
 
-            FrameTimer = new System.Timers.Timer(33);
+            FrameTimer = new System.Timers.Timer(MSPerFrame);
             FrameTimer.Elapsed += UpdateFrame;
+            FrameTimer.Start();
             
             //Establishes a non-blocking loop to collect clients
             Networking.ServerAwaitingClientLoop(ClientConnected);
 
             // Keep console window open
-            Console.Read();
+            while (true)
+                {
+                Console.Read();
+                }
 
+        }
+
+        /// <summary>
+        /// A Method to read in the settings from a settings file
+        /// </summary>
+        /// <param name="v">The file settings will be read from</param>
+        private void readSettings(string filename)
+        {
+            //All the work.  Make sure to catch any exception
+            try
+            {
+                // create the reader from the file and make sure it is disposed of
+                using (XmlReader reader = XmlReader.Create(filename))
+                {
+                    //cycle through the file
+                    while (reader.Read())
+                    {
+                        //Check what we have
+                        if (reader.IsStartElement())
+                        {
+                            switch (reader.Name)
+                            {
+                                case "BoardWidth":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readWidth = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readWidth, out boardWidth))
+                                    {
+                                        throw new ArgumentException("BoardWidth settings don't make sense.");
+                                    }
+                                    break;
+                                case "BoardHeight":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readHeight = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readHeight, out boardHeight))
+                                    {
+                                        throw new ArgumentException("boadHeight settings don't make sense.");
+                                    }
+                                    break;
+                                case "MSPerFrame":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readMS = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readMS, out MSPerFrame))
+                                    {
+                                        throw new ArgumentException("MSPerFrame settings don't make sense.");
+                                    }
+                                    break;
+
+                                case "FoodDensity":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readDensity = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readDensity, out FoodDensity))
+                                    {
+                                        throw new ArgumentException("FoodDensity settings don't make sense.");
+                                    }
+                                    break;
+                                case "SnakeRecycleRate":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readRecycle = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Double.TryParse(readRecycle, out SnakeRecycleRate) || SnakeRecycleRate < 0 || SnakeRecycleRate > 1)
+                                    {
+                                        throw new ArgumentException("SnakeRecycleRate settings don't make sense.");
+                                    }
+                                    break;
+
+                                    
+                                case "SnakeSettings":
+                                    //Doesn't Do anything at the start of the XML file.
+                                    break;
+
+                                default:
+                                    // makes sure to throw an exception if we find any incorrect opening tags
+
+                                    throw new ArgumentException("The Settings file is invalid");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //Catches whatever happened in the file and deals with it
+                if (e is ArgumentException)
+                {
+                    throw e;
+                } else
+                {
+                    throw new ArgumentException("There was a problem reading the settings file.");
+                }
+            }
         }
 
         /// <summary>
@@ -83,8 +188,7 @@ namespace Server
         private void UpdateFrame(object sender, ElapsedEventArgs e)
         {
             //Update the world
-            throw new NotImplementedException();
-
+            world.UpdateWorld();
 
             // Compile the date to be sent
             // Create a stringbuilder to hold data to be sent and append new items on
@@ -134,8 +238,25 @@ namespace Server
             Networking.SendData(State, startUpInfo);
 
             //PARSE NAME INFO & CREATE SNAKE WITH ID = State.ID
-            Console.WriteLine(State.sb.ToString());
-            State.sb.Clear();
+
+            // Grab the data from he sb
+            String data = State.sb.ToString();
+
+            // split the data into the individul pieces
+            String[] DataList = data.Split();
+
+            String name;
+
+            if (DataList.Length == 0 || DataList[0].Equals(""))
+            {
+                name = "Boaty McBoatface";
+            } else
+            {
+                name = DataList[0];
+            }
+
+            //Creates a snake for this client and places it in the world
+            world.createSnake(State.ID, name);
 
             //Adds this client to list of connected clients
             clients.Add(State);

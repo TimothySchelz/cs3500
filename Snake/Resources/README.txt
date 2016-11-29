@@ -35,6 +35,10 @@ Extra Features(Client):
 Added sound
 Almost added a Background.  We had it working but had a strange flickering and so we commented it out.  Just go to GamePanel.cs and uncomment line 101 to check it out
 
+Current Issues:
+Needs to handle client disconnection gracefully.
+
+
 
 Time Spent Working on PS7:
 11/11/16 2:20PM - 7:10PM

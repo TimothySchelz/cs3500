@@ -26,8 +26,12 @@ namespace SnakeModel
         private Dictionary<int, Color> SnakeColors;
         // The player
         int PlayerID;
-        // RNG to get colors for the snakes
+        // RNG for random world values
         Random rando = new Random();
+
+        // A variable used for assigning unique Food ID numbers
+        int NextFoodID;
+
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
         Object FoodLock = new object();
@@ -79,6 +83,38 @@ namespace SnakeModel
             Foods = new Dictionary<int, Food>();
             SnakeColors = new Dictionary<int, Color>();
             this.PlayerID = PlayerID;
+            NextFoodID = 0;
+        }
+
+        /// <summary>
+        /// Advances the world to the next frame of the game. Responsible for snake motion and food generation.
+        /// </summary>
+        public void UpdateWorld()
+        {
+
+            // Move snakes
+            MoveSnakes();
+
+            // Detect Collisions
+            Interactions();
+
+            // Generate food
+            PopulateWithFood();
+        }
+
+        private void Interactions()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PopulateWithFood()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void MoveSnakes()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -167,6 +203,37 @@ namespace SnakeModel
         }
 
         /// <summary>
+        /// Generates food in a random location in our world.
+        /// </summary>
+        public void generateFood() { 
+            Point pt = new Point();
+
+            pt.X = rando.Next() % Width;
+            pt.Y = rando.Next() % Height;
+
+            NextFoodID++;
+            updateFood(new Food(NextFoodID - 1, pt));
+
+        }
+
+        /// <summary>
+        /// Places a peice of food at the specified (X,Y) coordinate.
+        /// </summary>
+        /// <param name="X">Horizontal coordinate for food placement</param>
+        /// <param name="Y">Vertical coordinate for food placement</param>
+        public void generateFood(int X, int Y)
+        {
+            Point pt = new Point();
+
+            pt.X = X;
+            pt.Y = Y;
+
+            NextFoodID++;
+            updateFood(new Food(NextFoodID - 1, pt));
+
+        }
+
+        /// <summary>
         /// Updates the given snake
         /// </summary>
         /// <param name="newSnake">Snake that needs to be updated</param>
@@ -248,6 +315,32 @@ namespace SnakeModel
 
                 return SnakeColors[ID];
             }
+        }
+
+        /// <summary>
+        /// Creates a snake with the given ID number. This is the first appearance of this snake
+        /// in the world.
+        /// </summary>
+        /// <param name="ID">Unique ID number for this new snake</param>
+        public void createSnake(int ID, string Name)
+        {
+
+            Point Head = new Point();
+            Point Tail = new Point();
+
+            //FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
+
+            Head.X = Width / 2;
+            Head.Y = Height / 2;
+
+            Tail.X = Head.X + 10;
+            Tail.Y = Head.Y;
+
+            List<Point> verts = new List<Point>() { Head, Tail};
+            Snake NewPlayer = new Snake(verts, ID, Name);
+
+            // Puts the new snake in the world
+            this.updateSnake(NewPlayer);
         }
 
         /// <summary>
