@@ -64,43 +64,43 @@ namespace SnakeUnitTest
         [TestMethod]
         public void Snake_Length_1Segment()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             p1.X = 5;
             p1.Y = 5;
             p2.X = 15;
             p2.Y = 5;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
+            joints.Add(p1);
+            joints.Add(p2);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
-            Assert.AreEqual(10, testSnake.Length);
+            Assert.AreEqual(10, testSnake.GetLength());
         }
 
         [TestMethod]
         public void Snake_Length_ShortSegment()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             p1.X = 5;
             p1.Y = 5;
             p2.X = 6;
             p2.Y = 5;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
+            joints.Add(p1);
+            joints.Add(p2);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
-            Assert.AreEqual(1, testSnake.Length);
+            Assert.AreEqual(1, testSnake.GetLength());
         }
 
         [TestMethod]
         public void Snake_Length_3Segments()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             Point p3 = new Point();
@@ -116,20 +116,20 @@ namespace SnakeUnitTest
 
             p4.X = 7;
             p4.Y = 7;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
-            joints.AddFirst(p3);
-            joints.AddFirst(p4);
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
-            Assert.AreEqual(6, testSnake.Length);
+            Assert.AreEqual(6, testSnake.GetLength());
         }
 
         [TestMethod]
         public void Snake_GetVerticies_CheckCount()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             Point p3 = new Point();
@@ -145,10 +145,10 @@ namespace SnakeUnitTest
 
             p4.X = 7;
             p4.Y = 7;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
-            joints.AddFirst(p3);
-            joints.AddFirst(p4);
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
@@ -158,15 +158,15 @@ namespace SnakeUnitTest
         [TestMethod]
         public void Snake_GetVerticies_Short()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             p1.X = 5;
             p1.Y = 5;
             p2.X = 6;
             p2.Y = 5;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
+            joints.Add(p1);
+            joints.Add(p2);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
@@ -176,7 +176,7 @@ namespace SnakeUnitTest
         [TestMethod]
         public void Snake_GetSnakePoints_CheckCount()
         {
-            LinkedList<Point> joints = new LinkedList<Point>();
+            List<Point> joints = new List<Point>();
             Point p1 = new Point();
             Point p2 = new Point();
             Point p3 = new Point();
@@ -192,10 +192,10 @@ namespace SnakeUnitTest
 
             p4.X = 7;
             p4.Y = 7;
-            joints.AddFirst(p1);
-            joints.AddFirst(p2);
-            joints.AddFirst(p3);
-            joints.AddFirst(p4);
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
 
             Snake testSnake = new Snake(joints, 1, "john");
 
@@ -205,6 +205,163 @@ namespace SnakeUnitTest
         /*
          * World Tests
          */
+        [TestMethod]
+        public void World_Constructor_TestWidth()
+        {
+            World testWorld = new World(1, 10, 100);
 
+            Assert.AreEqual(10, testWorld.Width);
+        }
+
+        [TestMethod]
+        public void World_Constructor_TestHeight()
+        {
+            World testWorld = new World(1, 10, 100);
+
+            Assert.AreEqual(10, testWorld.Height);
+        }
+
+        [TestMethod]
+        public void World_GetSnakes_Empty()
+        {
+            World testWorld = new World(1, 10, 100);
+
+            Assert.AreEqual(0, testWorld.GetSnakes().Count);
+        }
+
+        [TestMethod]
+        public void World_GetSnakes_AFew()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+
+            Assert.AreEqual(4, testWorld.GetSnakes().Count);
+        }
+
+        [TestMethod]
+        public void World_GetSnakes_SnakeName()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+
+            foreach(Snake snake in testWorld.GetSnakes())
+            {
+                Assert.AreEqual("Seymour", snake.name);
+            }      
+        }
+
+        [TestMethod]
+        public void World_GetFood_Empty()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            Assert.AreEqual(0, testWorld.GetFood().Count);
+        }
+
+        [TestMethod]
+        public void World_GetFood_AFew()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.updateFood(RandomFood(100));
+            testWorld.updateFood(RandomFood(100));
+            testWorld.updateFood(RandomFood(100));
+            testWorld.updateFood(RandomFood(100));
+
+
+            Assert.AreEqual(4, testWorld.GetFood().Count);
+        }
+
+        [TestMethod]
+        public void World_GenerateFood_AFew()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.generateFood();
+            testWorld.generateFood();
+            testWorld.generateFood();
+            testWorld.generateFood();
+
+            Assert.AreEqual(4, testWorld.GetFood().Count);
+        }
+
+        /*
+         * Helper methods to make testing easier... It might be better for some of these to be in classes
+         */
+
+        /// <summary>
+        /// Returns a piece of food at a random location
+        /// </summary>
+        /// <param name="max">The lower of height and width</param>
+        /// <returns></returns>
+        public Food RandomFood(int max)
+        {
+            Point p1 = new Point();
+            Random rando = new Random(123456);
+
+            p1.X = rando.Next(max);
+            p1.Y = rando.Next(max);
+
+            int ID = p1.X.GetHashCode()*37 + p1.Y.GetHashCode()*157;
+            return new Food(ID, p1);
+        }
+
+        /// <summary>
+        /// returns a snake with the given head and tail x,y values.  It is named Sebastion
+        /// </summary>
+        /// <param name="HX">Head X value</param>
+        /// <param name="HY">Head Y value</param>
+        /// <param name="TX">Tail X value</param>
+        /// <param name="TY">Tail Y value</param>
+        /// <returns></returns>
+        public Snake SingleSegmentSnake(int HX, int HY, int TX, int TY)
+        {
+
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            p1.X = HX;
+            p1.Y = HY;
+            p2.X = TX;
+            p2.Y = TY;
+
+            int ID = (HX.GetHashCode() * 37 + HY.GetHashCode() * 67 + TX.GetHashCode() * 79 + TY.GetHashCode() * 19);
+            return new Snake(new List<Point>() { p2, p1 }, ID, "Sebastion");
+        }
+
+        /// <summary>
+        /// Returns a random horizontal snake. It is named Seymour
+        /// </summary>
+        /// <param name="max">the maximum x and y value to use</param>
+        /// <returns>The random snake</returns>
+        public Snake RandomSingleSegment(int max)
+        {
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            Random rando = new Random(1729);
+
+            int HX = rando.Next(max);
+            int HY = rando.Next(max);
+            int TX = HX;
+            int TY = rando.Next(max);
+
+            p1.X = HX;
+            p1.Y = HY;
+            p2.X = TX;
+            p2.Y = TY;
+
+            int ID = (HX.GetHashCode() * 37 + HY.GetHashCode() * 67 + TX.GetHashCode() * 79 + TY.GetHashCode() * 19);
+
+            return new Snake(new List<Point>() { p2, p1 }, ID, "Seymour");
+        }
     }
 }
