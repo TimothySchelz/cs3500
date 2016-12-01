@@ -355,7 +355,7 @@ namespace SnakeModel
             Point Head = new Point();
             Point Tail = new Point();
 
-            //FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
+            //TODO: FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
 
             Head.X = Width / 2;
             Head.Y = Height / 2;
@@ -363,7 +363,7 @@ namespace SnakeModel
             Tail.X = Head.X + 10;
             Tail.Y = Head.Y;
 
-            List<Point> verts = new List<Point>() { Head, Tail};
+            List<Point> verts = new List<Point>() { Head, Tail };
             Snake NewPlayer = new Snake(verts, ID, Name);
 
             // Puts the new snake in the world

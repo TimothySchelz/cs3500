@@ -293,6 +293,83 @@ namespace SnakeUnitTest
             Assert.AreEqual(4, testWorld.GetFood().Count);
         }
 
+        [TestMethod]
+        public void World_GenerateFood_DefinedSpots()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.generateFood(5, 5);
+            testWorld.generateFood(5, 6);
+            testWorld.generateFood(6, 5);
+            testWorld.generateFood(6, 6);
+
+            Assert.AreEqual(4, testWorld.GetFood().Count);
+            foreach (Food food in testWorld.GetFood())
+            {
+                Assert.IsTrue((food.loc.X == 5 || food.loc.X == 6) && (food.loc.X == 6 || food.loc.X == 6));
+            }
+        }
+
+        [TestMethod]
+        public void World_GetSnakeColor_CheckColorConsistency()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.updateSnake(RandomSingleSegment(100));
+
+            int ID = 0;
+            foreach(Snake snake in testWorld.GetSnakes())
+            {
+                ID = snake.ID;
+            }
+
+            System.Drawing.Color snakeColor = testWorld.GetSnakeColor(ID);
+
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+            testWorld.updateSnake(RandomSingleSegment(100));
+
+            Assert.AreEqual(snakeColor, testWorld.GetSnakeColor(ID));
+        }
+
+        [TestMethod]
+        public void World_GetSnakeColor_NoSnakes()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            Assert.AreEqual(System.Drawing.Color.Black, testWorld.GetSnakeColor(1729));
+        }
+
+        [TestMethod]
+        public void World_createSnake_SingleCreate()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.createSnake(5, "Simon");
+
+
+            Assert.AreEqual(1, testWorld.GetSnakes().Count);
+            foreach (Snake snake in testWorld.GetSnakes())
+            {
+                Assert.AreEqual("Simon", snake.name);
+            }
+
+        }
+
+        [TestMethod]
+        public void World_createSnake_AFew()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.createSnake(5, "Simon");
+            testWorld.createSnake(10, "Salazar");
+            testWorld.createSnake(10, "Satan");
+            testWorld.createSnake(10, "Sean");
+
+            Assert.AreEqual(4, testWorld.GetSnakes().Count);
+        }
+
         /*
          * Helper methods to make testing easier... It might be better for some of these to be in classes
          */
