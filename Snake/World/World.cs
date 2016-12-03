@@ -27,14 +27,13 @@ namespace SnakeModel
         // The player
         int PlayerID;
         // RNG for random world values
-        Random rando = new Random();
+        private Random rando = new Random();
         // Probability that a snake body point will turn to food
         private double snakeRecycleRate;
         // Food made available per snake.
         private int foodDensity;
-
-        // A variable used for assigning unique Food ID numbers
-        int NextFoodID;
+        // A list of food IDs that should be removed on the next updateWorld
+        private List<int> markedFood;
 
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
@@ -107,7 +106,6 @@ namespace SnakeModel
             Foods = new Dictionary<int, Food>();
             SnakeColors = new Dictionary<int, Color>();
             this.PlayerID = PlayerID;
-            NextFoodID = 0;
         }
 
         /// <summary>
@@ -121,6 +119,7 @@ namespace SnakeModel
         {
             this.snakeRecycleRate = snakeRecycleRate;
             this.foodDensity = foodDensity;
+            markedFood = new List<int>();
         }
 
         /// <summary>
@@ -128,6 +127,11 @@ namespace SnakeModel
         /// </summary>
         public void UpdateWorld()
         {
+            // check for eaten food and remove it
+            foreach(int foodID in markedFood)
+            {
+                Foods.Remove(foodID);
+            }
 
             // Move snakes and checks for collisions and interactions
             MoveSnakes();
@@ -164,6 +168,11 @@ namespace SnakeModel
                 //Food
                 case 1:
                     Map[newHead.X, newHead.Y] = 2;
+                    // Set the eaten foods location to (-1,-1)
+                    Foods[Food.getID(newHead)].loc.X = -1;
+                    Foods[Food.getID(newHead)].loc.Y = -1;
+                    // Remind us to remove this food on the next frame
+                    markedFood.Add(Food.getID(newHead));
                     break;
                 
                 //Snake
@@ -185,13 +194,16 @@ namespace SnakeModel
             foreach(Point point in snake.GetSnakePoints())
             {
                 //With specified probability, turns the snake body to food or empty space
-                if (rando.NextDouble() < snakeRecycleRate)
+                // Also checks to make sure the location is not on the wall.  
+                if (rando.NextDouble() < snakeRecycleRate &&  // Check rando
+                    point.X<Width && point.X>0 &&  // Make sure the X values are valid
+                    point.Y < Width && point.Y > 0) // Make sure the Y values are valid
                 {
                     //Updates world map with the new food.
                     Map[point.X, point.Y] = 1;
 
                     //Creates a new peice of food in our list.
-                    updateFood(new Food(NextFoodID, point));
+                    updateFood(new Food(Food.getID(point), point));
                 }
                 else
                 {
@@ -364,12 +376,20 @@ namespace SnakeModel
         public void generateFood() { 
             Point pt = new Point();
 
-            pt.X = rando.Next() % Width;
-            pt.Y = rando.Next() % Height;
+            pt.X = 0;
+            pt.Y = 0;
+            
+            // If the random position of the food is already filled in we pick a new random spot
+            while (Map[pt.X, pt.Y] != -1) 
+            {
+                // Get random x and y values that are inside of our world
+                pt.X = (rando.Next(Width - 2)) + 1;
+                pt.Y = (rando.Next(Height - 2)) + 1;
+            }
 
-            NextFoodID++;
-            updateFood(new Food(NextFoodID - 1, pt));
-
+            // Sets the food ID to be based on it's location
+            int ID = Food.getID(pt);
+            updateFood(new Food(Food.getID(pt), pt));
         }
 
         /// <summary>
@@ -384,8 +404,7 @@ namespace SnakeModel
             pt.X = X;
             pt.Y = Y;
 
-            NextFoodID++;
-            updateFood(new Food(NextFoodID - 1, pt));
+            updateFood(new Food(Food.getID(pt), pt));
 
         }
 

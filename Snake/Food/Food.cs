@@ -18,7 +18,8 @@ namespace SnakeModel
     public class Food
     {
         /// <summary>
-        /// ID for this peice of food.
+        /// ID for this peice of food.  It is based on the location that this food was placed at.
+        /// The ID should be 10000*x + y where x and y represent the x nd y coordinates of the food.
         /// </summary>
         [JsonProperty]
         public int ID
@@ -47,6 +48,29 @@ namespace SnakeModel
         {
             this.ID = ID;
             this.loc = loc;
+        }
+
+        /// <summary>
+        /// Gets the ID of a food given it's location.  This will give ID's of food that don't exist yet
+        /// So only use it for assigning IDs and food you already know exists
+        /// </summary>
+        /// <param name="X">X position of the food</param>
+        /// <param name="Y">X position of the food</param>
+        /// <returns>The ID of the food at this location</returns>
+        public static int getID(int X, int Y)
+        {
+            return 100000 * X + Y;
+        }
+
+        /// <summary>
+        /// Gets the ID of a food given it's location.  This will give ID's of food that don't exist yet
+        /// So only use it for assigning IDs and food you already know exists
+        /// </summary>
+        /// <param name="p">The point where the food is located</param>
+        /// <returns>The ID of the food at this location</returns>
+        public static int getID(Point p)
+        {
+            return getID(p.X, p.Y);
         }
        
     }

@@ -37,10 +37,22 @@ Almost added a Background.  We had it working but had a strange flickering and s
 
 Extra Features(Server):
 ?Severed snake becomes another snake, reversing direction
-?Severed snake becomes food.
+?Severed snake becomes food. (either made the 2d array an array of nodes or change value in 2d aray to be snake ID)
+?Create random walls in the gameboard and possibly other structures (wall segements, food alcoves, something else)
+?Useless direction does something(snake completely reverses direction)
+
 
 Current Issues:
+Client Always seems to crash after a few frames (Check protocol and then ask TAs about it)
 
+Implent random snake generation and make sure that it doesn't generate a snake on something else.
+ 
+Got a weird outOfBounds Exception when snake left bottom of board (it might have just been the 
+snake eating through a food on the wall and then moving through it)
+
+
+The new client closes when you hit 'q'
+The new client randomly crashes?
 
 Can 
 lock(A){
@@ -61,6 +73,3 @@ Time Spent Working on PS7:
 11/22/16 3:30PM - 7:45PM
 
 Total: 30:50
-
-Time Spend Working on PS8:
-11/27/16 1:45PM - 
