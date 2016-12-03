@@ -52,7 +52,7 @@ namespace Server
             readSettings(SETTINGSFILE);
 
             // create a World
-            world = new World(0, boardWidth, boardHeight);
+            world = new World(boardWidth, boardHeight, FoodDensity, SnakeRecycleRate);
 
             Console.WriteLine("Server Started up.");
 

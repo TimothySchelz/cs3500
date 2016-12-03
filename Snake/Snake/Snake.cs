@@ -164,9 +164,11 @@ namespace SnakeModel
         /// <summary>
         /// Moves this snakes head by 1 in the direction it wants to go
         /// </summary>
-        public void moveHeadForward()
+        /// <returns>Updated head location</returns>
+        public Point moveHeadForward()
         {
             Point Head = GetHead();
+
 
             // Check if direction has changed
             if (direction == prevDirection)
@@ -192,10 +194,12 @@ namespace SnakeModel
                         break;
                 }
 
+                //coordinate changed properly;
+                return Head;
+
             }
             else
             {
-
                 Point newHead = new Point();
 
                 //If direction has changed, create a new head in the correct position in relation to
@@ -226,17 +230,24 @@ namespace SnakeModel
                 //Adds the new head to the end of our vertex list.
                 vertices.Add(newHead);
 
+                return newHead;
             }
         }
 
         /// <summary>
         /// Moves this snakes tail forward by 1
         /// </summary>
-        public void moveTailForward()
+        /// <returns>Previous tail location</returns>
+        public Point moveTailForward()
         {
             //Gets points of the tail and next to last vertex
             Point Tail = vertices.First();
             Point NextToLast = vertices.ElementAt(1);
+
+            //Records current tail position which will no longer contain a snake
+            Point PrevTail = new Point();
+            PrevTail.X = Tail.X;
+            PrevTail.Y = Tail.Y;
 
             bool finalVerticiesAdj;
 
@@ -280,6 +291,9 @@ namespace SnakeModel
                 }
 
             }
+
+            //Returns the old position of the tail.
+            return PrevTail;
 
         }
 

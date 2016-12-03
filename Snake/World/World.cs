@@ -28,6 +28,10 @@ namespace SnakeModel
         int PlayerID;
         // RNG for random world values
         Random rando = new Random();
+        // Probability that a snake body point will turn to food
+        private double snakeRecycleRate;
+        // Food made available per snake.
+        private int foodDensity;
 
         // A variable used for assigning unique Food ID numbers
         int NextFoodID;
@@ -35,6 +39,7 @@ namespace SnakeModel
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
         Object FoodLock = new object();
+
 
         /// <summary>
         /// Snake being controlled by the player.
@@ -69,6 +74,7 @@ namespace SnakeModel
         /// No one to tell us no
         /// Or where to go
         /// Or say we're only dreaming
+        /// (Only for client use)
         /// </summary>
         /// <param name="PlayerID">The ID of the player snake</param>
         /// <param name="Width">The width of the world</param>
@@ -87,24 +93,97 @@ namespace SnakeModel
         }
 
         /// <summary>
-        /// Advances the world to the next frame of the game. Responsible for snake motion and food generation.
+        ///  Constructor used only by the server, where food density and snake recycle rate can be defined.
         /// </summary>
-        public void UpdateWorld(int FoodDensity, double SnakeRecycleRate)
+        /// <param name="Width"></param>
+        /// <param name="Height"></param>
+        /// <param name="FoodDensity"></param>
+        /// <param name="snakeRecycleRate"></param>
+        public World(int Width, int Height, int foodDensity, double snakeRecycleRate) : this(0, Width, Height)
         {
-
-            // Move snakes
-            MoveSnakes();
-
-            // Detect Collisions
-            Interactions();
-
-            // Generate food
-            PopulateWithFood(FoodDensity);
+            this.snakeRecycleRate = snakeRecycleRate;
+            this.foodDensity = foodDensity;
         }
 
-        private void Interactions()
+        /// <summary>
+        /// Advances the world to the next frame of the game. Responsible for snake motion and food generation.
+        /// </summary>
+        public void UpdateWorld()
         {
-            throw new NotImplementedException();
+
+            // Move snakes and checks for collisions and interactions
+            MoveSnakes();
+
+            // Generate food
+            PopulateWithFood(foodDensity);
+        }
+
+       /// <summary>
+       /// Given a specified snake and a new location for its head,
+       /// detects collisions of the snakes head and kills or grows
+       /// the snake if needed.
+       /// </summary>
+       /// <param name="newHead">New possition of the snake head</param>
+       /// <param name="snake">Snake to be updated</param>
+        private void Interactions(Point newHead, Snake snake)
+        {
+           
+            switch(Map[newHead.X, newHead.Y])
+            {
+
+                //Empty Space
+                case -1:
+                    Map[newHead.X, newHead.Y] = 2;
+                    snake.moveTailForward();
+                    break;
+                
+                //Wall
+                case 0:
+                    KillSnake(snake);
+                    break;
+
+                //Food
+                case 1:
+                    Map[newHead.X, newHead.Y] = 2;
+                    break;
+                
+                //Snake
+                case 2:
+                    KillSnake(snake);
+                    break;
+
+            }
+
+        }
+
+        /// <summary>
+        /// Decides what to do with each body point upon death
+        /// </summary>
+        /// <param name="snake"></param>
+        private void KillSnake(Snake snake)
+        {
+            //Iterates over all points in snake body
+            foreach(Point point in snake.GetSnakePoints())
+            {
+                //With specified probability, turns the snake body to food or empty space
+                if (rando.NextDouble() < snakeRecycleRate)
+                {
+                    //Updates world map with the new food.
+                    Map[point.X, point.Y] = 1;
+
+                    //Creates a new peice of food in our list.
+                    updateFood(new Food(NextFoodID, point));
+                }
+                else
+                {
+                    //Updates world map with empty space.
+                    Map[point.X, point.Y] = -1;
+                }
+
+                //kill this snake
+                snake.KillMe();
+            }
+
         }
 
         /// <summary>
@@ -136,10 +215,12 @@ namespace SnakeModel
                     continue;
 
                 // Move head Forward
-                snakePair.Value.moveHeadForward();
+                Point newHead = snakePair.Value.moveHeadForward();
 
-                // move tail forward
-                snakePair.Value.moveTailForward();
+                // Checks for interactions of the snake with other objects.
+                // Updates world map & snake body accordingly.
+                Interactions(newHead, snakePair.Value);
+
             }
 
         }
