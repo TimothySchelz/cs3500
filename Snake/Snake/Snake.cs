@@ -114,10 +114,14 @@ namespace SnakeModel
             {
                 lock (this)
                 {
-                    if (value >= 1 && value <= 4 && prevDirection - value % 2 != 0)
-                    {
+
+                    //Checks if given direction is valid and not
+                    //Also checks that we don't move back on ourselves.
+                    if ((value <= 4 && value >= 1 &&
+                        value != ((prevDirection + 1) % 4 + 1)) || 
+                        prevDirection == 0)
                         direction = value;
-                    }
+
                 }
             }
         }
@@ -140,10 +144,10 @@ namespace SnakeModel
 
             set
             {
-                if (value >= 1 && value <= 4 && prevDirection - value % 2 != 0)
-                {
+                //Checks if given direction is valid or not
+                //Also checks that we don't move back on ourselves.
+                if (value <= 4 && value >= 1 && (value != (prevDirection+1)%4 + 1))
                     prevDirection = value;
-                }
             }
         }
 
@@ -169,7 +173,6 @@ namespace SnakeModel
         {
             Point Head = GetHead();
 
-
             // Check if direction has changed
             if (direction == prevDirection)
             {
@@ -193,6 +196,9 @@ namespace SnakeModel
                         Head.X--;
                         break;
                 }
+
+                // make sure to reset the previous direction
+                prevDirection = direction;
 
                 //coordinate changed properly;
                 return Head;
@@ -227,11 +233,32 @@ namespace SnakeModel
                         break;
                 }
 
+                // make sure to set the previous direction
+                prevDirection = direction;
+
                 //Adds the new head to the end of our vertex list.
                 vertices.Add(newHead);
 
                 return newHead;
             }
+        }
+
+        /// <summary>
+        /// Actually kill the snake.  i.e. change it's verticies
+        /// </summary>
+        public void KillMe()
+        {
+            List<Point> deadList = new List<Point>();
+            Point h = new Point();
+            Point t = new Point();
+            h.X = -1;
+            h.Y = -1;
+            t.X = -1;
+            t.Y = -1;
+            deadList.Add(h);
+            deadList.Add(t);
+
+            vertices = deadList;
         }
 
         /// <summary>

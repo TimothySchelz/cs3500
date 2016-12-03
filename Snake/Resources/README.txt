@@ -40,8 +40,13 @@ Extra Features(Server):
 ?Severed snake becomes food.
 
 Current Issues:
-Needs to handle client disconnection gracefully.
 
+
+Can 
+lock(A){
+	lock(A){}
+}
+be entered or will that just deadlock with itself?
 
 
 Time Spent Working on PS7:

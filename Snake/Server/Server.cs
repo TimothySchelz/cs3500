@@ -190,6 +190,8 @@ namespace Server
             //Update the world
             world.UpdateWorld();
 
+            //TODO: Put the following serialization into world and lock it with snake lock and food lock
+
             // Compile the date to be sent
             // Create a stringbuilder to hold data to be sent and append new items on
             StringBuilder data = new StringBuilder();
@@ -206,20 +208,54 @@ namespace Server
 
             String message = data.ToString();
 
+            Console.WriteLine(message);
+
             //Send data to Clients
             foreach(SocketState client in clients.GetAllClients())
             {
+                Console.WriteLine(message);
                 Networking.SendData(client, message);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Client"></param>
         public void ClientConnected(SocketState Client)
         {
             //Updates callback
             Client.CallMe = RecieveName;
 
+            //Instructs the socket what to do when client disconnects.
+            Client.DisconnectCallback = DisconnectClient;
+
             //Begins listening for name information from client
             Networking.GetData(Client);
+        }
+
+        /// <summary>
+        /// Disconnects a client gracefully.
+        /// </summary>
+        /// <param name="State"></param>
+        private void DisconnectClient(SocketState State)
+        {
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+            Console.WriteLine("Disconnected Client");
+
+            clients.Remove(State.ID);
+            State.theSocket.Close();
         }
 
         /// <summary>
@@ -247,6 +283,7 @@ namespace Server
 
             String name;
 
+            // Set the name
             if (DataList.Length == 0 || DataList[0].Equals(""))
             {
                 name = "Boaty McBoatface";
@@ -282,10 +319,14 @@ namespace Server
             State.sb.Clear();
 
             // Get the actual irection the layer wishes to move
-            char direction = message[message.Length-3];
+            String direction = "" + message[message.Length-3];
 
-            //Changes
-            world.ChangeSnakeDirection(State.ID, direction);
+            int directionInt = 1;
+
+            Int32.TryParse(direction, out directionInt);
+
+            //Changes the snake's direction
+            world.ChangeSnakeDirection(State.ID, directionInt);
 
             Networking.GetData(State);
         }
@@ -361,6 +402,19 @@ namespace Server
                     NextID++;
                     return NextID -1;
                 }                
+            }
+
+            /// <summary>
+            /// Removes the client with the specified id from this list
+            /// </summary>
+            /// <param name="ID"></param>
+            /// <returns></returns>
+            public bool Remove(int ID)
+            {
+                lock (this)
+                {
+                    return clients.Remove(ID);
+                }
             }
 
 

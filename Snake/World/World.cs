@@ -85,6 +85,24 @@ namespace SnakeModel
             this.Height = Height;
             this.Width = Width;
             Map = new Int32[Width, Height];
+
+            //Iterate through every  cell in our map
+            for(int x = 0; x < Width; x++)
+            {
+                for(int y = 0; y < Height; y++)
+                {
+                    //Leave the edges of our map to be 0
+                    if (x == 0 || x == Width - 1 || y == 0 || y == Height - 1)
+                        continue;
+
+                    //Change everything else to -1
+                    Map[x, y] = -1;
+                }
+            }
+
+
+
+
             Snakes = new Dictionary<int, Snake>();
             Foods = new Dictionary<int, Food>();
             SnakeColors = new Dictionary<int, Color>();
@@ -134,7 +152,8 @@ namespace SnakeModel
                 //Empty Space
                 case -1:
                     Map[newHead.X, newHead.Y] = 2;
-                    snake.moveTailForward();
+                    Point prevTail = snake.moveTailForward();
+                    Map[prevTail.X, prevTail.Y] = -1;
                     break;
                 
                 //Wall
@@ -179,11 +198,10 @@ namespace SnakeModel
                     //Updates world map with empty space.
                     Map[point.X, point.Y] = -1;
                 }
-
-                //kill this snake
-                snake.KillMe();
             }
 
+            //this kills the snake
+            snake.KillMe();
         }
 
         /// <summary>
@@ -192,11 +210,24 @@ namespace SnakeModel
         /// <param name="FoodDensity">The amount of food per snake</param>
         private void PopulateWithFood(int FoodDensity)
         {
-            int FoodDisparity = (Snakes.Count * FoodDensity) - Foods.Count;
+            int FoodDisparity;
 
+            // Determine how much food is missing from the world based on density 
+            // Formula split into seperate locks to avoid nested locks and possible deadlocks.
+            lock (SnakeLock)  // Deal with snake portion first.  Lock it so we don't hve any problems
+            {
+                FoodDisparity = (Snakes.Count * FoodDensity);
+            }
+
+            lock(FoodLock) // then deal with food portion.  Lock it so e don't have any problems
+            {
+                FoodDisparity = FoodDisparity - Foods.Count;
+            }
+
+            // Create new food
             if (FoodDisparity > 0)
             {
-                for(int i = 0; i < FoodDisparity; i++)
+                for (int i = 0; i < FoodDisparity; i++)
                 {
                     generateFood();
                 }
@@ -208,21 +239,37 @@ namespace SnakeModel
         /// </summary>
         private void MoveSnakes()
         {
-            foreach(KeyValuePair<int,Snake> snakePair in Snakes)
+            lock(SnakeLock)
             {
-                //Do nothing if the snake is dead.
-                if (snakePair.Value.GetHead().X == -1)
-                    continue;
+                // List of snake ID's to be removed
+                List<int> MarkedForRemoval = new List<int>();
 
-                // Move head Forward
-                Point newHead = snakePair.Value.moveHeadForward();
+                foreach (KeyValuePair<int, Snake> snakePair in Snakes)
+                {
+                    // Remove the snake from the list of snakes if the snake is dead.
+                    if (snakePair.Value.GetHead().X == -1)
+                    {
+                        // Create a list of IDs of snakes to be removed... Can't actually remove 
+                        // them here since we are iterating through the snakes
+                        MarkedForRemoval.Add(snakePair.Key);
+                        continue;
+                    }
 
-                // Checks for interactions of the snake with other objects.
-                // Updates world map & snake body accordingly.
-                Interactions(newHead, snakePair.Value);
+                    // Move head Forward
+                    Point newHead = snakePair.Value.moveHeadForward();
 
+                    // Checks for interactions of the snake with other objects.
+                    // Updates world map & snake body accordingly.
+                    Interactions(newHead, snakePair.Value);
+                }
+
+                // Actually remove the dead snakes
+                foreach(int SID in MarkedForRemoval)
+                {
+                    Snakes.Remove(SID);
+                }
+                
             }
-
         }
 
         /// <summary>
@@ -301,8 +348,9 @@ namespace SnakeModel
                     // Check if the food has been eaten 
                     if (newFood.loc.X != -1)
                     {
-                        // if it hasn't, add it to our dictionary of food
+                        // if it hasn't, add it to our dictionary of food & our map
                         Foods.Add(newFood.ID, newFood);
+                        Map[newFood.loc.X, newFood.loc.Y] = 1;
 
                         // otherwise don't do anything.  It is gone
                     }
@@ -437,18 +485,27 @@ namespace SnakeModel
             Point Tail = new Point();
 
             //TODO: FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
+            
 
-            Head.X = Width / 2;
+            Head.X = (Width / 2) - 1;
             Head.Y = Height / 2;
 
-            Tail.X = Head.X + 10;
+            Tail.X = (Width / 2) + 40;
             Tail.Y = Head.Y;
 
+
             List<Point> verts = new List<Point>() { Head, Tail };
-            Snake NewPlayer = new Snake(verts, ID, Name);
+            Snake snake = new Snake(verts, ID, Name);
+
+
+            //Set appropriate direction
+            snake.Direction = 2;
+            snake.PrevDirection = 2;
 
             // Puts the new snake in the world
-            this.updateSnake(NewPlayer);
+            this.updateSnake(snake);
+
+
         }
 
         /// <summary>
@@ -483,5 +540,3 @@ namespace SnakeModel
         }
     }
 }
-
-

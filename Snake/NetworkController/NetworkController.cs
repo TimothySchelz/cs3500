@@ -22,7 +22,9 @@ namespace NetworkController
         public int ID;
         public Callback CallMe;
         public Callback SendCallback;
+        public Callback DisconnectCallback;
         public delegate void Callback(SocketState State);
+
 
         /// <summary>
         /// Keeps track of the size of the buffer
@@ -204,8 +206,17 @@ namespace NetworkController
         {
             SocketState ss = (SocketState)ar.AsyncState;
 
-            
-            int bytesRead = ss.theSocket.EndReceive(ar);        //TODO: Throws a SocketException when a client disconnects
+            int bytesRead = 0;
+
+            try
+            {
+                //A client may be disconnected
+                bytesRead = ss.theSocket.EndReceive(ar);        
+            }
+            catch(SocketException se)
+            {
+                ss.DisconnectCallback(ss);
+            }
 
             // If the socket is still open
             if (bytesRead > 0)
