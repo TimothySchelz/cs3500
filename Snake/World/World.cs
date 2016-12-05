@@ -115,10 +115,12 @@ namespace SnakeModel
         /// <summary>
         ///  Constructor used only by the server, where food density and snake recycle rate can be defined.
         /// </summary>
-        /// <param name="Width"></param>
-        /// <param name="Height"></param>
-        /// <param name="FoodDensity"></param>
-        /// <param name="snakeRecycleRate"></param>
+        /// <param name="Width">Width of the world</param>
+        /// <param name="Height">Height of the World</param>
+        /// <param name="foodDensity">the amount of food per snake</param>
+        /// <param name="headroom">The amount of empty space in front of a new snake</param>
+        /// <param name="snakeLength">The starting length of a snake</param>
+        /// <param name="snakeRecycleRate">The rate the snakes turn into food</param>
         public World(int Width, int Height, int foodDensity, int headroom, int snakeLength, double snakeRecycleRate) : this(0, Width, Height)
         {
             this.snakeRecycleRate = snakeRecycleRate;

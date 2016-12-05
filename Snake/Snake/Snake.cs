@@ -114,7 +114,7 @@ namespace SnakeModel
             {
                 lock (this)
                 {
-
+                    
                     //Checks if given direction is valid and not
                     //Also checks that we don't move back on ourselves.
                     if ((value <= 4 && value >= 1 &&

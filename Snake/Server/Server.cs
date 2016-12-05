@@ -32,6 +32,7 @@ namespace Server
         private int headroom;
         private int snakeLength;
         private double SnakeRecycleRate;
+        private bool ExtraGameMode;
 
         /// <summary>
         /// Main method to run when the server is staarted
@@ -53,8 +54,14 @@ namespace Server
             // Read info from the settings file
             readSettings(SETTINGSFILE);
 
-            // create a World
-            world = new World(boardWidth, boardHeight, FoodDensity, headroom, snakeLength, SnakeRecycleRate);
+            // create a World depending on the game mode
+            if (ExtraGameMode)
+            {
+
+            } else
+            {
+                world = new World(boardWidth, boardHeight, FoodDensity, headroom, snakeLength, SnakeRecycleRate);
+            }
 
             Console.WriteLine("Server Started up.");
 
@@ -178,6 +185,20 @@ namespace Server
                                     if (!Int32.TryParse(readSnakeLength, out snakeLength))
                                     {
                                         throw new ArgumentException("snakeLength settings don't make sense.");
+                                    }
+                                    break;
+
+                                
+                                case "ExtraGameMode":
+                                    // Reads the info from the xml and converts it into a bool
+                                    reader.Read();
+
+                                    String readGameMode = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!bool.TryParse(readGameMode, out ExtraGameMode))
+                                    {
+                                        throw new ArgumentException("ExtraGameMode settings don't make sense.");
                                     }
                                     break;
 
