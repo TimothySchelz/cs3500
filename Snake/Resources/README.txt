@@ -44,11 +44,9 @@ Extra Features(Server):
 
 Current Issues:
 Client Always seems to crash after a few frames (Check protocol and then ask TAs about it)
-
-Implent random snake generation and make sure that it doesn't generate a snake on something else.
  
 Got a weird outOfBounds Exception when snake left bottom of board (it might have just been the 
-snake eating through a food on the wall and then moving through it)
+snake eating through a food on the wall and then moving through it, in which case, this was resolved.)
 
 
 The new client closes when you hit 'q'

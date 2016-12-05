@@ -29,6 +29,8 @@ namespace Server
         private int boardHeight;
         private int MSPerFrame;
         private int FoodDensity;
+        private int headroom;
+        private int snakeLength;
         private double SnakeRecycleRate;
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace Server
             readSettings(SETTINGSFILE);
 
             // create a World
-            world = new World(boardWidth, boardHeight, FoodDensity, SnakeRecycleRate);
+            world = new World(boardWidth, boardHeight, FoodDensity, headroom, snakeLength, SnakeRecycleRate);
 
             Console.WriteLine("Server Started up.");
 
@@ -153,7 +155,32 @@ namespace Server
                                     }
                                     break;
 
-                                    
+                                case "headroom":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readHeadroom = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readHeadroom, out headroom))
+                                    {
+                                        throw new ArgumentException("headroom settings don't make sense.");
+                                    }
+                                    break;
+
+                                case "snakeLength":
+                                    // Reads the info from the xml and converts it into an int
+                                    reader.Read();
+
+                                    String readSnakeLength = reader.Value.Trim();
+
+                                    // Make sure it as read properly
+                                    if (!Int32.TryParse(readSnakeLength, out snakeLength))
+                                    {
+                                        throw new ArgumentException("snakeLength settings don't make sense.");
+                                    }
+                                    break;
+
                                 case "SnakeSettings":
                                     //Doesn't Do anything at the start of the XML file.
                                     break;

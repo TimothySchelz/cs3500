@@ -34,6 +34,10 @@ namespace SnakeModel
         private int foodDensity;
         // A list of food IDs that should be removed on the next updateWorld
         private List<int> markedFood;
+        // A variable specifying the amount of headroom a snake has upon spawning.
+        private int headroom;
+        // Length of snake upon spawning
+        private int snakeLength;
 
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
@@ -115,10 +119,12 @@ namespace SnakeModel
         /// <param name="Height"></param>
         /// <param name="FoodDensity"></param>
         /// <param name="snakeRecycleRate"></param>
-        public World(int Width, int Height, int foodDensity, double snakeRecycleRate) : this(0, Width, Height)
+        public World(int Width, int Height, int foodDensity, int headroom, int snakeLength, double snakeRecycleRate) : this(0, Width, Height)
         {
             this.snakeRecycleRate = snakeRecycleRate;
             this.foodDensity = foodDensity;
+            this.snakeLength = snakeLength;
+            this.headroom = headroom;
             markedFood = new List<int>();
         }
 
@@ -200,7 +206,7 @@ namespace SnakeModel
                     point.Y < Width && point.Y > 0) // Make sure the Y values are valid
                 {
                     //Updates world map with the new food.
-                    Map[point.X, point.Y] = 1;
+                    //Map[point.X, point.Y] = 1;  //TODO: Possibly unnecessary code.  Should be done in update food
 
                     //Creates a new peice of food in our list.
                     updateFood(new Food(Food.getID(point), point));
@@ -502,28 +508,114 @@ namespace SnakeModel
 
             Point Head = new Point();
             Point Tail = new Point();
-
-            //TODO: FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
-            
-
-            Head.X = (Width / 2) - 1;
-            Head.Y = Height / 2;
-
-            Tail.X = (Width / 2) + 40;
-            Tail.Y = Head.Y;
-
-
-            List<Point> verts = new List<Point>() { Head, Tail };
+           
+            List<Point> verts = new List<Point>() {Tail, Head};
             Snake snake = new Snake(verts, ID, Name);
 
+            //TODO: FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
+            do
+            {
+                //Randomly laces the head at a position within the board
+                //Places the snake head at least a snake length away from the nearest wall
+                Head.X = rando.Next(snakeLength + 1, Width-(snakeLength+2));
+                Head.Y = rando.Next(snakeLength + 1, Height-(snakeLength+2));
 
-            //Set appropriate direction
-            snake.Direction = 2;
-            snake.PrevDirection = 2;
+                //Chooses one of the 4 direction with equal probability
+                snake.Direction = (rando.Next() % 4) + 1;
+                snake.PrevDirection = snake.Direction;
+
+                //Sets the tail a snake length 'behind' the head
+                //'behind' is opposite the snake's current direction.
+                switch (snake.Direction)
+                {
+                    case 1:
+                        Tail.X = Head.X;
+                        Tail.Y = Head.Y + snakeLength;
+                        break;
+
+                    case 2:
+                        Tail.X = Head.X - snakeLength;
+                        Tail.Y = Head.Y;
+                        break;
+
+                    case 3:
+                        Tail.X = Head.X;
+                        Tail.Y = Head.Y - snakeLength;
+                        break;
+
+                    case 4:
+                        Tail.X = Head.X + snakeLength;
+                        Tail.Y = Head.Y;
+                        break;
+                }
+
+                //Retry random snake placement until space is clear.
+            } while (!SpaceIsClear(snake));
 
             // Puts the new snake in the world
             this.updateSnake(snake);
 
+
+        }
+
+        /// <summary>
+        /// Checks that the space that a given snake would take up is available in the world, as
+        /// well as a decent amount of space in front of the snake's head. Snake should be comprised
+        /// of 2 vertices.
+        /// </summary>
+        /// <param name="snake"></param>
+        /// <returns></returns>
+        private bool SpaceIsClear(Snake snake)
+        {
+            foreach( Point point in snake.GetSnakePoints())
+            {
+                if (Map[point.X, point.Y] != -1)
+                    return false;
+            }
+
+            Point Head = snake.GetHead();
+
+            switch (snake.Direction)
+            {
+                //Checks space above head.
+                case 1:
+                    for(int i = 0; i < headroom; i++)
+                    {
+                        if (Map[Head.X, Head.Y - i] != -1)
+                            return false;
+                    }
+                    break;
+
+                //Check space to the right of head
+                case 2:
+                    for(int i = 0; i < headroom; i++)
+                    {
+                        if (Map[Head.X + i, Head.Y] != -1)
+                            return false;
+                    }
+                    break;
+                
+                //Check space below the head
+                case 3:
+                    for (int i = 0; i < headroom; i++)
+                    {
+                        if (Map[Head.X, Head.Y - i] != -1)
+                            return false;
+                    }
+                    break;
+                
+                //Check space to the left of head
+                case 4:
+                    for (int i = 0; i < headroom; i++)
+                    {
+                        if (Map[Head.X - i, Head.Y] != -1)
+                            return false;
+                    }
+                    break;
+
+            }
+
+            return true;
 
         }
 
@@ -539,7 +631,8 @@ namespace SnakeModel
         /// <param name="direction">The direction the snake should be changed too</param>
         public void ChangeSnakeDirection(int ID, int direction)
         {
-            Snakes[ID].Direction = direction;
+            if(Snakes.ContainsKey(ID))
+                Snakes[ID].Direction = direction;
         }
 
         /// <summary>

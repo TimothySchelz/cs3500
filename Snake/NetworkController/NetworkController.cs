@@ -249,7 +249,7 @@ namespace NetworkController
         public static void SendData(SocketState ss, String data)
         {
             // Convert the string data to a Byte Array
-            byte[] messageBytes = Encoding.UTF8.GetBytes(data + "\n");
+            byte[] messageBytes = Encoding.UTF8.GetBytes(data);
 
             // Send the data
             ss.theSocket.BeginSend(messageBytes, 0, messageBytes.Length, SocketFlags.None, Networking.SendCallback, ss);
