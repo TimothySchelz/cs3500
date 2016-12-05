@@ -1,9 +1,9 @@
 ﻿<SnakeSettings>
   <BoardWidth>100</BoardWidth>
   <BoardHeight>100</BoardHeight>
-  <MSPerFrame>500</MSPerFrame>
-  <FoodDensity>10</FoodDensity>
+  <MSPerFrame>33</MSPerFrame>
+  <FoodDensity>0</FoodDensity>
   <headroom>10</headroom>
   <snakeLength>10</snakeLength>
-  <SnakeRecycleRate>0.5</SnakeRecycleRate>
+  <SnakeRecycleRate>1</SnakeRecycleRate>
 </SnakeSettings>

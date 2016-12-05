@@ -43,8 +43,8 @@ Extra Features(Server):
 
 
 Current Issues:
-Client Always seems to crash after a few frames (Check protocol and then ask TAs about it)
- 
+When there are a few snakes in the game we are getting an KeyNotFoundException where there appears to be a food in the 2d array but not in the list of foods.  It seems to only happen when there are more than 1 snake.
+
 Got a weird outOfBounds Exception when snake left bottom of board (it might have just been the 
 snake eating through a food on the wall and then moving through it, in which case, this was resolved.)
 

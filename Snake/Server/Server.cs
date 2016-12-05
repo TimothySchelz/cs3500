@@ -240,8 +240,15 @@ namespace Server
             //Send data to Clients
             foreach(SocketState client in clients.GetAllClients())
             {
-                Console.WriteLine(message);
-                Networking.SendData(client, message);
+                try
+                {
+                    Console.WriteLine(message);
+                    Networking.SendData(client, message);
+                } catch
+                {
+                    Console.WriteLine("Tried to send data to client that has already disconnected.");
+                }
+                
             }
         }
 
