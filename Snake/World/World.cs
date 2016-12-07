@@ -135,17 +135,22 @@ namespace SnakeModel
         /// </summary>
         public void UpdateWorld()
         {
-            // check for eaten food and remove it
-            foreach(int foodID in markedFood)
+            lock (this)
             {
-                Foods.Remove(foodID);
+                // check for eaten food and remove it
+                foreach (int foodID in markedFood)
+                {
+                    Foods.Remove(foodID);
+                }
+
+                markedFood.Clear();
+
+                // Move snakes and checks for collisions and interactions
+                MoveSnakes();
+
+                // Generate food
+                PopulateWithFood(foodDensity);
             }
-
-            // Move snakes and checks for collisions and interactions
-            MoveSnakes();
-
-            // Generate food
-            PopulateWithFood(foodDensity);
         }
 
        /// <summary>
@@ -176,11 +181,18 @@ namespace SnakeModel
                 //Food
                 case 1:
                     Map[newHead.X, newHead.Y] = 2;
-                    // Set the eaten foods location to (-1,-1)
-                    Foods[Food.getID(newHead)].loc.X = -1;
-                    Foods[Food.getID(newHead)].loc.Y = -1;
-                    // Remind us to remove this food on the next frame
-                    markedFood.Add(Food.getID(newHead));
+
+                    // covers up a weird Key not found exception
+                    if (Foods.ContainsKey(Food.getID(newHead)))
+                    {
+                        // Set the eaten foods location to (-1,-1)
+                        Foods[Food.getID(newHead)].loc.X = -1;
+                        Foods[Food.getID(newHead)].loc.Y = -1;
+
+                        // Remind us to remove this food on the next frame
+                        markedFood.Add(Food.getID(newHead));
+                    }
+                    
                     break;
                 
                 //Snake
@@ -201,6 +213,12 @@ namespace SnakeModel
             //Iterates over all points in snake body
             foreach(Point point in snake.GetSnakePoints())
             {
+
+                if(point.X == snake.GetHead().X && point.Y == snake.GetHead().Y)
+                {
+                    continue;
+                }
+
                 //With specified probability, turns the snake body to food or empty space
                 // Also checks to make sure the location is not on the wall.  
                 if (rando.NextDouble() < snakeRecycleRate &&  // Check rando
@@ -208,7 +226,7 @@ namespace SnakeModel
                     point.Y < Width && point.Y > 0) // Make sure the Y values are valid
                 {
                     //Updates world map with the new food.
-                    //Map[point.X, point.Y] = 1;  //TODO: Possibly unnecessary code.  Should be done in update food
+                    Map[point.X, point.Y] = 1;  //TODO: Possibly unnecessary code.  Should be done in update food
 
                     //Creates a new peice of food in our list.
                     updateFood(new Food(Food.getID(point), point));
@@ -354,7 +372,7 @@ namespace SnakeModel
                 // check if the food is already known about
                 if (Foods.ContainsKey(newFood.ID))
                 {
-                    // If the food hs been eaten we remove it
+                    // If the food has been eaten we remove it
                     if (newFood.loc.X == -1)
                     {
                         Foods.Remove(newFood.ID);

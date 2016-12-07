@@ -248,6 +248,7 @@ namespace Server
             {
                 data.Append(JsonConvert.SerializeObject(snake) + "\n");
             }
+            Console.WriteLine(data.ToString());
             // Append all the food onto the StringBuider
             foreach (Food food in world.GetFood())
             {
@@ -256,14 +257,13 @@ namespace Server
 
             String message = data.ToString();
 
-            Console.WriteLine(message);
+            
 
             //Send data to Clients
             foreach(SocketState client in clients.GetAllClients())
             {
                 try
                 {
-                    Console.WriteLine(message);
                     Networking.SendData(client, message);
                 } catch
                 {
