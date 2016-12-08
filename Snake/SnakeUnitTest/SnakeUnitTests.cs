@@ -212,6 +212,104 @@ namespace SnakeUnitTest
          * World Tests
          */
         [TestMethod]
+        public void World_PlayerSnake_GetingPlayerSnake()
+        {
+            World testWorld = new World(1, 100, 100);
+
+
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            int HX = rando.Next(100);
+            int HY = rando.Next(100);
+            int TX = HX;
+            int TY = rando.Next(100);
+
+            p1.X = HX;
+            p1.Y = HY;
+            p2.X = TX;
+            p2.Y = TY;
+
+            int ID = 1;
+
+            Snake Sean = new Snake(new List<Point>() { p2, p1 }, ID, "Sean");
+
+            testWorld.updateSnake(Sean);
+
+            Assert.AreEqual(Sean, testWorld.PlayerSnake);
+        }
+
+        [TestMethod]
+        public void World_Constructor2_OneSnake()
+        {
+            World testWorld = new World(100, 100, 5, 5, 10, 1);
+
+            testWorld.createSnake(5, "Steven");
+            foreach (Snake result in testWorld.GetSnakes())
+            {
+                Assert.AreEqual(10, result.GetLength());
+            }
+
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual(5, testWorld.GetFood().Count);
+        }
+
+        [TestMethod]
+        public void World_Constructor2_OneSnakeTestHeadroom()
+        {
+            // repeat this a bunch since placement is random
+            for (int i = 0; i < 100; i++)
+            {
+                World testWorld = new World(20, 20, 5, 5, 8, 1);
+
+                testWorld.createSnake(5, "Steven");
+
+                //move the snake forward by the headroom
+                testWorld.UpdateWorld();
+                testWorld.UpdateWorld();
+                testWorld.UpdateWorld();
+                testWorld.UpdateWorld();
+                testWorld.UpdateWorld();
+
+                // make sure the snake is still alive
+                foreach (Snake Steven in testWorld.GetSnakes())
+                {
+                    Assert.IsFalse(Steven.GetHead().X == -1);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void World_UpdateWorld_HitWall()
+        {
+
+            World testWorld = new World(20, 20, 5, 5, 8, 1);
+
+            testWorld.createSnake(5, "Steven");
+
+            bool hitwall = false;
+
+            for (int i = 0; i < 20; i++)
+            {
+                // move the snake forword a bunch
+                testWorld.UpdateWorld();
+
+                // make sure the snake dies eventually
+                foreach (Snake Steven in testWorld.GetSnakes())
+                {
+                    //check if it died
+                    if (Steven.GetHead().X == -1)
+                    {
+                        hitwall = true;
+                    }
+                }
+            }
+
+            Assert.IsTrue(hitwall);
+        }
+
+        [TestMethod]
         public void World_Constructor_TestWidth()
         {
             World testWorld = new World(1, 10, 100);
@@ -258,10 +356,10 @@ namespace SnakeUnitTest
             testWorld.updateSnake(RandomSingleSegment(100));
             testWorld.updateSnake(RandomSingleSegment(100));
 
-            foreach(Snake snake in testWorld.GetSnakes())
+            foreach (Snake snake in testWorld.GetSnakes())
             {
                 Assert.AreEqual("Seymour", snake.name);
-            }      
+            }
         }
 
         [TestMethod]
@@ -320,7 +418,7 @@ namespace SnakeUnitTest
             testWorld.updateSnake(RandomSingleSegment(100));
 
             int ID = 0;
-            foreach(Snake snake in testWorld.GetSnakes())
+            foreach (Snake snake in testWorld.GetSnakes())
             {
                 ID = snake.ID;
             }
@@ -401,7 +499,7 @@ namespace SnakeUnitTest
             p1.X = rando.Next(max);
             p1.Y = rando.Next(max);
 
-            int ID = p1.X.GetHashCode()*37 + p1.Y.GetHashCode()*157;
+            int ID = p1.X.GetHashCode() * 37 + p1.Y.GetHashCode() * 157;
             return new Food(ID, p1);
         }
 
