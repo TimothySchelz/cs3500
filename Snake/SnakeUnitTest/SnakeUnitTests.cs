@@ -1,5 +1,5 @@
 ﻿// Created by Gray Marchese, u0884194, and Timothy Schelz, u0851027
-// Last Date Updated: 11/22/16
+// Last Date Updated: 12/8/16
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SnakeModel;
@@ -13,6 +13,12 @@ namespace SnakeUnitTest
     [TestClass]
     public class SnakeUnitTests
     {
+        Random rando;
+        [TestInitialize]
+        public void StartupJunk()
+        {
+            rando = new Random(1729);
+        }
         /*
          * Food Tests
          */
@@ -218,7 +224,7 @@ namespace SnakeUnitTest
         {
             World testWorld = new World(1, 10, 100);
 
-            Assert.AreEqual(10, testWorld.Height);
+            Assert.AreEqual(100, testWorld.Height);
         }
 
         [TestMethod]
@@ -267,17 +273,13 @@ namespace SnakeUnitTest
         }
 
         [TestMethod]
-        public void World_GetFood_AFew()
+        public void World_GetFood_One()
         {
             World testWorld = new World(1, 100, 100);
 
             testWorld.updateFood(RandomFood(100));
-            testWorld.updateFood(RandomFood(100));
-            testWorld.updateFood(RandomFood(100));
-            testWorld.updateFood(RandomFood(100));
 
-
-            Assert.AreEqual(4, testWorld.GetFood().Count);
+            Assert.AreEqual(1, testWorld.GetFood().Count);
         }
 
         [TestMethod]
@@ -306,7 +308,7 @@ namespace SnakeUnitTest
             Assert.AreEqual(4, testWorld.GetFood().Count);
             foreach (Food food in testWorld.GetFood())
             {
-                Assert.IsTrue((food.loc.X == 5 || food.loc.X == 6) && (food.loc.X == 6 || food.loc.X == 6));
+                Assert.IsTrue((food.loc.X == 5 || food.loc.X == 6) && (food.loc.Y == 5 || food.loc.Y == 6));
             }
         }
 
@@ -364,10 +366,23 @@ namespace SnakeUnitTest
 
             testWorld.createSnake(5, "Simon");
             testWorld.createSnake(10, "Salazar");
+            testWorld.createSnake(100, "Satan");
+            testWorld.createSnake(984, "Sean");
+
+            Assert.AreEqual(4, testWorld.GetSnakes().Count);
+        }
+
+        [TestMethod]
+        public void World_createSnake_repeatedIDs()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.createSnake(5, "Simon");
+            testWorld.createSnake(10, "Salazar");
             testWorld.createSnake(10, "Satan");
             testWorld.createSnake(10, "Sean");
 
-            Assert.AreEqual(4, testWorld.GetSnakes().Count);
+            Assert.AreEqual(2, testWorld.GetSnakes().Count);
         }
 
         /*
@@ -382,7 +397,6 @@ namespace SnakeUnitTest
         public Food RandomFood(int max)
         {
             Point p1 = new Point();
-            Random rando = new Random(123456);
 
             p1.X = rando.Next(max);
             p1.Y = rando.Next(max);
@@ -423,8 +437,6 @@ namespace SnakeUnitTest
         {
             Point p1 = new Point();
             Point p2 = new Point();
-
-            Random rando = new Random(1729);
 
             int HX = rando.Next(max);
             int HY = rando.Next(max);
