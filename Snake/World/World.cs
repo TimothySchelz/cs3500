@@ -1,5 +1,5 @@
 ﻿// Created by Gray Marchese, u0884194, and Timothy Schelz, u0851027
-// Last Date Updated: 11/22/16
+// Last Date Updated: 12/8/16
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -532,10 +532,9 @@ namespace SnakeModel
             List<Point> verts = new List<Point>() {Tail, Head};
             Snake snake = new Snake(verts, ID, Name);
 
-            //TODO: FIGURE OUT BETTER PLACEMENT FOR NEW SNAKE
             do
             {
-                //Randomly laces the head at a position within the board
+                //Randomly places the head at a position within the board
                 //Places the snake head at least a snake length away from the nearest wall
                 Head.X = rando.Next(snakeLength + 1, Width-(snakeLength+2));
                 Head.Y = rando.Next(snakeLength + 1, Height-(snakeLength+2));
