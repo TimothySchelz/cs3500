@@ -34,7 +34,7 @@ namespace Server
         private int headroom;
         private int snakeLength;
         private double SnakeRecycleRate;
-        private bool ExtraGameMode;
+        private int ExtraGameMode;
 
         /// <summary>
         /// Main method to run when the server is staarted
@@ -53,17 +53,17 @@ namespace Server
             // create the hashset of clients
             clients = new Clients();
 
+
+            // Sets ExtraGameMode to the multiplicitive identity.
+            // Extra game modes will be represented as primes multiplied on.
+            ExtraGameMode = 1;
+
             // Read info from the settings file
             readSettings(SETTINGSFILE);
 
-            // create a World depending on the game mode
-            if (ExtraGameMode)
-            {
+            //Instantiates the world
+            world = new World(boardWidth, boardHeight, FoodDensity, headroom, snakeLength, SnakeRecycleRate, ExtraGameMode);
 
-            } else
-            {
-                world = new World(boardWidth, boardHeight, FoodDensity, headroom, snakeLength, SnakeRecycleRate);
-            }
 
             Console.WriteLine("Server Started up.");
 
@@ -191,18 +191,29 @@ namespace Server
                                     break;
 
                                 
-                                case "ExtraGameMode":
+                                case "TronMode":
                                     // Reads the info from the xml and converts it into a bool
                                     reader.Read();
 
                                     String readGameMode = reader.Value.Trim();
 
+                                    bool on;
+
                                     // Make sure it as read properly
-                                    if (!bool.TryParse(readGameMode, out ExtraGameMode))
+                                    if (!bool.TryParse(readGameMode, out on))
                                     {
                                         throw new ArgumentException("ExtraGameMode settings don't make sense.");
                                     }
+
+                                    //Mark it as part of our game mode
+                                    if (on)
+                                    {
+                                        ExtraGameMode *= 2;
+                                    }
+
                                     break;
+
+                                    
 
                                 case "SnakeSettings":
                                     //Doesn't Do anything at the start of the XML file.

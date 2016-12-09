@@ -38,6 +38,9 @@ namespace SnakeModel
         private int headroom;
         // Length of snake upon spawning
         private int snakeLength;
+        // A variable representing which extra game modes active.
+        // An extra game mode is active if its associated prime number divides this number.
+        private int ExtraGameMode;
 
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
@@ -121,9 +124,10 @@ namespace SnakeModel
         /// <param name="headroom">The amount of empty space in front of a new snake</param>
         /// <param name="snakeLength">The starting length of a snake</param>
         /// <param name="snakeRecycleRate">The rate the snakes turn into food</param>
-        public World(int Width, int Height, int foodDensity, int headroom, int snakeLength, double snakeRecycleRate) : this(0, Width, Height)
+        public World(int Width, int Height, int foodDensity, int headroom, int snakeLength, double snakeRecycleRate, int ExtraGameMode) : this(0, Width, Height)
         {
             this.snakeRecycleRate = snakeRecycleRate;
+            this.ExtraGameMode = ExtraGameMode;
             this.foodDensity = foodDensity;
             this.snakeLength = snakeLength;
             this.headroom = headroom;

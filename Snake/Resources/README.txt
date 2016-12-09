@@ -77,6 +77,7 @@ Extra Features(Server):
 ?Severed snake becomes food. (either made the 2d array an array of nodes or change value in 2d aray to be snake ID)
 ?Create random walls in the gameboard and possibly other structures (wall segements, food alcoves, something else)
 ?Useless direction does something(snake completely reverses direction)
+?Survival Mode(Every 20 frames snake shrinks)
 
 
 Current Issues:
