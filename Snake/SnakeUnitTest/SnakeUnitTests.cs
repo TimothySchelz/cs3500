@@ -242,7 +242,7 @@ namespace SnakeUnitTest
         [TestMethod]
         public void World_Constructor2_OneSnake()
         {
-            World testWorld = new World(100, 100, 5, 5, 10, 1);
+            World testWorld = new World(100, 100, 5, 5, 10, 1, 1);
 
             testWorld.createSnake(5, "Steven");
             foreach (Snake result in testWorld.GetSnakes())
@@ -261,7 +261,7 @@ namespace SnakeUnitTest
             // repeat this a bunch since placement is random
             for (int i = 0; i < 100; i++)
             {
-                World testWorld = new World(20, 20, 5, 5, 8, 1);
+                World testWorld = new World(20, 20, 5, 5, 8, 1, 1);
 
                 testWorld.createSnake(5, "Steven");
 
@@ -284,7 +284,7 @@ namespace SnakeUnitTest
         public void World_UpdateWorld_HitWall()
         {
 
-            World testWorld = new World(20, 20, 5, 5, 8, 1);
+            World testWorld = new World(20, 20, 5, 5, 8, 1, 1);
 
             testWorld.createSnake(5, "Steven");
 
@@ -605,7 +605,7 @@ namespace SnakeUnitTest
         public void World_Snake_MovesHeadForward()
         {
 
-            World testWorld = new World(100,100,5,10,10,0.3);
+            World testWorld = new World(100,100,5,10,10,0.3, 1);
 
             List<Point> joints = new List<Point>();
             Point p1 = new Point();
@@ -662,7 +662,7 @@ namespace SnakeUnitTest
         public void World_Snake_MovesTailForward()
         {
 
-            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3, 1);
 
             testWorld.createSnake(1, "Jennifer");
 
@@ -702,7 +702,7 @@ namespace SnakeUnitTest
         [TestMethod]
         public void World_Snake_Kills_Self()
         {
-            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3, 1);
 
             List<Point> joints = new List<Point>();
             Point p1 = new Point();
@@ -748,7 +748,7 @@ namespace SnakeUnitTest
         public void World_DefaultSnakeLength()
         {
 
-            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3, 1);
 
 
             testWorld.createSnake(1, "Sarah");
@@ -762,7 +762,7 @@ namespace SnakeUnitTest
         public void World_UpdateFood_FoodReplacesOldFoodAndIsAlsoEaten()
         {
 
-            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3, 1);
 
             Point point = new Point();
             point.X = 50;
@@ -782,7 +782,7 @@ namespace SnakeUnitTest
         public void World_UpdateSnakes_UpdateWithADeadSnake()
         {
 
-            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3, 1);
 
             Point point = new Point();
             point.X = -1;
@@ -800,7 +800,7 @@ namespace SnakeUnitTest
         [TestMethod]
         public void World_Changed_Direction_Server_Command()
         {
-            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3, 1);
 
             List<Point> joints = new List<Point>();
             Point p1 = new Point();
@@ -837,7 +837,7 @@ namespace SnakeUnitTest
         [TestMethod]
         public void World_UpdateFood_AddingFoodThatAlreadyExists()
         {
-            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3, 1);
 
             testWorld.updateFood(CreateFood(50, 50));
             testWorld.updateFood(CreateFood(50, 50));
@@ -849,7 +849,7 @@ namespace SnakeUnitTest
         public void World_Snake_Eats_Food()
         {
 
-            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3, 1);
 
             testWorld.createSnake(1, "Jennifer");
 
@@ -893,7 +893,7 @@ namespace SnakeUnitTest
         public void World_Regenerates_Food()
         {
 
-            World testWorld = new World(100, 100, 50, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 50, 10, 10, 0.3, 1);
 
             testWorld.createSnake(1, "Jennifer");
             testWorld.createSnake(2, "Mortimer");
@@ -908,9 +908,66 @@ namespace SnakeUnitTest
 
         }
 
+        [TestMethod]
+        public void World_TronMode_CheckLength()
+        {
 
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3, 2);
 
+            testWorld.createSnake(2, "Mortimer");
 
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual(14, findSnakeInWorld(testWorld, 2).GetSnakePoints().Count);
+
+        }
+
+        [TestMethod]
+        public void World_ExtraWalls_CheckNumberOfSnakes()
+        {
+
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3, 3);
+
+            Assert.IsTrue(testWorld.GetSnakes().Count > 10);
+        }
+
+        [TestMethod]
+        public void World_SurvivalMode_CheckLengthDecreasing()
+        {
+
+            World testWorld = new World(100, 100, 0, 70, 10, 0.3, 5);
+
+            testWorld.createSnake(2, "Fornelius");
+
+            for (int i = 0; i < 62; i++)
+            {
+                testWorld.UpdateWorld();
+            }
+
+            Assert.AreEqual(9, findSnakeInWorld(testWorld, 2).GetSnakePoints().Count - 1);
+        }
+
+        [TestMethod]
+        public void World_AllModes_CheckAddedSnakeStillExists()
+        {
+
+            World testWorld = new World(100, 100, 0, 70, 10, 0.3, 30);
+
+            testWorld.createSnake(2, "Fornelius");
+
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual("Fornelius", findSnakeInWorld(testWorld, 2).name);
+        }
 
         /*
          * Helper methods to make testing easier... It might be better for some of these to be in classes

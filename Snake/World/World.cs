@@ -109,8 +109,10 @@ namespace SnakeModel
                 }
             }
 
+            ExtraGameMode = 1;
 
-
+            //Sets the seed for our RNG with system time
+            rando = new Random();
 
             Snakes = new Dictionary<int, Snake>();
             Foods = new Dictionary<int, Food>();
