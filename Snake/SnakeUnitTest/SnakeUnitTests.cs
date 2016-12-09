@@ -529,9 +529,20 @@ namespace SnakeUnitTest
         {
             World testWorld = new World(1, 100, 100);
 
-            testWorld.createSnake(5, "Simon");
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
 
-            Snake Simon = findSnakeInWorld(testWorld, 5);
+            p1.X = 5;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            joints.Add(p1);
+            joints.Add(p2);
+
+            Snake Simon = new Snake(joints, 1, "Esme");
 
             Simon.Direction = 1;
             Simon.PrevDirection = 1;
@@ -650,6 +661,50 @@ namespace SnakeUnitTest
 
         }
 
+        [TestMethod]
+        public void World_Snake_Kills_Self()
+        {
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+            Point p3 = new Point();
+            Point p4 = new Point();
+
+            p1.X = 3;
+            p1.Y = 5;
+
+            p2.X = 6;
+            p2.Y = 5;
+
+            p3.X = 6;
+            p3.Y = 6;
+
+            p4.X = 5;
+            p4.Y = 6;
+
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
+
+            Snake john = new Snake(joints, 1, "john");
+
+            john.Direction = 4;
+            john.PrevDirection = 4;
+
+            testWorld.updateSnake(john);
+
+            testWorld.UpdateWorld();
+
+            john.Direction = 1;
+
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual(-1, john.GetHead().X);
+        }
+
 
         [TestMethod]
         public void World_DefaultSnakeLength()
@@ -708,6 +763,26 @@ namespace SnakeUnitTest
             Assert.AreEqual(0, testWorld.GetFood().Count);
 
         }
+
+        [TestMethod]
+        public void World_Regenerates_Food()
+        {
+
+            World testWorld = new World(100, 100, 50, 10, 10, 0.3);
+
+            testWorld.createSnake(1, "Jennifer");
+            testWorld.createSnake(2, "Mortimer");
+            testWorld.createSnake(3, "Alfred");
+
+
+            testWorld.UpdateWorld();
+
+            //The snake should 50 food per snake, but 3 of them could have eaten food.
+
+            Assert.IsTrue(testWorld.GetFood().Count > 146);
+
+        }
+
 
 
 
