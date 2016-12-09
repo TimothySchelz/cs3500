@@ -307,7 +307,6 @@ namespace Server
             {
                 data.Append(JsonConvert.SerializeObject(snake) + "\n");
             }
-            Console.WriteLine(data.ToString());
             // Append all the food onto the StringBuider
             foreach (Food food in world.GetFood())
             {
@@ -354,20 +353,6 @@ namespace Server
         /// <param name="State"></param>
         private void DisconnectClient(SocketState State)
         {
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-            Console.WriteLine("Disconnected Client");
-
             clients.Remove(State.ID);
             State.theSocket.Close();
         }
@@ -426,8 +411,6 @@ namespace Server
         /// <param name="State"></param>
         private void GetInput(SocketState State)
         {
-            Console.WriteLine(State.ID + ": " + State.sb.ToString());
-
             //pull info from string builder and clear it
             String message = State.sb.ToString();
             State.sb.Clear();
