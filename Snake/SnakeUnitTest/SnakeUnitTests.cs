@@ -370,6 +370,252 @@ namespace SnakeUnitTest
             Assert.AreEqual(4, testWorld.GetSnakes().Count);
         }
 
+        [TestMethod]
+        public void Snake_KillMe()
+        {
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+            Point p3 = new Point();
+            Point p4 = new Point();
+            p1.X = 5;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            p3.X = 8;
+            p3.Y = 7;
+
+            p4.X = 7;
+            p4.Y = 7;
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
+
+            Snake doomedSnake = new Snake(joints, 1, "john");
+
+            doomedSnake.KillMe();
+
+            LinkedList<Point> body = doomedSnake.GetVerticies();
+
+            if (body.Count != 2)
+                Assert.Fail("Dead snake doesn't have 1 vertices");
+
+            foreach(Point vertex in body)
+            {
+                if (vertex.X != -1 || vertex.Y != -1)
+                    Assert.Fail("Body point was not set to (-1,-1)");
+            }
+        }
+
+        //Method called in World, but its guts are really in snake.
+        [TestMethod]
+        public void Snake_ChageDirection()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            testWorld.createSnake(5, "Simon");
+
+            Snake Simon = findSnakeInWorld(testWorld, 5);
+
+            Simon.Direction = 1;
+            Simon.PrevDirection = 1;
+
+            if (Simon.Direction != 1)
+                Assert.Fail("Snake direction not set to 1");
+
+            Simon.Direction = 2;
+
+            if (Simon.Direction != 2)
+                Assert.Fail("Snake direction not changed to 2");
+
+            Simon.PrevDirection = 2;
+            Simon.Direction = 4;
+
+            if (Simon.Direction == 4)
+                Assert.Fail("Direction should not have been changed from right to left.");
+
+        }
+
+        [TestMethod]
+        public void World_Snake_MovesHeadForward()
+        {
+
+            World testWorld = new World(100,100,5,10,10,0.3);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+            Point p3 = new Point();
+            Point p4 = new Point();
+            p1.X = 5;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            p3.X = 8;
+            p3.Y = 7;
+
+            p4.X = 7;
+            p4.Y = 7;
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
+
+            Snake john = new Snake(joints, 1, "john");
+
+            john.Direction = 4;
+            john.PrevDirection = 4;
+
+            testWorld.updateSnake(john);
+
+            testWorld.UpdateWorld();
+
+            // (7,7) -> (6,7)
+            Assert.AreEqual(6, john.GetHead().X);
+
+
+            john.Direction = 3;
+            john.PrevDirection = 4;
+            testWorld.UpdateWorld();
+            
+            // (6,7) -> (6,8)
+            Assert.AreEqual(8, john.GetHead().Y);
+
+            john.Direction = 2;
+            john.PrevDirection = 3;
+            testWorld.UpdateWorld();
+
+            // (6,8) -> (7,8)
+            Assert.AreEqual(7, john.GetHead().X);
+
+
+        }
+
+        [TestMethod]
+        public void World_Snake_MovesTailForward()
+        {
+
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+            Point p3 = new Point();
+            Point p4 = new Point();
+            p1.X = 7;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            p3.X = 8;
+            p3.Y = 7;
+
+            p4.X = 7;
+            p4.Y = 7;
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
+
+            Snake john = new Snake(joints, 1, "john");
+
+            john.Direction = 4;
+            john.PrevDirection = 4;
+
+            testWorld.updateSnake(john);
+
+            testWorld.UpdateWorld();
+
+            Point tail = john.GetVerticies().First.Value;
+
+            // (7,5) -> (8,5)
+            Assert.AreEqual(8, tail.X);
+
+
+            john.Direction = 3;
+            john.PrevDirection = 4;
+            testWorld.UpdateWorld();
+
+            // (8,5) -> (8,6)
+            Assert.AreEqual(6, tail.Y);
+
+            john.Direction = 2;
+            john.PrevDirection = 3;
+            testWorld.UpdateWorld();
+
+            // (8,6) -> (8,7)
+            Assert.AreEqual(7, tail.Y);
+        }
+
+
+        [TestMethod]
+        public void World_DefaultSnakeLength()
+        {
+
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+
+
+            testWorld.createSnake(1, "Sarah");
+
+            int Length = findSnakeInWorld(testWorld, 1).GetLength();
+
+            Assert.AreEqual(12, Length);
+        }
+
+        [TestMethod]
+        public void World_Snake_Eats_Food()
+        {
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+            Point p3 = new Point();
+            Point p4 = new Point();
+
+            p1.X = 5;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            p3.X = 8;
+            p3.Y = 7;
+
+            p4.X = 7;
+            p4.Y = 7;
+
+            joints.Add(p1);
+            joints.Add(p2);
+            joints.Add(p3);
+            joints.Add(p4);
+
+            Snake john = new Snake(joints, 1, "john");
+
+            john.Direction = 4;
+            john.PrevDirection = 4;
+
+            int originalLength = john.GetVerticies().Count;
+
+            testWorld.updateSnake(john);
+
+            // Set a peice of food at 6,7
+            testWorld.generateFood(6, 7);
+
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual(originalLength+1, john.GetVerticies().Count);
+        }
+
+
+
+
         /*
          * Helper methods to make testing easier... It might be better for some of these to be in classes
          */
@@ -390,6 +636,26 @@ namespace SnakeUnitTest
             int ID = p1.X.GetHashCode()*37 + p1.Y.GetHashCode()*157;
             return new Food(ID, p1);
         }
+
+        /// <summary>
+        /// Searches the world for a snake with the given ID. Returns the snake if it is found.
+        /// returns null otherwise.
+        /// </summary>
+        /// <param name="testWorld">World to be searched for the snake</param>
+        /// <param name="v">ID of the desired snake.</param>
+        /// <returns></returns>
+        private Snake findSnakeInWorld(World testWorld, int ID)
+        {
+            foreach (Snake snake in testWorld.GetSnakes())
+            {
+                if (snake.ID == ID)
+                    return snake;
+            }
+
+            return null;
+        }
+
+
 
         /// <summary>
         /// returns a snake with the given head and tail x,y values.  It is named Sebastion

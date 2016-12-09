@@ -127,7 +127,7 @@ namespace SnakeModel
             this.foodDensity = foodDensity;
             this.snakeLength = snakeLength;
             this.headroom = headroom;
-            markedFood = new List<int>();
+            this.markedFood = new List<int>();
         }
 
         /// <summary>
