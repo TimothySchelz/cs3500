@@ -613,57 +613,41 @@ namespace SnakeUnitTest
         public void World_Snake_MovesTailForward()
         {
 
-            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
 
-            List<Point> joints = new List<Point>();
-            Point p1 = new Point();
-            Point p2 = new Point();
-            Point p3 = new Point();
-            Point p4 = new Point();
-            p1.X = 7;
-            p1.Y = 5;
+            testWorld.createSnake(1, "Jennifer");
 
-            p2.X = 8;
-            p2.Y = 5;
+            Snake Jennifer = findSnakeInWorld(testWorld, 1);
 
-            p3.X = 8;
-            p3.Y = 7;
+            int X_i, X_f, Y_i, Y_f;
 
-            p4.X = 7;
-            p4.Y = 7;
-            joints.Add(p1);
-            joints.Add(p2);
-            joints.Add(p3);
-            joints.Add(p4);
-
-            Snake john = new Snake(joints, 1, "john");
-
-            john.Direction = 4;
-            john.PrevDirection = 4;
-
-            testWorld.updateSnake(john);
+            X_i = Jennifer.GetVerticies().First.Value.X;
+            Y_i = Jennifer.GetVerticies().First.Value.Y;
 
             testWorld.UpdateWorld();
 
-            Point tail = john.GetVerticies().First.Value;
+            X_f = Jennifer.GetVerticies().First.Value.X;
+            Y_f = Jennifer.GetVerticies().First.Value.Y;
 
-            // (7,5) -> (8,5)
-            Assert.AreEqual(8, tail.X);
+            switch (Jennifer.Direction)
+            {
+                case 1:
+                    Assert.IsTrue(Y_f < Y_i);
+                    break;
 
+                case 2:
+                    Assert.IsTrue(X_f > X_i);
+                    break;
 
-            john.Direction = 3;
-            john.PrevDirection = 4;
-            testWorld.UpdateWorld();
+                case 3:
+                    Assert.IsTrue(Y_f > Y_i);
+                    break;
 
-            // (8,5) -> (8,6)
-            Assert.AreEqual(6, tail.Y);
+                case 4:
+                    Assert.IsTrue(X_f < X_i);
+                    break;
+            }
 
-            john.Direction = 2;
-            john.PrevDirection = 3;
-            testWorld.UpdateWorld();
-
-            // (8,6) -> (8,7)
-            Assert.AreEqual(7, tail.Y);
         }
 
 
@@ -684,46 +668,45 @@ namespace SnakeUnitTest
         [TestMethod]
         public void World_Snake_Eats_Food()
         {
-            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
 
-            List<Point> joints = new List<Point>();
-            Point p1 = new Point();
-            Point p2 = new Point();
-            Point p3 = new Point();
-            Point p4 = new Point();
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
 
-            p1.X = 5;
-            p1.Y = 5;
+            testWorld.createSnake(1, "Jennifer");
 
-            p2.X = 8;
-            p2.Y = 5;
+            Snake Jennifer = findSnakeInWorld(testWorld, 1);
 
-            p3.X = 8;
-            p3.Y = 7;
+            int X_i = Jennifer.GetHead().X;
+            int Y_i = Jennifer.GetHead().Y;
 
-            p4.X = 7;
-            p4.Y = 7;
+            switch (Jennifer.Direction)
+            {
+                case 1:
+                    testWorld.generateFood(X_i, Y_i - 1);
+                    break;
 
-            joints.Add(p1);
-            joints.Add(p2);
-            joints.Add(p3);
-            joints.Add(p4);
+                case 2:
+                    testWorld.generateFood(X_i + 1, Y_i);
+                    break;
 
-            Snake john = new Snake(joints, 1, "john");
+                case 3:
+                    testWorld.generateFood(X_i, Y_i + 1);
+                    break;
 
-            john.Direction = 4;
-            john.PrevDirection = 4;
-
-            int originalLength = john.GetVerticies().Count;
-
-            testWorld.updateSnake(john);
-
-            // Set a peice of food at 6,7
-            testWorld.generateFood(6, 7);
+                case 4:
+                    testWorld.generateFood(X_i - 1, Y_i);
+                    break;
+            }
 
             testWorld.UpdateWorld();
 
-            Assert.AreEqual(originalLength+1, john.GetVerticies().Count);
+            //The snake should be larger by 1
+            Assert.AreEqual(11, Jennifer.GetLength());
+
+            testWorld.UpdateWorld();
+
+            //There should be no food
+            Assert.AreEqual(0, testWorld.GetFood().Count);
+
         }
 
 
