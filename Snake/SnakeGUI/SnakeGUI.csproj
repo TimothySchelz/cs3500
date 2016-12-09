@@ -97,6 +97,10 @@
       <Project>{cb514dbc-692f-4bd3-b212-791c8cdaa198}</Project>
       <Name>NetworkController</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{a7c67ba6-846b-4246-81c4-46d3da768bc1}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScoreBoardPanel\ScoreBoardPanel.csproj">
       <Project>{c135d11a-d9ae-4565-94cc-3dd4773945fc}</Project>
       <Name>ScoreBoardPanel</Name>

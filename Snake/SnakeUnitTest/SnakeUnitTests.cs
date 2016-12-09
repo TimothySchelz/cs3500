@@ -523,7 +523,6 @@ namespace SnakeUnitTest
             }
         }
 
-        //Method called in World, but its guts are really in snake.
         [TestMethod]
         public void Snake_ChageDirection()
         {
@@ -560,6 +559,45 @@ namespace SnakeUnitTest
 
             if (Simon.Direction == 4)
                 Assert.Fail("Direction should not have been changed from right to left.");
+
+        }
+
+        [TestMethod]
+        public void Snake_ChagePreviousDirection()
+        {
+            World testWorld = new World(1, 100, 100);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            p1.X = 5;
+            p1.Y = 5;
+
+            p2.X = 8;
+            p2.Y = 5;
+
+            joints.Add(p1);
+            joints.Add(p2);
+
+            Snake Simon = new Snake(joints, 1, "Esme");
+
+            Simon.Direction = 1;
+            Simon.PrevDirection = 1;
+
+            if (Simon.PrevDirection != 1)
+                Assert.Fail("Previous direction not set to 1");
+
+            Simon.Direction = 2;
+            Simon.PrevDirection = 2;
+            if (Simon.PrevDirection != 2)
+                Assert.Fail("Snake previous direction not changed to 2");
+
+            Simon.PrevDirection = 2;
+            Simon.PrevDirection = 4;
+
+            if (Simon.PrevDirection == 4)
+                Assert.Fail("Previous Direction should not have been changed from right to left.");
 
         }
 
@@ -721,6 +759,93 @@ namespace SnakeUnitTest
         }
 
         [TestMethod]
+        public void World_UpdateFood_FoodReplacesOldFoodAndIsAlsoEaten()
+        {
+
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+
+            Point point = new Point();
+            point.X = 50;
+            point.Y = 50;
+            int ID = 500007;
+            Food food1 = new Food(ID, point);
+            Food food2 = new Food(ID, point);
+            testWorld.updateFood(food1);
+            point.X = -1;
+            point.Y = -1;
+            testWorld.updateFood(food2);
+
+            Assert.AreEqual(1, testWorld.GetFood().Count);
+        }
+
+        [TestMethod]
+        public void World_UpdateSnakes_UpdateWithADeadSnake()
+        {
+
+            World testWorld = new World(100, 100, 5, 10, 12, 0.3);
+
+            Point point = new Point();
+            point.X = -1;
+            point.Y = -1;
+            int ID = 500007;
+
+            List<Point> joints = new List<Point>() { point, point };
+            Snake Samantha = new Snake(joints, ID, "Samantha");
+   
+            testWorld.updateSnake(Samantha);
+
+            Assert.AreEqual(0, testWorld.GetSnakes().Count);
+        }
+
+        [TestMethod]
+        public void World_Changed_Direction_Server_Command()
+        {
+            World testWorld = new World(100, 100, 5, 10, 10, 0.3);
+
+            List<Point> joints = new List<Point>();
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            p1.X = 3;
+            p1.Y = 5;
+
+            p2.X = 9;
+            p2.Y = 5;
+
+            joints.Add(p1);
+            joints.Add(p2);
+
+            Snake Marge = new Snake(joints, 1, "Marge");
+
+            Marge.Direction = 2;
+            Marge.PrevDirection = 1;
+            Marge.PrevDirection = 2;
+
+            testWorld.updateSnake(Marge);
+
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+
+            testWorld.ChangeSnakeDirection(1, 3);
+
+            testWorld.UpdateWorld();
+            testWorld.UpdateWorld();
+
+            Assert.AreEqual(3, Marge.GetVerticies().Count);
+        }
+
+        [TestMethod]
+        public void World_UpdateFood_AddingFoodThatAlreadyExists()
+        {
+            World testWorld = new World(100, 100, 0, 10, 10, 0.3);
+
+            testWorld.updateFood(CreateFood(50, 50));
+            testWorld.updateFood(CreateFood(50, 50));
+
+            Assert.AreEqual(1, testWorld.GetFood().Count);
+        }
+
+        [TestMethod]
         public void World_Snake_Eats_Food()
         {
 
@@ -808,6 +933,23 @@ namespace SnakeUnitTest
         }
 
         /// <summary>
+        /// Returns a piece of food at a specified location
+        /// </summary>
+        /// <param name="X">X value</param>
+        /// <param name="Y">Y value</param
+        /// <returns>The food</returns>
+        public Food CreateFood(int X, int Y)
+        {
+            Point p1 = new Point();
+
+            p1.X = X;
+            p1.Y = Y;
+
+            int ID = Food.getID(X, Y);
+            return new Food(ID, p1);
+        }
+
+        /// <summary>
         /// Searches the world for a snake with the given ID. Returns the snake if it is found.
         /// returns null otherwise.
         /// </summary>
@@ -823,31 +965,6 @@ namespace SnakeUnitTest
             }
 
             return null;
-        }
-
-
-
-        /// <summary>
-        /// returns a snake with the given head and tail x,y values.  It is named Sebastion
-        /// </summary>
-        /// <param name="HX">Head X value</param>
-        /// <param name="HY">Head Y value</param>
-        /// <param name="TX">Tail X value</param>
-        /// <param name="TY">Tail Y value</param>
-        /// <returns></returns>
-        public Snake SingleSegmentSnake(int HX, int HY, int TX, int TY)
-        {
-
-            Point p1 = new Point();
-            Point p2 = new Point();
-
-            p1.X = HX;
-            p1.Y = HY;
-            p2.X = TX;
-            p2.Y = TY;
-
-            int ID = (HX.GetHashCode() * 37 + HY.GetHashCode() * 67 + TX.GetHashCode() * 79 + TY.GetHashCode() * 19);
-            return new Snake(new List<Point>() { p2, p1 }, ID, "Sebastion");
         }
 
         /// <summary>

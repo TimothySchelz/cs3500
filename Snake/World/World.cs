@@ -653,21 +653,5 @@ namespace SnakeModel
             if(Snakes.ContainsKey(ID))
                 Snakes[ID].Direction = direction;
         }
-
-        /// <summary>
-        /// This should only be called when the world gets updated and the snakes move forward.
-        /// Changes the direction of the given snake to a valid direction based on the input and the prevDirection
-        /// 1: up
-        /// 2: right
-        /// 3: down
-        /// 4: left
-        /// 
-        /// </summary>
-        /// <param name="ID">The ID os the snake to change direction</param>
-        /// <param name="direction">The direction the snake should be changed too</param>
-        public void ChangeSnakePrevDirection(int ID, int direction)
-        {
-            Snakes[ID].PrevDirection = direction;
-        }
     }
 }
