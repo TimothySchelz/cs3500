@@ -213,7 +213,53 @@ namespace Server
 
                                     break;
 
-                                    
+
+                                case "ExtraWalls":
+                                    // Reads the info from the xml and converts it into a bool
+                                    reader.Read();
+
+                                    String readExtraWalls = reader.Value.Trim();
+
+                                    bool ExtraWallsOn;
+
+                                    // Make sure it as read properly
+                                    if (!bool.TryParse(readExtraWalls, out ExtraWallsOn))
+                                    {
+                                        throw new ArgumentException("Extrawalls settings don't make sense.");
+                                    }
+
+                                    //Mark it as part of our game mode
+                                    if (ExtraWallsOn)
+                                    {
+                                        ExtraGameMode *= 3;
+                                    }
+
+                                    break;
+
+
+                                case "SurvivalMode":
+                                    // Reads the info from the xml and converts it into a bool
+                                    reader.Read();
+
+                                    String readSurvival = reader.Value.Trim();
+
+                                    bool SurvivalOn;
+
+                                    // Make sure it as read properly
+                                    if (!bool.TryParse(readSurvival, out SurvivalOn))
+                                    {
+                                        throw new ArgumentException("Survival mode settings don't make sense.");
+                                    }
+
+                                    //Mark it as part of our game mode
+                                    if (SurvivalOn)
+                                    {
+                                        ExtraGameMode *= 5;
+                                    }
+
+                                    break;
+
+
 
                                 case "SnakeSettings":
                                     //Doesn't Do anything at the start of the XML file.

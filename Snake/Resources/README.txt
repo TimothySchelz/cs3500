@@ -73,16 +73,20 @@ value in the 2d array and move the tail forward.  If there is a wall or a snake 
 values.  If there is food at the snakes head we eat the food, set the value of the cell to 2 and we don't move the tail forward.
 
 Extra Features(Server):
-?Severed snake becomes another snake, reversing direction
-?Severed snake becomes food. (either made the 2d array an array of nodes or change value in 2d aray to be snake ID)
-?Create random walls in the gameboard and possibly other structures (wall segements, food alcoves, something else)
-?Useless direction does something(snake completely reverses direction)
-?Survival Mode(Every 20 frames snake shrinks)
+!!!Warning!!! If settings such as Width and Height are set to small values there may be problems with creating the world and populating it with objects.
 
+Extra Walls:  If this is set to True in the settings random walls and alcoves will be generated in the world when they begin.  The alcoves are full of food but watch
+out!  They are dangerous.
 
-Current Issues:
-When there are a few snakes in the game we are getting an KeyNotFoundException where there appears to be a food in the 2d array but not in the list of foods.  
-It seems to only happen when there are more than 1 snake.
+Survival Mode:  If this mode is activated in the settings file your snake will shorten by 1 every 60 frames.  If you on't eat quick enough you will die!
 
-Got a weird outOfBounds Exception when snake left bottom of board (it might have just been the 
-snake eating through a food on the wall and then moving through it, in which case, this was resolved.)
+Tron Mode: I am almost sure everyone will have a tron mode.  If you set this to true in the settings file then your tail will not disappear as you move forword. 
+
+The way that the server and the world detects that the extra game modes are being used may seem a bit unorthadox.  Each extra feature is associated with a prime number.
+We then multiply these to determine what game mode we should be in.  So if we want to determine if we are using a specific extra feature we just see if our game mode is
+divisible by the prime number associated with the specific exta feature.  So if we want Extra walls and tron mode to be on our game mode will be 6 which is divisible by
+2 and 3 the primes associated with those exta features.
+
+Extra Settings:
+Headroom:  Determine how many cells in fron of your snak must be open and free of obstacles. 
+Snake Length: Determine how long starting snakes should be.

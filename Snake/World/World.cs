@@ -27,7 +27,7 @@ namespace SnakeModel
         // The player
         int PlayerID;
         // RNG for random world values
-        private Random rando = new Random();
+        private Random rando;
         // Probability that a snake body point will turn to food
         private double snakeRecycleRate;
         // Food made available per snake.
@@ -38,9 +38,12 @@ namespace SnakeModel
         private int headroom;
         // Length of snake upon spawning
         private int snakeLength;
+        // A variable to count frames updated in the game
+        private int frameCounter;
         // A variable representing which extra game modes active.
         // An extra game mode is active if its associated prime number divides this number.
         private int ExtraGameMode;
+
 
         // Locks for The Food and the Snakes so that we can only be adding or getting from them by one thread at a time
         Object SnakeLock = new object();
@@ -132,6 +135,101 @@ namespace SnakeModel
             this.snakeLength = snakeLength;
             this.headroom = headroom;
             this.markedFood = new List<int>();
+            frameCounter = 0;
+
+
+            //Sets the seed for our RNG with system time
+            rando = new Random();
+
+            //Adds Extra Walls Before the game begins.
+            if(ExtraGameMode % 3 == 0)
+            {
+                AddExtraWalls();
+            }
+        }
+
+
+        /// <summary>
+        /// Adds Extra walls to the world depending on its size. Walls are represented by snakes with negative ID.
+        /// </summary>
+        private void AddExtraWalls()
+        {
+            
+            //Builds central wall
+            Point p1 = new Point();
+            Point p2 = new Point();
+
+            p1.X = Width / 3;
+            p2.X = 2 * (Width / 3);
+
+            p1.Y = Height / 2;
+            p2.Y = Height / 2;
+
+            List<Point> joints = new List<Point>() { p1, p2 };
+
+            Snake middleWall = new Snake(joints, -1, "wall");
+
+            updateSnake(middleWall);
+
+            //Creates a set of alcoves filled with food
+            for (int i = 0; i < 7; i++)
+            {
+                CreateAlcove(-(100+ i));
+            }
+
+            //Creates a few random straight walls.
+            for (int i = 0; i < 15; i++)
+            {
+                createSnake(-(200 + i), "Wall-e");
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CreateAlcove(int ID)
+        {
+            //Creates small squares filled with food.
+            Point p3 = new Point();
+            Point p4 = new Point();
+            Point p5 = new Point();
+            Point p6 = new Point();
+
+            p3.X = rando.Next(Width - 7);
+            p3.Y = rando.Next(Height - 7);
+
+            p4.X = p3.X + 7;
+            p4.Y = p3.Y;
+
+            p5.X = p3.X;
+            p5.Y = p3.Y + 7;
+
+            p6.X = p3.X + 7;
+            p6.Y = p3.Y + 7;
+
+            List<Point> wallCorners = new List<Point>() { p3, p4, p6, p5 };
+
+            int offset = rando.Next(4);
+
+            for (int i = 0; i < offset; i++)
+            {
+                Point movingPoint = wallCorners[0];
+
+                wallCorners.Remove(movingPoint);
+
+                wallCorners.Add(movingPoint);
+            }
+
+            for(int x = p3.X + 1; x <= p4.X - 1; x++)
+            {
+                for(int y = p3.Y+1; y <= p5.Y-1; y++)
+                {
+                    generateFood(x, y);
+                }
+            }
+
+            updateSnake(new Snake(wallCorners, ID, "SquareWall1"));
         }
 
         /// <summary>
@@ -139,6 +237,7 @@ namespace SnakeModel
         /// </summary>
         public void UpdateWorld()
         {
+
             lock (this)
             {
                 // check for eaten food and remove it
@@ -154,6 +253,33 @@ namespace SnakeModel
 
                 // Generate food
                 PopulateWithFood(foodDensity);
+
+
+                // If survival mode is on
+                if(ExtraGameMode % 5 == 0 && frameCounter > 60)
+                {
+                    foreach(KeyValuePair<int,Snake> pair in Snakes)
+                    {
+                        if ( pair.Key >= 0)
+                        {
+                            Point tail = pair.Value.GetVerticies().First.Value;
+                            Map[tail.X, tail.Y] = -1;
+                            pair.Value.moveTailForward();
+                           
+                            if (pair.Value.GetSnakePoints().Count== 2)
+                            {
+
+                                KillSnake(pair.Value);
+                                
+                            }
+
+                        }
+                    }
+
+                    frameCounter = 0;
+                }
+
+                frameCounter++;
             }
         }
 
@@ -173,8 +299,14 @@ namespace SnakeModel
                 //Empty Space
                 case -1:
                     Map[newHead.X, newHead.Y] = 2;
-                    Point prevTail = snake.moveTailForward();
-                    Map[prevTail.X, prevTail.Y] = -1;
+
+                    //If Tron mode is off, move tail forward.
+                    if (ExtraGameMode % 2 != 0)
+                    {
+                        Point prevTail = snake.moveTailForward();
+                        Map[prevTail.X, prevTail.Y] = -1;
+                    }
+
                     break;
                 
                 //Wall
@@ -288,6 +420,10 @@ namespace SnakeModel
 
                 foreach (KeyValuePair<int, Snake> snakePair in Snakes)
                 {
+                    //Don't move snake if they are representing walls.
+                    if (snakePair.Key < 0)
+                        continue;
+
                     // Remove the snake from the list of snakes if the snake is dead.
                     if (snakePair.Value.GetHead().X == -1)
                     {
