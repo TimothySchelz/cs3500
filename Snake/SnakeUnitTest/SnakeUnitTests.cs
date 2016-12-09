@@ -937,7 +937,7 @@ namespace SnakeUnitTest
         public void World_SurvivalMode_CheckLengthDecreasing()
         {
 
-            World testWorld = new World(100, 100, 0, 70, 10, 0.3, 5);
+            World testWorld = new World(100, 100, 0, 70, 10, 0, 5);
 
             testWorld.createSnake(2, "Fornelius");
 
