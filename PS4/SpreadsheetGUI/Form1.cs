@@ -130,7 +130,6 @@ namespace SpreadsheetGUI
         {
             int row, col;
 
-
             // Gets the selection
             ss.GetSelection(out col, out row);
 
